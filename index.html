@@ -20,6 +20,9 @@
     h1{
       text-align: center;
     }
+    span{
+      margin-left: -80%;
+    }
     </style>
 </head>
 <body>
@@ -34,7 +37,7 @@
       </div>
     </div> 
     <!-- food, water, urination, defecation -->
-    <div class="row justify-content-around row-cols-2 gy-4">   
+    <div class="row justify-content-around row-cols-2 gy-4 mb-2">   
       <!-- food -->
       <div class="col"> 
         <div class="card shadow h-100 py-2">
@@ -165,20 +168,18 @@
         </div>
       </div>
     </div>
-    &nbsp;
-    <div class="row">
+    <div class="row mb-2">
       <div class="col offset-8">
-        <button type="button" class="btn btn-outline-primary">新增</button>
+        <button type="submit" class="btn btn-primary">新增</button>
       </div>
     </div>
-    &nbsp;
     <!-- weight -->
-    <div class="row">
+    <div class="row mb-2">
       <div class="col">
         <div class="card shadow h-60 py-2">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
-              <div class="col-4 align-items-center">
+              <div class="col-4 text-center">
                 <h3>體重</h3>
               </div>
               <div class="col-2">
@@ -200,13 +201,11 @@
         </div>
       </div>
     </div>
-    &nbsp;
-    <div class="row">
+    <div class="row mb-2">
       <div class="col offset-8">
-        <button class="btn btn-primary disabled"> 新增</button>
+        <button class="btn btn-primary"> 新增</button>
       </div>
     </div>
-    &nbsp;
   </div>
   
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
