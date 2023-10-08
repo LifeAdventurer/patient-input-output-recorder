@@ -1,21 +1,35 @@
-let week = ['日', '一', '二', '三', '四', '五', '六'];
-
-const update = {
+Vue.createApp({
   data() {
     return {
       date: ' ',
-      time: ' '
+      time: ' ',
+      recordDate: ' ',
+      weight: '未量測',
+      count: 0,
+      inputWeight: ' ',
+      records: []
     }
-  },    
-  mounted() {
-    setInterval(() => {
-      let date = new Date();
-      return this.date = date.getFullYear() + "." + (date.getMonth() + 1) + "." + ("0" + date.getDate()).substr(-2) + " (" + week[date.getDay()] + ")";
-    }, 1000);
-    setInterval(() => {
-      let date = new Date();
-      return this.time = ("0" + date.getHours()).substr(-2) + ":" + ("0" + date.getMinutes()).substr(-2) + ":" + ("0" + date.getSeconds()).substr(-2);
-    }, 1000);
   },
-}
-Vue.createApp(update).mount('#clock');
+  methods: {
+    addData() {
+      this.records.push(1);
+      this.count = this.records.length;
+    },
+    addWeight() {
+      if(isNaN(this.inputWeight) || this.inputWeight <= 0 || this.inputWeight > 300){
+        alert('您輸入的體重不正常')
+        return;
+      }
+      this.weight = this.inputWeight + " kg";
+    }
+  },
+  mounted() {
+    let week = ['日', '一', '二', '三', '四', '五', '六'];
+    setInterval(() => {
+      let d = new Date();
+      this.time = ("0" + d.getHours()).substr(-2) + ":" + ("0" + d.getMinutes()).substr(-2) + ":" + ("0" + d.getSeconds()).substr(-2);
+      this.date = d.getFullYear() + "." + (d.getMonth() + 1) + "." + ("0" + d.getDate()).substr(-2) + " (" + week[d.getDay()] + ")";
+      this.recordDate = (d.getMonth() + 1) + "." + ("0" + d.getDate()).substr(-2);
+    }, 1000);
+  }
+}).mount('#app');
