@@ -6,13 +6,26 @@ Vue.createApp({
       recordDate: ' ',
       weight: '未量測',
       count: 0,
+      inputFood: 0,
+      inputWater: 0,
+      inputUrination: 0,
+      inputDefecation: 0,
       inputWeight: ' ',
       records: []
     }
   },
   methods: {
     addData() {
-      this.records.push(1);
+      let d = new Date();
+      let currentData = {
+        "timeStamp": (("0" + d.getHours()).substr(-2) + ":" + ("0" + d.getMinutes()).substr(-2)),
+        "food": this.inputFood,
+        "water": this.inputWater,
+        "unrination": this.inputUrination,
+        "defecation": this.inputDefecation
+      };
+      this.records.push(currentData);
+      console.table(this.records);
       this.count = this.records.length;
     },
     addWeight() {
@@ -20,7 +33,7 @@ Vue.createApp({
         alert('您輸入的體重不正常')
         return;
       }
-      this.weight = this.inputWeight + " kg";
+      this.weight = Math.round(this.inputWeight * 100) / 100 + " kg";
     }
   },
   mounted() {
