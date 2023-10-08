@@ -21,9 +21,14 @@
     h1{
       text-align: center;
     }
+    
     span{
       margin-left: -20%;
     }
+    
+    /* #time{
+      font-family: 'Share Tech Mono', monospace;
+    } */
     </style>
 </head>
 <body>
@@ -47,7 +52,7 @@
     <div class="row justify-content-around row-cols-2 gy-4 mb-2">   
       <!-- food -->
       <div class="col"> 
-        <div class="card shadow h-100 py-2">
+        <div class="card shadow h-100 py-2 bg-light">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col-8">
@@ -78,7 +83,7 @@
       </div>  
       <!-- water -->
       <div class="col">
-        <div class="card shadow h-100 py-2">
+        <div class="card shadow h-100 py-2 bg-light">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col-8">
@@ -109,7 +114,7 @@
       </div>
       <!-- urination -->
       <div class="col">
-        <div class="card shadow h-100 py-2">
+        <div class="card shadow h-100 py-2 bg-light">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col-8">
@@ -121,7 +126,7 @@
                 </span>
               </div>
             </div>
-        
+            
             <div class="row">
               <!-- downdrops -->
               <div class="col">
@@ -140,7 +145,7 @@
       </div>
       <!-- defecation -->
       <div class="col">
-        <div class="card shadow h-100 py-2">
+        <div class="card shadow h-100 py-2 bg-light">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col-8">
@@ -183,7 +188,7 @@
     <!-- weight -->
     <div class="row mb-2">
       <div class="col">
-        <div class="card shadow h-60 py-2">
+        <div class="card shadow h-60 py-2 bg-light">
           <div class="card-body">
             <div class="row no-gutters align-items-center">
               <div class="col-4">
@@ -210,7 +215,26 @@
     </div>
     <div class="row mb-2">
       <div class="col offset-8">
-        <button type="submit" class="btn btn-primary"> 新增</button>
+        <button type="submit" class="btn btn-primary glow-effect"> 新增</button>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col">
+        <div class="accordion">
+          <div class="accordion-item shadow bg-light">
+            <h2 class="accordion-header" id="records">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#content" aria-expanded="false" aria-controls="content">
+                RECORD
+              </button>
+            </h2>
+            <div class="accordion-collapse collapse" id="content" aria-labelledby="records" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                ABCD
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
