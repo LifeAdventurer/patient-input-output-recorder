@@ -1,17 +1,21 @@
 Vue.createApp({
   data() {
     return {
+      // time bar
       date: ' ',
       time: ' ',
+      // record bar head
       recordDate: ' ',
       weight: '未量測',
       count: 0,
+      // record bar content
       inputFood: 0,
       inputWater: 0,
       inputUrination: 0,
       inputDefecation: 0,
       inputWeight: '',
       records: [],
+      // sums
       foodSum: 0,
       waterSum: 0,
       urinationSum: 0,
@@ -29,14 +33,18 @@ Vue.createApp({
         "defecation": this.inputDefecation
       };
       this.records.push(currentData);
-      
+      this.count = this.records.length;
+      console.table(this.records);
+      // sums
       this.foodSum += parseInt(this.inputFood);
       this.waterSum += parseInt(this.inputWater);
       this.urinationSum += parseInt(this.inputUrination);
       this.defecationSum += parseInt(this.inputDefecation);
-      
-      console.table(this.records);
-      this.count = this.records.length;
+      // init again
+      this.inputFood = 0;
+      this.inputWater = 0;
+      this.inputUrination = 0;
+      this.inputDefecation = 0;
     },
     addWeight() {
       if(isNaN(this.inputWeight) || this.inputWeight <= 0 || this.inputWeight > 300){
@@ -44,6 +52,7 @@ Vue.createApp({
         return;
       }
       this.weight = Math.round(this.inputWeight * 100) / 100 + " kg";
+      this.inputWeight = 0; // init again
     }
   },
   mounted() {
