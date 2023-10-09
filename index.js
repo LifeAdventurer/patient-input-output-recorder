@@ -10,8 +10,12 @@ Vue.createApp({
       inputWater: 0,
       inputUrination: 0,
       inputDefecation: 0,
-      inputWeight: ' ',
-      records: []
+      inputWeight: '',
+      records: [],
+      foodSum: 0,
+      waterSum: 0,
+      urinationSum: 0,
+      defecationSum: 0
     }
   },
   methods: {
@@ -25,6 +29,12 @@ Vue.createApp({
         "defecation": this.inputDefecation
       };
       this.records.push(currentData);
+      
+      this.foodSum += parseInt(this.inputFood);
+      this.waterSum += parseInt(this.inputWater);
+      this.urinationSum += parseInt(this.inputUrination);
+      this.defecationSum += parseInt(this.inputDefecation);
+      
       console.table(this.records);
       this.count = this.records.length;
     },
