@@ -1,0 +1,15 @@
+h1{
+  text-align: center;
+}
+
+span{
+  margin-left: -20%;
+}
+
+[v-cloak] {
+  display: none !important;
+}
+
+/* #time{
+  font-family: 'Share Tech Mono', monospace;
+} */
