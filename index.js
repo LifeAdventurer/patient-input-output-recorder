@@ -15,6 +15,7 @@ Vue.createApp({
       inputDefecation: 0,
       inputWeight: '',
       records: [],
+      lastUpdateTime: 0,
       // sums
       foodSum: 0,
       waterSum: 0,
@@ -26,7 +27,7 @@ Vue.createApp({
     addData() {
       let d = new Date();
       let currentData = {
-        "timeStamp": (("0" + d.getHours()).substr(-2) + ":" + ("0" + d.getMinutes()).substr(-2)),
+        "time": (("0" + d.getHours()).substr(-2) + ":" + ("0" + d.getMinutes()).substr(-2)),
         "food": this.inputFood,
         "water": this.inputWater,
         "unrination": this.inputUrination,
