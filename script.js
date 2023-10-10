@@ -15,7 +15,6 @@ Vue.createApp({
       inputDefecation: 0,
       inputWeight: '',
       records: [],
-      lastUpdateTime: 0,
       // sums
       foodSum: 0,
       waterSum: 0,
@@ -26,6 +25,10 @@ Vue.createApp({
   methods: {
     addData() {
       let d = new Date();
+      if(this.inputFood == 0 && this.inputWater == 0 && this.inputUrination == 0 && this.inputDefecation == 0){
+        // alert('您尚未輸入數據');
+        return;
+      }
       let currentData = {
         "time": (("0" + d.getHours()).substr(-2) + ":" + ("0" + d.getMinutes()).substr(-2)),
         "food": this.inputFood,
