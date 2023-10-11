@@ -22,14 +22,12 @@
 <body>
   <div class="container" id="app">
     <!-- DATE and TIME -->
-    <div class="row">
-      <div class="col-7" style="font-size: 24px;">
-        <div v-cloak class="date fw-bold">
+    <div class="timeBar">
+      <div class="row">
+        <div v-cloak class="col-7 fw-bold" style="font-size: 24px;">
           {{ date }}
         </div>
-      </div>
-      <div class="col-3 offset-1" style="font-size: 24px;">
-        <div v-cloak class="time fw-bold">
+        <div v-cloak class="col-3 offset-1 fw-bold" style="font-size: 24px;">
           {{ time }}
         </div>
       </div>
@@ -210,19 +208,20 @@
           <div class="accordion-item shadow bg-light">
             <h2 class="accordion-header" id="recordSection">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#content" aria-expanded="false" aria-controls="content">
+              <!-- v-on:click="toggleAccordion" -->
                 <div class="row">
                   <div class="col-1" style="white-space: nowrap; font-size: 20px;">
-                    <div v-cloak class="date">
+                    <div v-cloak class="recordDate">
                       {{ recordDate }}
                     </div>
                   </div>
-                  <div class="col-5 offset-2">
-                    <div v-cloak style="white-space: nowrap; font-size: 18px;">
+                  <div class="col-5 offset-2" style="white-space: nowrap; font-size: 18px;">
+                    <div v-cloak class="weight">
                       體重: {{ weight }}
                     </div>
                   </div>
-                  <div class="col-3">
-                    <div v-cloak style="white-space: nowrap; font-size: 18px;">
+                  <div class="col-3" style="white-space: nowrap; font-size: 18px;">
+                    <div v-cloak class="count">
                       {{ count }}筆資料
                     </div>
                   </div>
