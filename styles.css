@@ -1,8 +1,8 @@
-h1{
-  text-align: center;
+body {
+  background: linear-gradient(335deg, #f9e4e4, #f1fff6, #e5e7f9);
 }
 
-span{
+span {
   margin-left: -20%;
 }
 
@@ -10,6 +10,6 @@ span{
   display: none !important;
 }
 
-/* #time{
-  font-family: 'Share Tech Mono', monospace;
-} */
+.timeBar {
+  font-family: Pixelify Sans;
+}
