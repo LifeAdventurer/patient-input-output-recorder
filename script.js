@@ -19,7 +19,7 @@ Vue.createApp({
       foodSum: 0,
       waterSum: 0,
       urinationSum: 0,
-      defecationSum: 0
+      defecationSum: 0,
     }
   },
   methods: {
@@ -57,10 +57,14 @@ Vue.createApp({
       }
       this.weight = Math.round(this.inputWeight * 100) / 100 + " kg";
       this.inputWeight = 0; // init again
-    }
+    },
+    // toggleAccordion() {
+      
+    // },
   },
   mounted() {
     let week = ['日', '一', '二', '三', '四', '五', '六'];
+    // window.scrollTo(0, document.body.scrollHeight);
     setInterval(() => {
       let d = new Date();
       this.time = ("0" + d.getHours()).substr(-2) + ":" + ("0" + d.getMinutes()).substr(-2) + ":" + ("0" + d.getSeconds()).substr(-2);
