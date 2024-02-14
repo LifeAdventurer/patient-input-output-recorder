@@ -18,7 +18,7 @@ Vue.createApp({
   },
   methods: {
     initRecords(currentDate) {
-      let num = currentDate.split('.');
+      let num = currentDate.split('_');
       this.records[currentDate] = {}
       this.records[currentDate]['data'] = [];
       this.records[currentDate]['recordDate'] = num[1] + '.' + num[2];
@@ -32,7 +32,7 @@ Vue.createApp({
       const fetchUrl = this.url + '?password=' + this.password;
       fetch(fetchUrl, {
         method: 'GET',
-        mode: "cors",
+        mode: 'cors',
       })
         .then(response => {
           // fix this later
@@ -58,14 +58,14 @@ Vue.createApp({
       const url = this.url;
       fetch(url, {
         method: 'POST',
-        mode: "cors",
+        mode: 'cors',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          "password": this.password,
-          "data": this.records
+          'password': this.password,
+          'data': this.records
         })
       })
         .then(response => {
@@ -84,16 +84,16 @@ Vue.createApp({
         return;
       }
       let d = new Date();
-      let currentDate = d.getFullYear() + "." + (d.getMonth() + 1) + "." + ("0" + d.getDate()).substr(-2);
+      let currentDate = d.getFullYear() + '_' + (d.getMonth() + 1) + '_' + ('0' + d.getDate()).substr(-2);
       if (!this.records[currentDate]) {
         this.initRecords(currentDate);
       }
       let currentData = {
-        "time": (("0" + d.getHours()).substr(-2) + ":" + ("0" + d.getMinutes()).substr(-2)),
-        "food": this.inputFood,
-        "water": this.inputWater,
-        "urination": this.inputUrination,
-        "defecation": this.inputDefecation
+        'time': (('0' + d.getHours()).substr(-2) + ':' + ('0' + d.getMinutes()).substr(-2)),
+        'food': this.inputFood,
+        'water': this.inputWater,
+        'urination': this.inputUrination,
+        'defecation': this.inputDefecation
       };
       this.records[currentDate]['data'].push(currentData);
       this.records[currentDate]['count'] = this.records[currentDate]['data'].length;
@@ -117,11 +117,11 @@ Vue.createApp({
         return;
       }
       let d = new Date();
-      let currentDate = d.getFullYear() + "." + (d.getMonth() + 1) + "." + ("0" + d.getDate()).substr(-2);
+      let currentDate = d.getFullYear() + '_' + (d.getMonth() + 1) + '_' + ('0' + d.getDate()).substr(-2);
       if (!this.records[currentDate]) {
         this.initRecords(currentDate);
       }
-      this.records[currentDate]['weight'] = Math.round(this.inputWeight * 100) / 100 + " kg";
+      this.records[currentDate]['weight'] = Math.round(this.inputWeight * 100) / 100 + ' kg';
       // init again
       this.inputWeight = 0;
       // post to database
@@ -136,8 +136,8 @@ Vue.createApp({
     // window.scrollTo(0, document.body.scrollHeight);
     setInterval(() => {
       let d = new Date();
-      this.time = ("0" + d.getHours()).substr(-2) + ":" + ("0" + d.getMinutes()).substr(-2) + ":" + ("0" + d.getSeconds()).substr(-2);
-      this.date = d.getFullYear() + "." + (d.getMonth() + 1) + "." + ("0" + d.getDate()).substr(-2) + " (" + week[d.getDay()] + ")";
+      this.time = ('0' + d.getHours()).substr(-2) + ':' + ('0' + d.getMinutes()).substr(-2) + ':' + ('0' + d.getSeconds()).substr(-2);
+      this.date = d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + ('0' + d.getDate()).substr(-2) + ' (' + week[d.getDay()] + ')';
     }, 1000);
   },
   // computed: {
