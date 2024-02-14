@@ -1,6 +1,8 @@
 Vue.createApp({
   data() {
     return {
+      password: '',
+      authenticated: false,
       // time bar
       date: ' ',
       time: ' ',
@@ -11,20 +13,47 @@ Vue.createApp({
       inputDefecation: 0,
       inputWeight: '',
       records: {},
+      url: 'https://tobiichi3227.eu.org/'
     }
   },
   methods: {
+    authenticate() {
+      const fetchUrl = this.url + '?password=' + this.password;
+      fetch(fetchUrl, {
+        method: 'GET',
+        mode: "cors",
+      })
+        .then(response => {
+          // fix this later
+          // if (!response.ok) {
+          //   throw new Error('Network response was not ok');
+          // }
+          return response.json();
+        })
+        .then(data => {
+          if (data.hasOwnProperty('message') && data.message === 'wrong password') {
+            alert('密碼錯誤')
+            this.password = '';
+          } else {
+            this.authenticated = true;
+            this.records = JSON.parse(data['record']);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    },
     postData() {
-      const url = 'https://tobiichi3227.eu.org/'
-      console.log('post data')
+      const url = this.url;
       fetch(url, {
         method: 'POST',
-        mode: "no-cors",
+        mode: "cors",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          "password": this.password,
           "data": this.records
         })
       })
@@ -35,7 +64,7 @@ Vue.createApp({
           console.log('Data posted successfully');
         })
         .catch(error => {
-          console.error('Error: ', error);
+          console.error(error);
         });
     },
     addData() {
