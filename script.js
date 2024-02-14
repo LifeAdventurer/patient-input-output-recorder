@@ -17,6 +17,17 @@ Vue.createApp({
     }
   },
   methods: {
+    initRecords(currentDate) {
+      let num = currentDate.split('.');
+      this.records[currentDate] = {}
+      this.records[currentDate]['data'] = [];
+      this.records[currentDate]['recordDate'] = num[1] + '.' + num[2];
+      this.records[currentDate]['foodSum'] = 0;
+      this.records[currentDate]['waterSum'] = 0;
+      this.records[currentDate]['urinationSum'] = 0;
+      this.records[currentDate]['defecationSum'] = 0;
+      this.records[currentDate]['weight'] = '未量測';
+    },
     authenticate() {
       const fetchUrl = this.url + '?password=' + this.password;
       fetch(fetchUrl, {
@@ -75,14 +86,7 @@ Vue.createApp({
       let d = new Date();
       let currentDate = d.getFullYear() + "." + (d.getMonth() + 1) + "." + ("0" + d.getDate()).substr(-2);
       if (!this.records[currentDate]) {
-        this.records[currentDate] = {}
-        this.records[currentDate]['data'] = [];
-        this.records[currentDate]['recordDate'] = (d.getMonth() + 1) + "." + ("0" + d.getDate()).substr(-2);
-        this.records[currentDate]['foodSum'] = 0;
-        this.records[currentDate]['waterSum'] = 0;
-        this.records[currentDate]['urinationSum'] = 0;
-        this.records[currentDate]['defecationSum'] = 0;
-        this.records[currentDate]['weight'] = '未量測';
+        this.initRecords(currentDate);
       }
       let currentData = {
         "time": (("0" + d.getHours()).substr(-2) + ":" + ("0" + d.getMinutes()).substr(-2)),
@@ -115,14 +119,7 @@ Vue.createApp({
       let d = new Date();
       let currentDate = d.getFullYear() + "." + (d.getMonth() + 1) + "." + ("0" + d.getDate()).substr(-2);
       if (!this.records[currentDate]) {
-        this.records[currentDate] = {}
-        this.records[currentDate]['data'] = [];
-        this.records[currentDate]['recordDate'] = (d.getMonth() + 1) + "." + ("0" + d.getDate()).substr(-2);
-        this.records[currentDate]['foodSum'] = 0;
-        this.records[currentDate]['waterSum'] = 0;
-        this.records[currentDate]['urinationSum'] = 0;
-        this.records[currentDate]['defecationSum'] = 0;
-        this.records[currentDate]['weight'] = '未量測';
+        this.initRecords(currentDate);
       }
       this.records[currentDate]['weight'] = Math.round(this.inputWeight * 100) / 100 + " kg";
       // init again
