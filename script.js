@@ -14,6 +14,30 @@ Vue.createApp({
     }
   },
   methods: {
+    postData() {
+      const url = 'https://tobiichi3227.eu.org/'
+      console.log('post data')
+      fetch(url, {
+        method: 'POST',
+        mode: "no-cors",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "data": this.records
+        })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to post data');
+          }
+          console.log('Data posted successfully');
+        })
+        .catch(error => {
+          console.error('Error: ', error);
+        });
+    },
     addData() {
       if (this.inputFood == 0 && this.inputWater == 0 && this.inputUrination == 0 && this.inputDefecation == 0) {
         // alert('您尚未輸入數據');
@@ -40,7 +64,7 @@ Vue.createApp({
       };
       this.records[currentDate]['data'].push(currentData);
       this.records[currentDate]['count'] = this.records[currentDate]['data'].length;
-      console.table(this.records[currentDate]);
+      // console.table(this.records[currentDate]);
       // sums
       this.records[currentDate]['foodSum'] += parseInt(this.inputFood);
       this.records[currentDate]['waterSum'] += parseInt(this.inputWater);
@@ -51,6 +75,8 @@ Vue.createApp({
       this.inputWater = 0;
       this.inputUrination = 0;
       this.inputDefecation = 0;
+      // post to database
+      this.postData();
     },
     addWeight() {
       if (isNaN(this.inputWeight) || this.inputWeight <= 0 || this.inputWeight > 300) {
@@ -70,7 +96,10 @@ Vue.createApp({
         this.records[currentDate]['weight'] = '未量測';
       }
       this.records[currentDate]['weight'] = Math.round(this.inputWeight * 100) / 100 + " kg";
-      this.inputWeight = 0; // init again
+      // init again
+      this.inputWeight = 0;
+      // post to database
+      this.postData();
     },
     // toggleAccordion() {
 
