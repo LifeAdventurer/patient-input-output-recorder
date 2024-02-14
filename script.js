@@ -21,7 +21,7 @@ Vue.createApp({
       let num = currentDate.split('_');
       this.records[currentDate] = {}
       this.records[currentDate]['data'] = [];
-      this.records[currentDate]['recordDate'] = num[1] + '.' + num[2];
+      this.records[currentDate]['recordDate'] = num[1] + '/' + num[2];
       this.records[currentDate]['foodSum'] = 0;
       this.records[currentDate]['waterSum'] = 0;
       this.records[currentDate]['urinationSum'] = 0;
