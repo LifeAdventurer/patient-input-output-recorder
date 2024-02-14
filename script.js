@@ -28,31 +28,37 @@ Vue.createApp({
       this.records[currentDate]['defecationSum'] = 0;
       this.records[currentDate]['weight'] = '未量測';
     },
-    authenticate() {
+    async fetchRecords() {
       const fetchUrl = this.url + '?password=' + this.password;
-      fetch(fetchUrl, {
+      return await fetch(fetchUrl, {
         method: 'GET',
         mode: 'cors',
       })
         .then(response => {
-          // fix this later
-          // if (!response.ok) {
-          //   throw new Error('Network response was not ok');
-          // }
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
           return response.json();
         })
         .then(data => {
-          if (data.hasOwnProperty('message') && data.message === 'wrong password') {
-            alert('密碼錯誤')
-            this.password = '';
-          } else {
-            this.authenticated = true;
-            this.records = JSON.parse(data['record']);
-          }
+          console.log(data);
+          return data;
         })
         .catch(error => {
           console.error(error);
         });
+    },
+    async authenticate() {
+      const fetchedData = await this.fetchRecords();
+      console.log(fetchedData)
+      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'wrong password') {
+        alert('密碼錯誤')
+        this.password = '';
+      } else {
+        this.authenticated = true;
+        this.records = JSON.parse(fetchedData['record']);
+        sessionStorage.setItem('password', this.password);
+      }
     },
     postData() {
       const url = this.url;
@@ -131,7 +137,15 @@ Vue.createApp({
 
     // },
   },
-  mounted() {
+  async mounted() {
+    let password = sessionStorage.getItem('password');
+    if (password !== null && password !== undefined) {
+      this.authenticated = true;
+      this.password = password;
+      const fetchedData = await this.fetchRecords();
+      console.log(fetchedData);
+      this.records = JSON.parse(fetchedData['record']);
+    }
     let week = ['日', '一', '二', '三', '四', '五', '六'];
     // window.scrollTo(0, document.body.scrollHeight);
     setInterval(() => {
