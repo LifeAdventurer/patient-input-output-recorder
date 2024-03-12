@@ -28,8 +28,11 @@ def read_data(account: str, password: str):
         return {"message": "unauthorized"}
 
     with open('./data.json', 'r') as f:
-        return {"message": "read success", "record": json.load(f)[account]}
-
+        data = json.load(f)
+        if account in data:
+            return {"message": "read success", "record": json.load(f)[account]}
+        else:
+            return {"message": "read success", "record": {}}
 
 @app.post("/")
 async def write_data(post_request: Request):
