@@ -68,6 +68,6 @@ async def write_data(post_request: Request):
 
         data[record['account']] = record['data']
         with open('./data.json', 'w') as f:
-            json.dumps(data, f)
+            json.dump(data, f)
 
         return {"message": "write success"}
