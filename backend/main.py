@@ -34,6 +34,7 @@ def read_data(account: str, password: str):
         else:
             return {"message": "read success", "record": {}}
 
+
 @app.post("/")
 async def write_data(post_request: Request):
     post_request = await post_request.json()
@@ -64,6 +65,9 @@ async def write_data(post_request: Request):
 
         with open('./data.json', 'r') as f:
             data = json.load(f)
-            data[record['account']] = record['data']
+
+        data[record['account']] = record['data']
+        with open('./data.json', 'w') as f:
             json.dumps(data, f)
-            return {"message": "write success"}
+
+        return {"message": "write success"}
