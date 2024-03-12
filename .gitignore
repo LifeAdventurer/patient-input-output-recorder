@@ -1,6 +1,5 @@
 __pycache__/
 
-backend/backup.py
 backend/post.py
 backend/note.md
 
