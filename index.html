@@ -30,20 +30,22 @@
 <body>
   <div class="container" id="app">
     <div v-if="!authenticated">
-      <div class="row">
-        <div class="col" style="text-align: center;">
-          <h1>Patient Diet Recorder</h1>
+      <div class="row mt-1">
+        <div class="col text-center">
+          <h1>病患飲食排泄紀錄</h1>
         </div>
       </div>
       <div class="row mt-5">
-        <div class="col" style="display: flex; justify-content: center; align-items: center;">
-          <div>
-            <h2>請輸入密碼: </h2>
-          </div>
-          <div>
-            <input type="password" v-model="password">
-            <button @click="authenticate">輸入</button>
-          </div>
+        <div class="col-md-1 offset-md-4 col-2 offset-1" style="white-space: nowrap;">
+          <h4>密碼: </h4>
+        </div>
+        <div class="col-md-3 col-7">
+          <input type="password" class="form-control" v-model="password">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-2 offset-7">
+          <button class="btn btn-primary" @click="authenticate">輸入</button>
         </div>
       </div>
     </div>
