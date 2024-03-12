@@ -64,6 +64,13 @@ Vue.createApp({
         sessionStorage.setItem('password', this.password);
       }
     },
+    confirmLogout() {
+      if (confirm("請確認是否登出")) {
+        this.account = '';
+        this.password = '';
+        this.authenticated = false;
+      }
+    },
     postData() {
       const url = this.url;
       fetch(url, {
