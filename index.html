@@ -37,6 +37,14 @@
       </div>
       <div class="row mt-5">
         <div class="col-md-1 offset-md-4 col-2 offset-1" style="white-space: nowrap;">
+          <h4>帳號: </h4>
+        </div>
+        <div class="col-md-3 col-7">
+          <input type="text" class="form-control" v-model="account">
+        </div>
+      </div>
+      <div class="row mt-5">
+        <div class="col-md-1 offset-md-4 col-2 offset-1" style="white-space: nowrap;">
           <h4>密碼: </h4>
         </div>
         <div class="col-md-3 col-7">
@@ -235,7 +243,6 @@
                   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                     v-bind:data-bs-target="`#content_${index}`" aria-expanded="false"
                     v-bind:aria-controls="`content_${index}`">
-                    <!-- v-on:click="toggleAccordion" -->
                     <div class="row">
                       <div class="col-1" style="white-space: nowrap; font-size: 20px;">
                         <div v-cloak class="recordDate">

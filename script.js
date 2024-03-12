@@ -1,6 +1,7 @@
 Vue.createApp({
   data() {
     return {
+      account: '',
       password: '',
       authenticated: false,
       // time bar
@@ -14,6 +15,7 @@ Vue.createApp({
       inputWeight: '',
       records: {},
       url: 'https://tobiichi3227.eu.org/'
+      // url: 'http://127.0.0.1:8000/'
     }
   },
   methods: {
@@ -29,7 +31,7 @@ Vue.createApp({
       this.records[currentDate]['weight'] = '未量測';
     },
     async fetchRecords() {
-      const fetchUrl = this.url + '?password=' + this.password;
+      const fetchUrl = this.url + '?account=' + this.account + '&password=' + this.password;
       return await fetch(fetchUrl, {
         method: 'GET',
         mode: 'cors',
@@ -41,7 +43,7 @@ Vue.createApp({
           return response.json();
         })
         .then(data => {
-          console.log(data);
+          // console.log(data);
           return data;
         })
         .catch(error => {
@@ -50,13 +52,15 @@ Vue.createApp({
     },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
-      console.log(fetchedData)
-      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'wrong password') {
-        alert('密碼錯誤')
+      // console.log(fetchedData)
+      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'unauthorized') {
+        alert('帳號或密碼錯誤')
+        this.account = '';
         this.password = '';
       } else {
         this.authenticated = true;
         this.records = JSON.parse(fetchedData['record']);
+        sessionStorage.setItem('account', this.account);
         sessionStorage.setItem('password', this.password);
       }
     },
@@ -70,6 +74,7 @@ Vue.createApp({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          'account': this.account,
           'password': this.password,
           'data': this.records
         })
@@ -138,9 +143,11 @@ Vue.createApp({
     // },
   },
   async mounted() {
+    let account = sessionStorage.getItem('account');
     let password = sessionStorage.getItem('password');
-    if (password !== null && password !== undefined) {
+    if (account !== null && account !== undefined && password !== null && password !== undefined) {
       this.authenticated = true;
+      this.account = account;
       this.password = password;
       const fetchedData = await this.fetchRecords();
       console.log(fetchedData);
