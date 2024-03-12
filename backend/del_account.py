@@ -1,5 +1,6 @@
-import requests
 import json
+
+import requests
 
 url = 'https://tobiichi3227.eu.org/'
 # url = 'http://localhost:8000/'
@@ -17,10 +18,7 @@ payload = {
     'account': account,
     'password': password,
 }
-headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-}
+headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
 try:
     response = requests.post(url, json=payload, headers=headers)

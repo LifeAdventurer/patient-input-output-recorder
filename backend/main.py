@@ -1,15 +1,16 @@
 import json
 
+import db
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-import db
 
 class PatientDietRecord(BaseModel):
     password: str
     account: str
     data: str
+
 
 app = FastAPI()
 app.add_middleware(
@@ -19,6 +20,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.get("/")
 def read_data(account: str, password: str):
@@ -43,11 +45,13 @@ async def write_data(post_request: Request):
 
         return {"message": "Account created successfully"}
 
-    elif post_request['type'] == 'del account' and post_request['token'] == token:
+    elif (
+        post_request['type'] == 'del account' and post_request['token'] == token
+    ):
         err = db.delete_account(post_request['account'])
         if err is not None:
             return {"message": "Account does not exists."}
-        
+
         return {"message": "Account deleted successfully"}
 
     elif post_request['type'] == 'update record':
