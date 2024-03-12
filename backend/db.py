@@ -11,7 +11,7 @@ cursor.execute('''
     )
 ''')
 
-def add_account(username, password):
+def add_account(username: str, password: str):
     try:
         cursor.execute('INSERT INTO accounts (username, password) VALUES (?, ?)', (username, password))
         conn.commit()
@@ -21,7 +21,7 @@ def add_account(username, password):
         print("Account already exists.")
         return "Account already exists"
 
-def delete_account(username):
+def delete_account(username: str):
     try:
         cursor.execute('DELETE FROM accounts WHERE username = ?', (username,))
         conn.commit()
@@ -30,3 +30,13 @@ def delete_account(username):
     except sqlite3.IntegrityError:
         print("Account does not exist.")
         return "Account does not exist"
+
+def authenticate(username: str, password: str) -> bool:
+    cursor.execute('SELECT * FROM accounts WHERE username = ? AND password = ?', (username, password))
+    account = cursor.fetchone()
+    if account:
+        print("Authentication successful.")
+        return True
+    else:
+        print("Invalid username or password.")
+        return False
