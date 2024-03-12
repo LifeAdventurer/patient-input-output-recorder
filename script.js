@@ -59,7 +59,7 @@ Vue.createApp({
         this.password = '';
       } else {
         this.authenticated = true;
-        this.records = JSON.parse(fetchedData['record']);
+        this.records = JSON.parse(fetchedData['account_records']);
         sessionStorage.setItem('account', this.account);
         sessionStorage.setItem('password', this.password);
       }
@@ -152,7 +152,7 @@ Vue.createApp({
       this.password = password;
       const fetchedData = await this.fetchRecords();
       console.log(fetchedData);
-      this.records = JSON.parse(fetchedData['record']);
+      this.records = JSON.parse(fetchedData['account_records']);
     }
     let week = ['日', '一', '二', '三', '四', '五', '六'];
     // window.scrollTo(0, document.body.scrollHeight);

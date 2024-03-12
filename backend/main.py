@@ -30,9 +30,9 @@ def read_data(account: str, password: str):
     with open('./data.json', 'r') as f:
         data = json.load(f)
         if account in data:
-            return {"message": "read success", "record": json.load(f)[account]}
+            return {"message": "read success", "account_records": json.load(f)[account]}
         else:
-            return {"message": "read success", "record": {}}
+            return {"message": "read success", "account_records": {}}
 
 
 @app.post("/")
@@ -64,10 +64,10 @@ async def write_data(post_request: Request):
             return {"message": "unauthorized"}
 
         with open('./data.json', 'r') as f:
-            data = json.load(f)
+            account_records = json.load(f)
 
-        data[record['account']] = record['data']
+        account_records[record['account']] = record['data']
         with open('./data.json', 'w') as f:
-            json.dump(data, f)
+            json.dump(account_records, f)
 
         return {"message": "write success"}
