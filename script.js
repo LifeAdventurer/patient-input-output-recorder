@@ -74,6 +74,7 @@ Vue.createApp({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
+          'type': 'update record',
           'account': this.account,
           'password': this.password,
           'data': this.records
