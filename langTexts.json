@@ -13,7 +13,11 @@
     "record_count": "records",
     "timestamp": "Timestamp",
     "sum": "Sum",
-    "logout": "Logout"
+    "logout": "Logout",
+    "not_measured": "None",
+    "account_or_password_incorrect": "Account or Password incorrect",
+    "confirm_logout": "Please confirm whether you want to log out",
+    "weight_abnormal": "The weight you entered is abnormal"
   },
   "zh-tw": {
     "app_title": "病患飲食排泄紀錄",
@@ -29,6 +33,10 @@
     "record_count": "筆資料",
     "timestamp": "時間",
     "sum": "總和",
-    "logout": "登出"
+    "logout": "登出",
+    "not_measured": "未量測",
+    "account_or_password_incorrect": "帳號或密碼錯誤",
+    "confirm_logout": "請確認是否要登出",
+    "weight_abnormal": "您輸入的體重不正常"
   }
 }

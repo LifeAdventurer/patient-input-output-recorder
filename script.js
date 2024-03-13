@@ -43,7 +43,7 @@ Vue.createApp({
       this.records[currentDate]['waterSum'] = 0;
       this.records[currentDate]['urinationSum'] = 0;
       this.records[currentDate]['defecationSum'] = 0;
-      this.records[currentDate]['weight'] = '未量測';
+      this.records[currentDate]['weight'] = this.curLangText.not_measured;
     },
     async loadLangTexts() {
       const response = await fetch('./langTexts.json');
@@ -74,7 +74,7 @@ Vue.createApp({
       const fetchedData = await this.fetchRecords();
       // console.log(fetchedData)
       if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'unauthorized') {
-        alert('帳號或密碼錯誤')
+        alert(this.curLangText.account_or_password_incorrect)
         this.account = '';
         this.password = '';
       } else {
@@ -85,7 +85,7 @@ Vue.createApp({
       }
     },
     confirmLogout() {
-      if (confirm("請確認是否登出")) {
+      if (confirm(this.curLangText.confirm_logout)) {
         this.account = '';
         this.password = '';
         this.authenticated = false;
@@ -154,7 +154,7 @@ Vue.createApp({
     },
     addWeight() {
       if (isNaN(this.inputWeight) || this.inputWeight <= 0 || this.inputWeight > 300) {
-        alert('您輸入的體重不正常')
+        alert(this.curLangText.weight_abnormal)
         return;
       }
       let d = new Date();
