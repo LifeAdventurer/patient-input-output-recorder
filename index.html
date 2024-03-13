@@ -58,7 +58,8 @@
       </div>
       <div class="row mt-3">
         <div class="col-md-2 offset-7">
-          <select v-model="selectedLanguage" @click="changeLanguage($event.target.value)">
+          <select v-model="selectedLanguage" @click="changeLanguage($event.target.value)" class="form-select">
+            <option value="" disabled>Select Language</option>
             <option v-for="(lang, index) in supportedLanguages" :key="index" :value="lang.code">{{ lang.name }}</option>
           </select>
         </div>

@@ -18,8 +18,8 @@ Vue.createApp({
       // url: 'http://127.0.0.1:8000/'
       selectedLanguage: 'zh-tw',
       supportedLanguages: [
+        { code: 'zh-tw', name: '繁體中文' },
         { code: 'en', name: 'English' },
-        { code: 'zh-tw', name: '繁體中文' }
       ],
       curLangTexts: {},
     }
