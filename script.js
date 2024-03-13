@@ -37,6 +37,11 @@ Vue.createApp({
       }
     }
   },
+  created() {
+    this.loadLangTexts().then(langTexts => {
+      this.curLangTexts = langTexts;
+    });
+  },
   methods: {
     initRecords(currentDate) {
       let num = currentDate.split('_');
@@ -48,6 +53,11 @@ Vue.createApp({
       this.records[currentDate]['urinationSum'] = 0;
       this.records[currentDate]['defecationSum'] = 0;
       this.records[currentDate]['weight'] = '未量測';
+    },
+    async loadLangTexts() {
+      const response = await fetch('./langTexts.json');
+      const langTexts = await response.json();
+      return langTexts;
     },
     async fetchRecords() {
       const fetchUrl = this.url + '?account=' + this.account + '&password=' + this.password;

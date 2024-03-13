@@ -4,4 +4,4 @@ backend/post.py
 backend/note.md
 
 *.db
-*json
+config.json
