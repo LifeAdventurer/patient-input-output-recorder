@@ -184,10 +184,10 @@ Vue.createApp({
       // console.log(fetchedData);
       this.records = fetchedData['account_records'];
     }
-    let dayOfWeek = this.curLangText.day_of_week;
     // window.scrollTo(0, document.body.scrollHeight);
     setInterval(() => {
       let d = new Date();
+      let dayOfWeek = this.curLangText.day_of_week;
       this.time = ('0' + d.getHours()).substr(-2) + ':' + ('0' + d.getMinutes()).substr(-2) + ':' + ('0' + d.getSeconds()).substr(-2);
       this.date = d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + ('0' + d.getDate()).substr(-2) + ' (' + dayOfWeek[d.getDay()] + ')';
     }, 1000);
