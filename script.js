@@ -184,12 +184,12 @@ Vue.createApp({
       // console.log(fetchedData);
       this.records = fetchedData['account_records'];
     }
-    let week = ['日', '一', '二', '三', '四', '五', '六'];
+    let dayOfWeek = this.curLangText.day_of_week;
     // window.scrollTo(0, document.body.scrollHeight);
     setInterval(() => {
       let d = new Date();
       this.time = ('0' + d.getHours()).substr(-2) + ':' + ('0' + d.getMinutes()).substr(-2) + ':' + ('0' + d.getSeconds()).substr(-2);
-      this.date = d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + ('0' + d.getDate()).substr(-2) + ' (' + week[d.getDay()] + ')';
+      this.date = d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + ('0' + d.getDate()).substr(-2) + ' (' + dayOfWeek[d.getDay()] + ')';
     }, 1000);
   },
   computed: {
