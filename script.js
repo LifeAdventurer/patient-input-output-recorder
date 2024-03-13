@@ -21,20 +21,7 @@ Vue.createApp({
         { code: 'en', name: 'English' },
         { code: 'zh-tw', name: '繁體中文' }
       ],
-      curLangTexts: {
-        'en': {
-          'app_title': 'Patient Diet Recorder',
-          'username': 'Username',
-          'password': 'Password',
-          'login': 'Login',
-        },
-        'zh-tw': {
-          'app_title': '病患飲食排泄紀錄',
-          'username': '帳號',
-          'password': '密碼',
-          'login': '登入',
-        }
-      }
+      curLangTexts: {},
     }
   },
   created() {
