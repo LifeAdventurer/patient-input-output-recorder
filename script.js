@@ -69,6 +69,8 @@ Vue.createApp({
         this.account = '';
         this.password = '';
         this.authenticated = false;
+        sessionStorage.removeItem('account');
+        sessionStorage.removeItem('password');
       }
     },
     postData() {
