@@ -43,7 +43,7 @@ Vue.createApp({
       this.records[currentDate]['waterSum'] = 0;
       this.records[currentDate]['urinationSum'] = 0;
       this.records[currentDate]['defecationSum'] = 0;
-      this.records[currentDate]['weight'] = this.curLangText.not_measured;
+      this.records[currentDate]['weight'] = 'NaN';
     },
     async loadLangTexts() {
       const response = await fetch('./langTexts.json');

@@ -261,7 +261,7 @@
                       </div>
                       <div class="col-5 offset-2" style="white-space: nowrap; font-size: 18px;">
                         <div v-cloak class="weight">
-                          {{ curLangText.weight }}: <b>{{ dailyRecord['weight'] }}</b>
+                          {{ curLangText.weight }}: <b>{{ dailyRecord['weight'] == 'NaN' ? curLangText.not_measured : dailyRecord['weight'] }} </b>
                         </div>
                       </div>
                       <div class="col-3" style="white-space: nowrap; font-size: 18px;">
@@ -318,7 +318,7 @@
           </div>
         </div>
         <div class="col-md-2 offset-md-1 col-3 offset-1" id="logout">
-          <button class="btn btn-dark" @click="confirmLogout">  {{ curLangText.logout }}  </button>
+          <button class="btn btn-dark" @click="confirmLogout"> {{ curLangText.logout }} </button>
         </div>
       </div>
     </div>
