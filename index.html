@@ -84,7 +84,7 @@
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col-8">
-                  <h3>進食</h3>
+                  <h3> {{ curLangText.food_intake }} </h3>
                 </div>
                 <div class="col-4">
                   <span class="material-symbols-outlined" style="font-size: 30px;">
@@ -115,7 +115,7 @@
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col-8">
-                  <h3>喝水</h3>
+                  <h3> {{ curLangText.water_consumption }} </h3>
                 </div>
                 <div class="col-4">
                   <span class="material-symbols-outlined" style="font-size: 30px;">
@@ -146,7 +146,7 @@
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col-8">
-                  <h3>排尿</h3>
+                  <h3> {{ curLangText.urination }} </h3>
                 </div>
                 <div class="col-4">
                   <span class="material-symbols-outlined" style="font-size: 30px;">
@@ -177,7 +177,7 @@
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col-8">
-                  <h3>排便</h3>
+                  <h3> {{ curLangText.defecation }} </h3>
                 </div>
                 <div class="col-4">
                   <span class="material-symbols-outlined" style="font-size: 30px;">
@@ -203,7 +203,7 @@
       </div>
       <div class="row mb-2">
         <div class="col offset-9">
-          <button type="submit" class="btn btn-primary" v-on:click="addData">新增</button>
+          <button type="submit" class="btn btn-primary" v-on:click="addData"> {{ curLangText.create_new_record }} </button>
         </div>
       </div>
       <!-- weight -->
@@ -213,7 +213,7 @@
             <div class="card-body">
               <div class="row no-gutters align-items-center">
                 <div class="col-4">
-                  <h3>體重</h3>
+                  <h3> {{ curLangText.weight }} </h3>
                 </div>
                 <div class="col-2">
                   <span class="material-symbols-outlined" style="font-size: 38px; margin-left: -80%;">
@@ -225,7 +225,7 @@
                     <div class="form-floating">
                       <input type="text" class="form-control" id="floatingPassword" placeholder="Password"
                         v-model="inputWeight">
-                      <label for="floatingPassword">重量</label>
+                      <label for="floatingPassword"> {{ curLangText.weight }} </label>
                     </div>
                   </div>
                 </div>
@@ -236,7 +236,7 @@
       </div>
       <div class="row mb-2">
         <div class="col offset-9">
-          <button type="submit" class="btn btn-primary" v-on:click="addWeight"> 新增</button>
+          <button type="submit" class="btn btn-primary" v-on:click="addWeight"> {{ curLangText.create_new_record }} </button>
         </div>
       </div>
       <!-- records -->
@@ -258,12 +258,12 @@
                       </div>
                       <div class="col-5 offset-2" style="white-space: nowrap; font-size: 18px;">
                         <div v-cloak class="weight">
-                          體重: <b>{{ dailyRecord['weight'] }}</b>
+                          {{ curLangText.weight }}: <b>{{ dailyRecord['weight'] }}</b>
                         </div>
                       </div>
                       <div class="col-3" style="white-space: nowrap; font-size: 18px;">
                         <div v-cloak class="count">
-                          <b>{{ dailyRecord['count'] }}</b> 筆資料
+                          <b>{{ dailyRecord['count'] }}</b>  {{ curLangText.record_count }}
                         </div>
                       </div>
                     </div>
@@ -275,11 +275,11 @@
                     <table class="table table-striped table-bordered" style="font-size: 18px;">
                       <thead>
                         <tr class="text-center">
-                          <th scope="col">時間</th>
-                          <th scope="col">進食</th>
-                          <th scope="col">喝水</th>
-                          <th scope="col">排尿</th>
-                          <th scope="col">排便</th>
+                          <th scope="col"> {{ curLangText.timestamp }} </th>
+                          <th scope="col"> {{ curLangText.food_intake }} </th>
+                          <th scope="col"> {{ curLangText.water_consumption }} </th>
+                          <th scope="col"> {{ curLangText.urination }} </th>
+                          <th scope="col"> {{ curLangText.defecation }} </th>
                         </tr>
                       </thead>
                       <tbody>
@@ -289,7 +289,7 @@
                           </td>
                         </tr>
                         <tr class="text-center fw-bold">
-                          <td> 總和 </td>
+                          <td>  {{ curLangText.sum }} </td>
                           <td> {{ dailyRecord['foodSum'] }} </td>
                           <td> {{ dailyRecord['waterSum'] }} </td>
                           <td> {{ dailyRecord['urinationSum'] }} </td>
@@ -305,7 +305,7 @@
         </div>
       </div>
       <div class="row" id="logout">
-        <button class="btn btn-dark col-md-2 offset-md-5 col-6 offset-3 mt-3" @click="confirmLogout"> 登出 </button>
+        <button class="btn btn-dark col-md-2 offset-md-5 col-6 offset-3 mt-3" @click="confirmLogout">  {{ curLangText.logout }}  </button>
       </div>
     </div>
   </div>

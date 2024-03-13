@@ -3,12 +3,32 @@
     "app_title": "Patient Diet Recorder",
     "username": "Username",
     "password": "Password",
-    "login": "Login"
+    "login": "Login",
+    "food_intake": "Food",
+    "water_consumption": "Water",
+    "urination": "Urination",
+    "defecation": "Defecation",
+    "create_new_record": "Add",
+    "weight": "Weight",
+    "record_count": "records",
+    "timestamp": "Timestamp",
+    "sum": "Sum",
+    "logout": "Logout"
   },
   "zh-tw": {
     "app_title": "病患飲食排泄紀錄",
     "username": "帳號",
     "password": "密碼",
-    "login": "登入"
+    "login": "登入",
+    "food_intake": "進食",
+    "water_consumption": "喝水",
+    "urination": "排尿",
+    "defecation": "排便",
+    "create_new_record": "新增",
+    "weight": "體重",
+    "record_count": "筆資料",
+    "timestamp": "時間",
+    "sum": "總和",
+    "logout": "登出"
   }
 }
