@@ -14,8 +14,27 @@ Vue.createApp({
       inputDefecation: 0,
       inputWeight: '',
       records: {},
-      url: 'https://tobiichi3227.eu.org/'
+      url: 'https://tobiichi3227.eu.org/',
       // url: 'http://127.0.0.1:8000/'
+      selectedLanguage: 'zh-tw',
+      supportedLanguages: [
+        { code: 'en', name: 'English' },
+        { code: 'zh-tw', name: '繁體中文' }
+      ],
+      curLangTexts: {
+        'en': {
+          'app_title': 'Patient Diet Recorder',
+          'username': 'Username',
+          'password': 'Password',
+          'login': 'Login',
+        },
+        'zh-tw': {
+          'app_title': '病患飲食排泄紀錄',
+          'username': '帳號',
+          'password': '密碼',
+          'login': '登入',
+        }
+      }
     }
   },
   methods: {
@@ -148,9 +167,9 @@ Vue.createApp({
       // post to database
       this.postData();
     },
-    // toggleAccordion() {
-
-    // },
+    changeLanguage(languageCode) {
+      this.selectedLanguage = languageCode;
+    },
   },
   async mounted() {
     let account = sessionStorage.getItem('account');
@@ -171,20 +190,23 @@ Vue.createApp({
       this.date = d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + ('0' + d.getDate()).substr(-2) + ' (' + week[d.getDay()] + ')';
     }, 1000);
   },
-  // computed: {
-  //   reversedRecord() {
-  //     let dataArray = [];
-  //     for (const date in this.records) {
-  //       if (this.records.hasOwnProperty(date)) {
-  //         dataArray.push({
-  //           date: date,
-  //           data: this.records[date]
-  //         });
-  //       }
-  //     }
+  computed: {
+    curLangText() {
+      return this.curLangTexts[this.selectedLanguage];
+    },
+    // reversedRecord() {
+    //   let dataArray = [];
+    //   for (const date in this.records) {
+    //     if (this.records.hasOwnProperty(date)) {
+    //       dataArray.push({
+    //         date: date,
+    //         data: this.records[date]
+    //       });
+    //     }
+    //   }
 
-  //     dataArray.sort((a, b) => new Date(b.date) - new Date(a.date));
-  //     return dataArray;
-  //   }
-  // }
+    //   dataArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+    //   return dataArray;
+    // },
+  }
 }).mount('#app');
