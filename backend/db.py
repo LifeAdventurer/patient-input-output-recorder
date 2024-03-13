@@ -51,3 +51,8 @@ def authenticate(username: str, password: str) -> bool:
     else:
         print("Invalid username or password.")
         return False
+
+
+def get_all_accounts():
+    cursor.execute('SELECT * FROM accounts')
+    return cursor.fetchall()

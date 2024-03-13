@@ -30,7 +30,10 @@ def read_data(account: str, password: str):
     with open('./data.json', 'r') as f:
         data = json.load(f)
         if account in data:
-            return {"message": "read success", "account_records": json.load(f)[account]}
+            return {
+                "message": "read success",
+                "account_records": json.load(f)[account],
+            }
         else:
             return {"message": "read success", "account_records": {}}
 
@@ -57,6 +60,13 @@ async def write_data(post_request: Request):
             return {"message": "Account does not exists."}
 
         return {"message": "Account deleted successfully"}
+
+    elif (
+        post_request['type'] == 'fetch account list'
+        and post_request['token'] == token
+    ):
+        account_list = db.get_all_accounts()
+        return {"account_list": account_list}
 
     elif post_request['type'] == 'update record':
         record = post_request

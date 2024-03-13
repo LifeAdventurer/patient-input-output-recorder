@@ -3,7 +3,6 @@ import json
 import requests
 from constants import URL
 
-
 ACCOUNT = input('Enter the account you want to clear data: ')
 PASSWORD = input('Enter the password: ')
 
