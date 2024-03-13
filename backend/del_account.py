@@ -13,8 +13,8 @@ PASSWORD = input('Enter the password: ')
 payload = {
     'token': token,
     'type': 'del account',
-    'account': account,
-    'password': password,
+    'account': ACCOUNT,
+    'password': PASSWORD,
 }
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
