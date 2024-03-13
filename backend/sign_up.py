@@ -1,9 +1,7 @@
 import json
 
 import requests
-
-url = 'https://tobiichi3227.eu.org/'
-# url = 'http://localhost:8000/'
+from constants import URL
 
 with open('./config.json', 'r') as f:
     token = json.load(f)['token']
@@ -21,7 +19,7 @@ payload = {
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
 try:
-    response = requests.post(url, json=payload, headers=headers)
+    response = requests.post(URL, json=payload, headers=headers)
     response.raise_for_status()
     response = response.json()
     if response['message'] == 'Account created successfully':
