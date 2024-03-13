@@ -23,6 +23,7 @@
   <!-- weight -->
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <script src="https://unpkg.com/vue@3.3.4/dist/vue.global.js"></script>
   <link rel="stylesheet" href="./styles.css">
 </head>
@@ -58,10 +59,13 @@
       </div>
       <div class="row mt-3">
         <div class="col-md-2 offset-7">
-          <select v-model="selectedLanguage" @click="changeLanguage($event.target.value)" class="form-select">
-            <option value="" disabled>Select Language</option>
-            <option v-for="(lang, index) in supportedLanguages" :key="index" :value="lang.code">{{ lang.name }}</option>
-          </select>
+          <div class="input-group">
+            <span class="input-group-text"><i class="fas fa-globe"></i></span>
+            <select v-model="selectedLanguage" @click="changeLanguage($event.target.value)" class="form-select">
+              <option value="" disabled>Select Language</option>
+              <option v-for="(lang, index) in supportedLanguages" :key="index" :value="lang.code">{{ lang.name }}</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
