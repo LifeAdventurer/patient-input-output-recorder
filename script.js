@@ -25,6 +25,10 @@ Vue.createApp({
     }
   },
   created() {
+    languageCode = localStorage.getItem('selectedLanguageCode');
+    if (languageCode !== null && languageCode !== undefined) {
+      this.selectedLanguage = languageCode;
+    }
     this.loadLangTexts().then(langTexts => {
       this.curLangTexts = langTexts;
     });
@@ -166,6 +170,7 @@ Vue.createApp({
     },
     changeLanguage(languageCode) {
       this.selectedLanguage = languageCode;
+      localStorage.setItem('selectedLanguageCode', languageCode);
     },
   },
   async mounted() {
