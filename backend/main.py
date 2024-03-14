@@ -32,7 +32,7 @@ def read_data(account: str, password: str):
         if account in data:
             return {
                 "message": "read success",
-                "account_records": json.load(f)[account],
+                "account_records": data[account],
             }
         else:
             return {"message": "read success", "account_records": {}}
