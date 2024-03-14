@@ -20,6 +20,27 @@
     "weight_abnormal": "您輸入的體重不正常",
     "day_of_week": ["日", "一", "二", "三", "四", "五", "六"]
   },
+  "zh-CN": {
+    "app_title": "病患饮食排泄记录",
+    "username": "帐号",
+    "password": "密码",
+    "login": "登录",
+    "food_intake": "进食",
+    "water_consumption": "喝水",
+    "urination": "排尿",
+    "defecation": "排便",
+    "create_new_record": "新增",
+    "weight": "体重",
+    "record_count": "笔资料",
+    "timestamp": "时间",
+    "sum": "总和",
+    "logout": "登出",
+    "not_measured": "未量测",
+    "account_or_password_incorrect": "帐号或密码错误",
+    "confirm_logout": "请确认是否要登出",
+    "weight_abnormal": "您输入的体重不正常",
+    "day_of_week": ["日", "一", "二", "三", "四", "五", "六"]
+  },
   "en": {
     "app_title": "Patient Diet Recorder",
     "username": "Username",
