@@ -17,10 +17,7 @@ Vue.createApp({
       url: 'https://tobiichi3227.eu.org/',
       // url: 'http://127.0.0.1:8000/'
       selectedLanguage: 'zh-tw',
-      supportedLanguages: [
-        { code: 'zh-tw', name: '繁體中文' },
-        { code: 'en', name: 'English' },
-      ],
+      supportedLanguages: [],
       curLangTexts: {},
     }
   },
@@ -29,6 +26,9 @@ Vue.createApp({
     if (languageCode !== null && languageCode !== undefined) {
       this.selectedLanguage = languageCode;
     }
+    this.loadSupportedLangs().then(supportedLangs => {
+      this.supportedLanguages = supportedLangs;
+    });
     this.loadLangTexts().then(langTexts => {
       this.curLangTexts = langTexts;
     });
@@ -44,6 +44,11 @@ Vue.createApp({
       this.records[currentDate]['urinationSum'] = 0;
       this.records[currentDate]['defecationSum'] = 0;
       this.records[currentDate]['weight'] = 'NaN';
+    },
+    async loadSupportedLangs() {
+      const response = await fetch('./supported_languages.json');
+      const supportedLanguages = await response.json();
+      return supportedLanguages;
     },
     async loadLangTexts() {
       const response = await fetch('./lang_texts.json');
