@@ -2,6 +2,7 @@ __pycache__/
 
 backend/post.py
 backend/note.md
+backend/data.json
 
 *.db
 config.json
