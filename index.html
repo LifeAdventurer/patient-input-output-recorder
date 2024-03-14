@@ -32,12 +32,12 @@
   <div class="container pb-5 mb-5" id="app">
     <div v-if="!authenticated">
       <div class="row mt-1">
-        <div class="col text-center">
+        <div v-cloak class="col text-center">
           <h1> {{ curLangText.app_title }} </h1>
         </div>
       </div>
       <div class="row mt-5">
-        <div class="col-md-2 offset-md-4 col-3 offset-0">
+        <div v-cloak class="col-md-2 offset-md-4 col-3 offset-0">
           <h4> {{ curLangText.username }}: </h4>
         </div>
         <div class="col-md-2 col-7 offset-md-0 offset-0">
@@ -45,7 +45,7 @@
         </div>
       </div>
       <div class="row mt-5">
-        <div class="col-md-2 offset-md-4 col-3 offset-0">
+        <div v-cloak class="col-md-2 offset-md-4 col-3 offset-0">
           <h4> {{ curLangText.password }}: </h4>
         </div>
         <div class="col-md-2 col-7 offset-md-0 offset-0">
@@ -54,7 +54,7 @@
       </div>
       <div class="row mt-3">
         <div class="col-md-2 offset-md-4 col-5 offset-1">
-          <div class="input-group">
+          <div v-cloak class="input-group">
             <span class="input-group-text"><i class="fas fa-globe"></i></span>
             <select v-model="selectedLanguage" @click="changeLanguage($event.target.value)" class="form-select">
               <option value="" disabled>Select Language</option>
@@ -62,7 +62,7 @@
             </select>
           </div>
         </div>
-        <div class="col-md-2 offset-md-1 col-3 offset-1">
+        <div v-cloak class="col-md-2 offset-md-1 col-3 offset-1">
           <button class="btn btn-primary" @click="authenticate"> {{ curLangText.login }} </button>
         </div>
       </div>
@@ -86,7 +86,7 @@
           <div class="card shadow h-100 py-2 bg-light">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
-                <div class="col-8">
+                <div v-cloak class="col-8">
                   <h3> {{ curLangText.food_intake }} </h3>
                 </div>
                 <div class="col-4">
@@ -117,7 +117,7 @@
           <div class="card shadow h-100 py-2 bg-light">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
-                <div class="col-8">
+                <div v-cloak class="col-8">
                   <h3> {{ curLangText.water_consumption }} </h3>
                 </div>
                 <div class="col-4">
@@ -148,7 +148,7 @@
           <div class="card shadow h-100 py-2 bg-light">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
-                <div class="col-8">
+                <div v-cloak class="col-8">
                   <h3> {{ curLangText.urination }} </h3>
                 </div>
                 <div class="col-4">
@@ -179,7 +179,7 @@
           <div class="card shadow h-100 py-2 bg-light">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
-                <div class="col-8">
+                <div v-cloak class="col-8">
                   <h3> {{ curLangText.defecation }} </h3>
                 </div>
                 <div class="col-4">
@@ -205,7 +205,7 @@
         </div>
       </div>
       <div class="row mb-2">
-        <div class="col offset-9">
+        <div v-cloak class="col offset-9">
           <button type="submit" class="btn btn-primary" v-on:click="addData"> {{ curLangText.create_new_record }} </button>
         </div>
       </div>
@@ -215,7 +215,7 @@
           <div class="card shadow h-60 py-2 bg-light ">
             <div class="card-body">
               <div class="row no-gutters align-items-center">
-                <div class="col-4">
+                <div v-cloak class="col-4">
                   <h3> {{ curLangText.weight }} </h3>
                 </div>
                 <div class="col-2">
@@ -225,7 +225,7 @@
                 </div>
                 <div class="col-6">
                   <div class="col">
-                    <div class="form-floating">
+                    <div v-cloak class="form-floating">
                       <input type="text" class="form-control" id="floatingPassword" placeholder="Password"
                         v-model="inputWeight">
                       <label for="floatingPassword"> {{ curLangText.weight }} </label>
@@ -238,7 +238,7 @@
         </div>
       </div>
       <div class="row mb-2">
-        <div class="col offset-9">
+        <div v-cloak class="col offset-9">
           <button type="submit" class="btn btn-primary" v-on:click="addWeight"> {{ curLangText.create_new_record }} </button>
         </div>
       </div>
@@ -256,7 +256,7 @@
                     <div class="row">
                       <div class="col-1" style="white-space: nowrap; font-size: 20px;">
                         <div v-cloak class="recordDate">
-                          <b>{{ dailyRecord['recordDate'] }}</b> 
+                          <b> {{ dailyRecord['recordDate'] }} </b> 
                         </div>
                       </div>
                       <div class="col-5 offset-2" style="white-space: nowrap; font-size: 18px;">
@@ -277,7 +277,7 @@
                   <div class="accordion-body">
                     <table class="table table-striped table-bordered" style="font-size: 18px;">
                       <thead>
-                        <tr class="text-center">
+                        <tr v-cloak class="text-center">
                           <th scope="col"> {{ curLangText.timestamp }} </th>
                           <th scope="col"> {{ curLangText.food_intake }} </th>
                           <th scope="col"> {{ curLangText.water_consumption }} </th>
@@ -291,8 +291,8 @@
                             {{ content }}
                           </td>
                         </tr>
-                        <tr class="text-center fw-bold">
-                          <td>  {{ curLangText.sum }} </td>
+                        <tr v-cloak class="text-center fw-bold">
+                          <td> {{ curLangText.sum }} </td>
                           <td> {{ dailyRecord['foodSum'] }} </td>
                           <td> {{ dailyRecord['waterSum'] }} </td>
                           <td> {{ dailyRecord['urinationSum'] }} </td>
@@ -309,15 +309,15 @@
       </div>
       <div class="row mt-3">
         <div class="col-md-2 offset-md-4 col-5 offset-1">
-          <div class="input-group">
+          <div v-cloak class="input-group">
             <span class="input-group-text"><i class="fas fa-globe"></i></span>
             <select v-model="selectedLanguage" @click="changeLanguage($event.target.value)" class="form-select">
               <option value="" disabled>Select Language</option>
-              <option v-for="(lang, index) in supportedLanguages" :key="index" :value="lang.code">{{ lang.name }}</option>
+              <option v-for="(lang, index) in supportedLanguages" :key="index" :value="lang.code"> {{ lang.name }} </option>
             </select>
           </div>
         </div>
-        <div class="col-md-2 offset-md-1 col-3 offset-1" id="logout">
+        <div v-cloak class="col-md-2 offset-md-1 col-3 offset-1" id="logout">
           <button class="btn btn-dark" @click="confirmLogout"> {{ curLangText.logout }} </button>
         </div>
       </div>
