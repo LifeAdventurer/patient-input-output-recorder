@@ -8,6 +8,10 @@
     "name": "简体中文"
   },
   {
+    "code": "vi",
+    "name": "Tiếng Việt"
+  },
+  {
     "code": "en",
     "name": "English"
   }

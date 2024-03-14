@@ -41,6 +41,27 @@
     "weight_abnormal": "您输入的体重不正常",
     "day_of_week": ["日", "一", "二", "三", "四", "五", "六"]
   },
+  "vi": {
+    "app_title": "Hồ sơ chế độ ăn uống và bài tiết của bệnh nhân",
+    "username": "Số tài khoản",
+    "password": "Mật khẩu",
+    "login": "Đăng nhập",
+    "food_intake": "Ăn",
+    "water_consumption": "Uống nước",
+    "urination": "Tiểu tiện",
+    "defecation": "Đại tiện",
+    "create_new_record": "Nhập bản ghi",
+    "weight": "Cân nặng",
+    "record_count": "thông tin",
+    "timestamp": "Thời gian",
+    "sum": "Tổng",
+    "logout": "Đăng xuất",
+    "not_measured": "Chưa đo",
+    "account_or_password_incorrect": "Tài khoản hoặc mật khẩu không đúng",
+    "confirm_logout": "Vui lòng xác nhận có thoát hay không",
+    "weight_abnormal": "Cân nặng bạn nhập không bình thường",
+    "day_of_week": ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"]
+  },
   "en": {
     "app_title": "Patient Diet Recorder",
     "username": "Username",
