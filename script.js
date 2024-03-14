@@ -46,7 +46,7 @@ Vue.createApp({
       this.records[currentDate]['weight'] = 'NaN';
     },
     async loadLangTexts() {
-      const response = await fetch('./langTexts.json');
+      const response = await fetch('./lang_texts.json');
       const langTexts = await response.json();
       return langTexts;
     },
