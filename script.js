@@ -16,7 +16,7 @@ Vue.createApp({
       records: {},
       url: 'https://tobiichi3227.eu.org/',
       // url: 'http://127.0.0.1:8000/'
-      selectedLanguage: 'zh-tw',
+      selectedLanguage: 'zh-TW',
       supportedLanguages: [],
       curLangTexts: {},
     }
