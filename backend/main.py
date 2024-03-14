@@ -21,13 +21,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Constants
+DATA_FILE_PATH = './data.json'
+
 
 @app.get("/")
 def read_data(account: str, password: str):
     if not db.authenticate(account, password):
         return {"message": "unauthorized"}
 
-    with open('./data.json', 'r') as f:
+    with open(DATA_FILE_PATH, 'r') as f:
         data = json.load(f)
         if account in data:
             return {
@@ -73,11 +76,11 @@ async def write_data(post_request: Request):
         if not db.authenticate(record['account'], record['password']):
             return {"message": "unauthorized"}
 
-        with open('./data.json', 'r') as f:
+        with open(DATA_FILE_PATH, 'r') as f:
             account_records = json.load(f)
 
         account_records[record['account']] = record['data']
-        with open('./data.json', 'w') as f:
+        with open(DATA_FILE_PATH, 'w') as f:
             json.dump(account_records, f)
 
         return {"message": "write success"}
