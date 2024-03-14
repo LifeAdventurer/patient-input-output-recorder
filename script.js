@@ -22,16 +22,20 @@ Vue.createApp({
     }
   },
   created() {
-    languageCode = localStorage.getItem('selectedLanguageCode');
-    if (languageCode !== null && languageCode !== undefined) {
-      this.selectedLanguage = languageCode;
-    }
     this.loadSupportedLangs().then(supportedLangs => {
       this.supportedLanguages = supportedLangs;
     });
     this.loadLangTexts().then(langTexts => {
       this.curLangTexts = langTexts;
     });
+    const languageCode = localStorage.getItem('selectedLanguageCode');
+    if (languageCode !== null && languageCode !== undefined) {
+      if (this.supportedLanguages.some(language => language.code === languageCode)) {
+        this.selectedLanguage = languageCode;
+      } else {
+        localStorage.setItem('selectedLanguageCode', this.selectedLanguage);
+      }
+    }
   },
   methods: {
     initRecords(currentDate) {
