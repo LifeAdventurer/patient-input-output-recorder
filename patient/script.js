@@ -52,6 +52,7 @@ Vue.createApp({
       let num = currentDate.split('_');
       this.records[currentDate] = {}
       this.records[currentDate]['data'] = [];
+      this.records[currentDate]['count'] = 0;
       this.records[currentDate]['recordDate'] = num[1] + '/' + num[2];
       this.records[currentDate]['foodSum'] = 0;
       this.records[currentDate]['waterSum'] = 0;
@@ -91,7 +92,6 @@ Vue.createApp({
     },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
-      // console.log(fetchedData)
       if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'unauthorized') {
         alert(this.curLangText.account_or_password_incorrect)
         this.account = '';
@@ -139,53 +139,50 @@ Vue.createApp({
         });
     },
     addData() {
-      if (this.inputFood == 0 && this.inputWater == 0 && this.inputUrination == 0 && this.inputDefecation == 0) {
-        // alert('您尚未輸入數據');
-        return;
-      }
-      let d = new Date();
-      let currentDate = d.getFullYear() + '_' + (d.getMonth() + 1) + '_' + ('0' + d.getDate()).substr(-2);
-      if (!this.records[currentDate]) {
-        this.initRecords(currentDate);
-      }
-      let currentData = {
-        'time': (('0' + d.getHours()).substr(-2) + ':' + ('0' + d.getMinutes()).substr(-2)),
-        'food': this.inputFood,
-        'water': this.inputWater,
-        'urination': this.inputUrination,
-        'defecation': this.inputDefecation
-      };
-      this.records[currentDate]['data'].push(currentData);
-      this.records[currentDate]['count'] = this.records[currentDate]['data'].length;
-      // console.table(this.records[currentDate]);
-      // sums
-      this.records[currentDate]['foodSum'] += parseInt(this.inputFood);
-      this.records[currentDate]['waterSum'] += parseInt(this.inputWater);
-      this.records[currentDate]['urinationSum'] += parseInt(this.inputUrination);
-      this.records[currentDate]['defecationSum'] += parseInt(this.inputDefecation);
-      // init again
-      this.inputFood = 0;
-      this.inputWater = 0;
-      this.inputUrination = 0;
-      this.inputDefecation = 0;
-      // post to database
-      this.postData();
-    },
-    addWeight() {
-      if (isNaN(this.inputWeight) || this.inputWeight < 0.01 || this.inputWeight > 300) {
-        alert(this.curLangText.weight_abnormal)
-        return;
-      }
       let d = new Date();
       let currentDate = `${d.getFullYear()}_${(d.getMonth() + 1)}_${('0' + d.getDate()).substr(-2)}`;
-      if (!this.records[currentDate]) {
-        this.initRecords(currentDate);
+      // Food, Water, Urination, Defecation
+      if (this.inputFood !== 0 || this.inputWater !== 0 || this.inputUrination !== 0 || this.inputDefecation !== 0) {
+        if (!this.records[currentDate]) {
+          this.initRecords(currentDate);
+        }
+        let currentData = {
+          'time': (('0' + d.getHours()).substr(-2) + ':' + ('0' + d.getMinutes()).substr(-2)),
+          'food': this.inputFood,
+          'water': this.inputWater,
+          'urination': this.inputUrination,
+          'defecation': this.inputDefecation
+        };
+        this.records[currentDate]['data'].push(currentData);
+        this.records[currentDate]['count'] = this.records[currentDate]['data'].length;
+        // sums
+        this.records[currentDate]['foodSum'] += parseInt(this.inputFood);
+        this.records[currentDate]['waterSum'] += parseInt(this.inputWater);
+        this.records[currentDate]['urinationSum'] += parseInt(this.inputUrination);
+        this.records[currentDate]['defecationSum'] += parseInt(this.inputDefecation);
+        // init again
+        this.inputFood = 0;
+        this.inputWater = 0;
+        this.inputUrination = 0;
+        this.inputDefecation = 0;
+        // post to database
+        this.postData();
       }
-      this.records[currentDate]['weight'] = `${parseFloat(this.inputWeight).toFixed(2)} kg`;
-      // init again
-      this.inputWeight = 0;
-      // post to database
-      this.postData();
+      const inputWeight = parseFloat(this.inputWeight);
+      if (Number.isFinite(inputWeight) && inputWeight !== 0 && (inputWeight < 0.01 || inputWeight > 300)) {
+        alert(this.curLangText.weight_abnormal)
+        return;
+      } else if (Number.isFinite(inputWeight) && inputWeight !== 0) {
+        // console.log()
+        if (!this.records[currentDate]) {
+          this.initRecords(currentDate);
+        }
+        this.records[currentDate]['weight'] = `${Math.round(inputWeight * 100) / 100} kg`;
+        // init again
+        this.inputWeight = 0;
+        // post to database
+        this.postData();
+      }
     },
     changeLanguage(languageCode) {
       this.selectedLanguage = languageCode;
@@ -200,10 +197,8 @@ Vue.createApp({
       this.account = account;
       this.password = password;
       const fetchedData = await this.fetchRecords();
-      // console.log(fetchedData);
       this.records = fetchedData['account_records'];
     }
-    // window.scrollTo(0, document.body.scrollHeight);
     setInterval(() => {
       let d = new Date();
       let dayOfWeek = this.curLangText.day_of_week;
