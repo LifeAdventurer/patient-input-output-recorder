@@ -62,6 +62,27 @@
     "weight_abnormal": "Cân nặng bạn nhập không bình thường",
     "day_of_week": ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"]
   },
+  "id": {
+    "app_title": "Catatan diet dan ekskresi pasien",
+    "username": "Nomor akun",
+    "password": "Kata sandi",
+    "login": "Gabung",
+    "food_intake": "Makan",
+    "water_consumption": "Minum air",
+    "urination": "Buang air kecil",
+    "defecation": "Berak",
+    "create_new_record": "Tambahkan",
+    "weight": "Berat badan",
+    "record_count": "informasi",
+    "timestamp": "Waktu",
+    "sum": "Jumlah",
+    "logout": "Keluar",
+    "not_measured": "Tidak diukur",
+    "account_or_password_incorrect": "Akun atau kata sandi salah",
+    "confirm_logout": "Harap konfirmasi jika ingin keluar",
+    "weight_abnormal": "Berat badan yang Anda masukkan tidak normal",
+    "day_of_week": ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"]
+  },
   "en": {
     "app_title": "Patient Diet Recorder",
     "username": "Username",
