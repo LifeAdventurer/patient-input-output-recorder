@@ -172,16 +172,16 @@ Vue.createApp({
       this.postData();
     },
     addWeight() {
-      if (isNaN(this.inputWeight) || this.inputWeight <= 0 || this.inputWeight > 300) {
+      if (isNaN(this.inputWeight) || this.inputWeight < 0.01 || this.inputWeight > 300) {
         alert(this.curLangText.weight_abnormal)
         return;
       }
       let d = new Date();
-      let currentDate = d.getFullYear() + '_' + (d.getMonth() + 1) + '_' + ('0' + d.getDate()).substr(-2);
+      let currentDate = `${d.getFullYear()}_${(d.getMonth() + 1)}_${('0' + d.getDate()).substr(-2)}`;
       if (!this.records[currentDate]) {
         this.initRecords(currentDate);
       }
-      this.records[currentDate]['weight'] = Math.round(this.inputWeight * 100) / 100 + ' kg';
+      this.records[currentDate]['weight'] = `${parseFloat(this.inputWeight).toFixed(2)} kg`;
       // init again
       this.inputWeight = 0;
       // post to database
