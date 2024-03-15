@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "patient-diet-recorder"
-version = "1.0.0"
+version = "0.1.0"
 description = ""
 authors = ["lifeadventurer <life0adventurer@gmail.com>"]
 license = "GPL-3.0"
