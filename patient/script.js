@@ -210,19 +210,13 @@ Vue.createApp({
     curLangText() {
       return this.curLangTexts[this.selectedLanguage];
     },
-    // reversedRecord() {
-    //   let dataArray = [];
-    //   for (const date in this.records) {
-    //     if (this.records.hasOwnProperty(date)) {
-    //       dataArray.push({
-    //         date: date,
-    //         data: this.records[date]
-    //       });
-    //     }
-    //   }
-
-    //   dataArray.sort((a, b) => new Date(b.date) - new Date(a.date));
-    //   return dataArray;
-    // },
+    reversedRecord() {
+      let reversedData = {};
+      const keys = Object.keys(this.records).reverse();
+      keys.forEach(key => {
+        reversedData[key] = this.records[key];
+      });
+      return reversedData;
+    },
   }
 }).mount('#app');
