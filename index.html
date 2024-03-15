@@ -66,6 +66,24 @@
           <button class="btn btn-primary" @click="authenticate"> {{ curLangText.login }} </button>
         </div>
       </div>
+      <footer class="footer pt-2 mt-2 bg-light fixed-bottom">
+        <div v-if="!authenticated" class="container">
+          <div class="row">
+            <div class="col-md-5 col-12 text-muted">
+              <p class="text-left small">Copyright © 2023-2024 LifeAdventurer | All Rights Reserved.</p>
+            </div>
+            <div class="col-md-3 col-6 text-muted">
+              <p>
+                Code licensed
+                <a href="https://github.com/LifeAdventurer/patient-diet-recorder/blob/main/LICENSE">GPL-3.0</a>
+              </p>
+            </div>
+            <div class="col-md-2 col-6 text-muted">
+              <p>Currently v1.0.0</p>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
     <div v-else>
       <!-- DATE and TIME -->
@@ -332,24 +350,6 @@
       </div>
     </div>
   </div>
-  <footer class="footer pt-2 mt-2 bg-light fixed-bottom">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-5 col-12 text-muted">
-          <p class="text-left small">Copyright © 2023-2024 LifeAdventurer | All Rights Reserved.</p>
-        </div>
-        <div class="col-md-3 col-6 text-muted">
-          <p>
-            Code licensed
-            <a href="https://github.com/LifeAdventurer/patient-diet-recorder/blob/main/LICENSE">GPL-3.0</a>
-          </p>
-        </div>
-        <div class="col-md-2 col-6 text-muted">
-          <p>Currently v1.0.0</p>
-        </div>
-      </div>
-    </div>
-  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
     integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
