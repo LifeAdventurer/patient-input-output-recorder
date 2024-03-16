@@ -32,6 +32,8 @@ Vue.createApp({
     }
   },
   created() {
+      
+        
     this.loadSupportedLangs().then(supportedLangs => {
       this.supportedLanguages = supportedLangs;
     });
@@ -202,11 +204,22 @@ Vue.createApp({
 
       target.parentElement.parentElement.remove();
       this.postData();
-    }
+    },
   },
   async mounted() {
-    let account = sessionStorage.getItem('account');
-    let password = sessionStorage.getItem('password');
+    let url = new URL(location.href);
+    let params = url.searchParams;
+    let account = null, password = null;
+    if (params.has('acct') && params.has('pw')) {
+      account = params.get('acct');
+      password = params.get('pw');
+    }
+
+    if (account === null && password === null) {
+      account = sessionStorage.getItem('account');
+      password = sessionStorage.getItem('password');
+    }
+
     if (account !== null && account !== undefined && password !== null && password !== undefined) {
       this.authenticated = true;
       this.account = account;
