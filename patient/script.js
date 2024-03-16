@@ -83,7 +83,6 @@ Vue.createApp({
           return response.json();
         })
         .then(data => {
-          // console.log(data);
           return data;
         })
         .catch(error => {
@@ -173,7 +172,6 @@ Vue.createApp({
         alert(this.curLangText.weight_abnormal)
         return;
       } else if (Number.isFinite(inputWeight) && inputWeight !== 0) {
-        // console.log()
         if (!this.records[currentDate]) {
           this.initRecords(currentDate);
         }
