@@ -186,6 +186,23 @@ Vue.createApp({
       this.selectedLanguage = languageCode;
       localStorage.setItem('selectedLanguageCode', languageCode);
     },
+
+    removeRecord(event) {
+      let target = event.target;
+      let [date, index] = target.attributes.id.textContent.split('-');
+
+      index = parseInt(index);
+      let record = this.records[date]['data'][index];
+      this.records[date]['count'] -= 1;
+      this.records[date]['defecationSum'] -= record['defecation'];
+      this.records[date]['foodSum'] -= record['food'];
+      this.records[date]['urinationSum'] -= record['urination'];
+      this.records[date]['waterSum'] -= record['water'];
+      this.records[date]['data'].splice(index, 1);
+
+      target.parentElement.parentElement.remove();
+      this.postData();
+    }
   },
   async mounted() {
     let account = sessionStorage.getItem('account');
