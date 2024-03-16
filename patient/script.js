@@ -22,7 +22,7 @@ Vue.createApp({
       inputWater: 0,
       inputUrination: 0,
       inputDefecation: 0,
-      inputWeight: '',
+      inputWeight: 0,
       records: {},
       url: 'https://tobiichi3227.eu.org/',
       // url: 'http://127.0.0.1:8000/'
