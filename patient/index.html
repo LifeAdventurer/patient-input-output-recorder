@@ -291,10 +291,11 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="data in dailyRecord['data']">
+                        <tr v-for="(data, index2) in dailyRecord['data']">
                           <td v-cloak v-for="content in data" class="text-center">
                             {{ content }}
                           </td>
+                          <td><span @click="removeRecord" :id="`${index}-${index2}`" class="material-symbols-outlined">delete</span></td>
                         </tr>
                         <tr v-cloak class="text-center fw-bold">
                           <td> {{ curLangText.sum }} </td>
