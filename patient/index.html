@@ -90,10 +90,10 @@
       <div class="timeBar">
         <div class="row">
           <div v-cloak class="col-7 fw-bold" style="font-size: 24px;">
-            {{ date }}
+            {{ currentDate }}
           </div>
           <div v-cloak class="col-3 offset-1 fw-bold" style="font-size: 24px;">
-            {{ time }}
+            {{ currentTime }}
           </div>
         </div>
       </div>
@@ -266,7 +266,7 @@
                       </div>
                       <div class="col-6" style="font-size: 18px; margin-left: 6px;">
                         <div v-cloak class="weight">
-                          {{ curLangText.weight }}: <b>{{ dailyRecord['weight'] == ' kg' ? curLangText.not_measured : dailyRecord['weight'] }} </b>
+                          {{ curLangText.weight }}: <b>{{ dailyRecord['weight'] == 'NaN' ? curLangText.not_measured : dailyRecord['weight'] }} </b>
                         </div>
                       </div>
                       <div class="col-4" style="white-space: nowrap; font-size: 18px;">
@@ -295,7 +295,7 @@
                           <td v-cloak v-for="content in data" class="text-center">
                             {{ content }}
                           </td>
-                          <td><span @click="removeRecord" :id="`${index}-${index2}`" class="material-symbols-outlined">delete</span></td>
+                          <td><span @click="removeRecord($event.target)" :id="`${index}-${index2}`" class="material-symbols-outlined">delete</span></td>
                         </tr>
                         <tr v-cloak class="text-center fw-bold">
                           <td> {{ curLangText.sum }} </td>

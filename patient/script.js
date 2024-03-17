@@ -4,19 +4,17 @@ Vue.createApp({
       account: '',
       password: '',
       authenticated: false,
-      // time bar
-      date: ' ',
-      time: ' ',
-      // record bar content
+      currentDate: '',
+      currentTime: '',
       options: [
-        { value: 50, label: '50' },
-        { value: 100, label: '100' },
-        { value: 150, label: '150' },
-        { value: 200, label: '200' },
-        { value: 250, label: '250' },
-        { value: 300, label: '300' },
-        { value: 350, label: '350' },
-        { value: 400, label: '400' }
+        {value: 50, label: '50'},
+        {value: 100, label: '100'},
+        {value: 150, label: '150'},
+        {value: 200, label: '200'},
+        {value: 250, label: '250'},
+        {value: 300, label: '300'},
+        {value: 350, label: '350'},
+        {value: 400, label: '400'},
       ],
       inputFood: 0,
       inputWater: 0,
@@ -24,77 +22,70 @@ Vue.createApp({
       inputDefecation: 0,
       inputWeight: 0,
       records: {},
-      url: 'https://tobiichi3227.eu.org/',
-      // url: 'http://127.0.0.1:8000/'
+      apiUrl: 'https://tobiichi3227.eu.org/',
       selectedLanguage: 'zh-TW',
       supportedLanguages: [],
       curLangTexts: {},
-    }
+    };
   },
-  created() {
-      
-        
-    this.loadSupportedLangs().then(supportedLangs => {
-      this.supportedLanguages = supportedLangs;
-    });
-    this.loadLangTexts().then(langTexts => {
-      this.curLangTexts = langTexts;
-    });
-    const languageCode = localStorage.getItem('selectedLanguageCode');
-    if (languageCode !== null && languageCode !== undefined) {
-      if (this.supportedLanguages.some(language => language.code === languageCode)) {
-        this.selectedLanguage = languageCode;
-      } else {
-        localStorage.setItem('selectedLanguageCode', this.selectedLanguage);
-      }
-    }
+  async created() {
+    this.loadSupportedLanguages();
+    this.loadLangTexts();
+    this.loadSelectedLanguage();
   },
   methods: {
     initRecords(currentDate) {
-      let num = currentDate.split('_');
-      this.records[currentDate] = {}
-      this.records[currentDate]['data'] = [];
-      this.records[currentDate]['count'] = 0;
-      this.records[currentDate]['recordDate'] = num[1] + '/' + num[2];
-      this.records[currentDate]['foodSum'] = 0;
-      this.records[currentDate]['waterSum'] = 0;
-      this.records[currentDate]['urinationSum'] = 0;
-      this.records[currentDate]['defecationSum'] = 0;
-      this.records[currentDate]['weight'] = 'NaN';
+      const num = currentDate.split('_');
+      this.records[currentDate] = {
+        data: [],
+        count: 0,
+        recordDate: `${num[1]}/${num[2]}}`,
+        foodSum: 0,
+        waterSum: 0,
+        urinationSum: 0,
+        defecationSum: 0,
+        weight: 'NaN',
+      };
     },
-    async loadSupportedLangs() {
+    async loadSupportedLanguages() {
       const response = await fetch('./supported_languages.json');
-      const supportedLanguages = await response.json();
-      return supportedLanguages;
+      this.supportedLanguages = await response.json();
     },
     async loadLangTexts() {
       const response = await fetch('./lang_texts.json');
-      const langTexts = await response.json();
-      return langTexts;
+      this.curLangTexts = await response.json();
+    },
+    loadSelectedLanguage() {
+      const languageCode = localStorage.getItem('selectedLanguageCode');
+      if (languageCode !== null && languageCode !== undefined) {
+        if (this.supportedLanguages.some((language) => language.code === languageCode)) {
+          this.selectedLanguage = languageCode;
+        } else {
+          localStorage.setItem('selectedLanguageCode', this.selectedLanguage);
+        }
+      }
     },
     async fetchRecords() {
-      const fetchUrl = this.url + '?account=' + this.account + '&password=' + this.password;
-      return await fetch(fetchUrl, {
-        method: 'GET',
-        mode: 'cors',
-      })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          return data;
-        })
-        .catch(error => {
-          console.error(error);
+      const fetchUrl = `${this.apiUrl}?account=${this.account}&password=${this.password}`;
+      try {
+        const response = await fetch(fetchUrl, {
+          method: 'GET',
+          mode: 'cors',
         });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        return await response.json();
+      } catch (error) {
+        throw new Error(error.message);
+      }
     },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
       if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'unauthorized') {
-        alert(this.curLangText.account_or_password_incorrect)
+        alert(this.curLangText.account_or_password_incorrect);
         this.account = '';
         this.password = '';
       } else {
@@ -114,45 +105,45 @@ Vue.createApp({
       }
     },
     postData() {
-      const url = this.url;
+      const url = this.apiUrl;
       fetch(url, {
         method: 'POST',
         mode: 'cors',
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           'type': 'update record',
           'account': this.account,
           'password': this.password,
-          'data': this.records
-        })
+          'data': this.records,
+        }),
       })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Failed to post data');
-          }
-          console.log('Data posted successfully');
-        })
-        .catch(error => {
-          console.error(error);
-        });
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error('Failed to post data');
+            }
+            console.log('Data posted successfully');
+          })
+          .catch((error) => {
+            console.error(error);
+          });
     },
     addData() {
-      let d = new Date();
-      let currentDate = `${d.getFullYear()}_${(d.getMonth() + 1)}_${('0' + d.getDate()).substr(-2)}`;
+      const d = new Date();
+      const currentDate = `${d.getFullYear()}_${(d.getMonth() + 1)}_${('0' + d.getDate()).substr(-2)}`;
       // Food, Water, Urination, Defecation
       if (this.inputFood !== 0 || this.inputWater !== 0 || this.inputUrination !== 0 || this.inputDefecation !== 0) {
         if (!this.records[currentDate]) {
           this.initRecords(currentDate);
         }
-        let currentData = {
-          'time': (('0' + d.getHours()).substr(-2) + ':' + ('0' + d.getMinutes()).substr(-2)),
+        const currentData = {
+          'time': `${('0' + d.getHours()).substr(-2)}:${('0' + d.getMinutes()).substr(-2)}  `,
           'food': this.inputFood,
           'water': this.inputWater,
           'urination': this.inputUrination,
-          'defecation': this.inputDefecation
+          'defecation': this.inputDefecation,
         };
         this.records[currentDate]['data'].push(currentData);
         this.records[currentDate]['count'] = this.records[currentDate]['data'].length;
@@ -171,8 +162,7 @@ Vue.createApp({
       }
       const inputWeight = parseFloat(this.inputWeight);
       if (Number.isFinite(inputWeight) && inputWeight !== 0 && (inputWeight < 0.01 || inputWeight > 300)) {
-        alert(this.curLangText.weight_abnormal)
-        return;
+        alert(this.curLangText.weight_abnormal);
       } else if (Number.isFinite(inputWeight) && inputWeight !== 0) {
         if (!this.records[currentDate]) {
           this.initRecords(currentDate);
@@ -188,13 +178,11 @@ Vue.createApp({
       this.selectedLanguage = languageCode;
       localStorage.setItem('selectedLanguageCode', languageCode);
     },
-
-    removeRecord(event) {
-      let target = event.target;
+    removeRecord(target) {
       let [date, index] = target.attributes.id.textContent.split('-');
 
       index = parseInt(index);
-      let record = this.records[date]['data'][index];
+      const record = this.records[date]['data'][index];
       this.records[date]['count'] -= 1;
       this.records[date]['defecationSum'] -= record['defecation'];
       this.records[date]['foodSum'] -= record['food'];
@@ -207,9 +195,9 @@ Vue.createApp({
     },
   },
   async mounted() {
-    let url = new URL(location.href);
-    let params = url.searchParams;
-    let account = null, password = null;
+    const url = new URL(location.href);
+    const params = url.searchParams;
+    let account = null; let password = null;
     if (params.has('acct') && params.has('pw')) {
       account = params.get('acct');
       password = params.get('pw');
@@ -228,10 +216,10 @@ Vue.createApp({
       this.records = fetchedData['account_records'];
     }
     setInterval(() => {
-      let d = new Date();
-      let dayOfWeek = this.curLangText.day_of_week;
-      this.time = ('0' + d.getHours()).substr(-2) + ':' + ('0' + d.getMinutes()).substr(-2) + ':' + ('0' + d.getSeconds()).substr(-2);
-      this.date = d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + ('0' + d.getDate()).substr(-2) + ' (' + dayOfWeek[d.getDay()] + ')';
+      const d = new Date();
+      const dayOfWeek = this.curLangText.day_of_week;
+      this.currentDate = d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + ('0' + d.getDate()).substr(-2) + ' (' + dayOfWeek[d.getDay()] + ')';
+      this.currentTime = ('0' + d.getHours()).substr(-2) + ':' + ('0' + d.getMinutes()).substr(-2) + ':' + ('0' + d.getSeconds()).substr(-2);
     }, 1000);
   },
   computed: {
@@ -239,12 +227,11 @@ Vue.createApp({
       return this.curLangTexts[this.selectedLanguage];
     },
     reversedRecord() {
-      let reversedData = {};
-      const keys = Object.keys(this.records).reverse();
-      keys.forEach(key => {
+      const reversedData = {};
+      Object.keys(this.records).reverse().forEach((key) => {
         reversedData[key] = this.records[key];
       });
       return reversedData;
     },
-  }
+  },
 }).mount('#app');
