@@ -6,3 +6,6 @@ backend/data.json
 
 *.db
 config.json
+
+# Generated QR codes
+qr_code*
