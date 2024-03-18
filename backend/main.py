@@ -84,3 +84,7 @@ async def write_data(post_request: Request):
             json.dump(account_records, f)
 
         return {"message": "write success"}
+
+
+if __name__ == "__main__":
+    db.create_table()
