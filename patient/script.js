@@ -39,7 +39,7 @@ Vue.createApp({
       this.records[currentDate] = {
         data: [],
         count: 0,
-        recordDate: `${num[1]}/${num[2]}}`,
+        recordDate: `${num[1]}/${num[2]}`,
         foodSum: 0,
         waterSum: 0,
         urinationSum: 0,
