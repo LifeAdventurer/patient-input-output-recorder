@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "patient-diet-recorder"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["lifeadventurer <life0adventurer@gmail.com>"]
 license = "GPL-3.0"
@@ -10,6 +10,7 @@ readme = "README.md"
 python = "^3.11"
 fastapi = "^0.110.0"
 pydantic = "^2.6.4"
+qrcode = "^7.4.2"
 
 
 [tool.poetry.group.dev.dependencies]
