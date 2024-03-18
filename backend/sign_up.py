@@ -1,5 +1,6 @@
 import json
 
+import gen_qr_code
 import requests
 from constants import URL
 
@@ -24,6 +25,7 @@ try:
     response = response.json()
     if response['message'] == 'Account created successfully':
         print('Account created successfully')
+        gen_qr_code.generate_qr_code(account, password)
     else:
         print(response['message'])
 except requests.exceptions.RequestException as e:
