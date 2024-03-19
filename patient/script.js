@@ -179,19 +179,21 @@ Vue.createApp({
       localStorage.setItem('selectedLanguageCode', languageCode);
     },
     removeRecord(target) {
-      let [date, index] = target.attributes.id.textContent.split('-');
+      if (confirm(this.curLangText.confirm_remove_record)) {
+        let [date, index] = target.attributes.id.textContent.split('-');
 
-      index = parseInt(index);
-      const record = this.records[date]['data'][index];
-      this.records[date]['count'] -= 1;
-      this.records[date]['defecationSum'] -= record['defecation'];
-      this.records[date]['foodSum'] -= record['food'];
-      this.records[date]['urinationSum'] -= record['urination'];
-      this.records[date]['waterSum'] -= record['water'];
-      this.records[date]['data'].splice(index, 1);
+        index = parseInt(index);
+        const record = this.records[date]['data'][index];
+        this.records[date]['count'] -= 1;
+        this.records[date]['defecationSum'] -= record['defecation'];
+        this.records[date]['foodSum'] -= record['food'];
+        this.records[date]['urinationSum'] -= record['urination'];
+        this.records[date]['waterSum'] -= record['water'];
+        this.records[date]['data'].splice(index, 1);
 
-      target.parentElement.parentElement.remove();
-      this.postData();
+        target.parentElement.parentElement.remove();
+        this.postData();
+      }
     },
   },
   async mounted() {
