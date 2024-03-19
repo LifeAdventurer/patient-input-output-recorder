@@ -273,6 +273,7 @@
                           <th scope="col">{{ curLangText.water_consumption }}</th>
                           <th scope="col">{{ curLangText.urination }}</th>
                           <th scope="col">{{ curLangText.defecation }}</th>
+                          <th scope="col"></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -280,9 +281,9 @@
                           <td v-for="content in data" class="text-center">
                             {{ content }}
                           </td>
-                          <td>
-                            <span @click="removeRecord($event.target)" :id="`${index}-${index2}`" class="material-symbols-outlined">
-                              delete
+                          <td class="justify-content-center align-items-center" style="text-align: center;">
+                            <span @click="removeRecord($event.target)" :id="`${index}-${index2}`" class="material-symbols-outlined" style="display: inline-block; margin-left: 0px;">
+                                delete
                             </span>
                           </td>
                         </tr>
@@ -292,6 +293,7 @@
                           <td>{{ dailyRecord['waterSum'] }}</td>
                           <td>{{ dailyRecord['urinationSum'] }}</td>
                           <td>{{ dailyRecord['defecationSum'] }}</td>
+                          <td></td>
                         </tr>
                       </tbody>
                     </table>
