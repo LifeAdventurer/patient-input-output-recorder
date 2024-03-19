@@ -191,7 +191,6 @@ Vue.createApp({
         this.records[date]['waterSum'] -= record['water'];
         this.records[date]['data'].splice(index, 1);
 
-        target.parentElement.parentElement.remove();
         this.postData();
       }
     },
