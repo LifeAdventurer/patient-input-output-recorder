@@ -3,6 +3,7 @@ Vue.createApp({
     return {
       account: '',
       password: '',
+      showPassword: false,
       authenticated: false,
       currentDate: '',
       currentTime: '',
@@ -81,6 +82,9 @@ Vue.createApp({
       } catch (error) {
         throw new Error(error.message);
       }
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
     },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
