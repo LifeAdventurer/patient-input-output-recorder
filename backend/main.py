@@ -49,7 +49,18 @@ async def write_data(post_request: Request):
         token = json.load(f)['token']
 
     if post_request['type'] == 'sign up' and post_request['token'] == token:
-        err = db.add_account(post_request['account'], post_request['password'])
+        if post_request['account_type'] not in [
+            db.AccountType.ADMIN,
+            db.AccountType.PATIENT,
+            db.AccountType.MONITOR,
+        ]:
+            return {"message": "Wrong account type."}
+
+        err = db.add_account(
+            post_request['account'],
+            post_request['password'],
+            post_request['account_type'],
+        )
         if err is not None:
             return {"message": "Account already exists."}
 
