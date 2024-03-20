@@ -3,6 +3,7 @@ Vue.createApp({
     return {
       account: '',
       password: '',
+      showPassword: false,
       authenticated: false,
       records: {},
       apiUrl: 'https://tobiichi3227.eu.org/',
@@ -25,6 +26,9 @@ Vue.createApp({
       } catch (error) {
         throw new Error(error.message);
       }
+    },
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
     },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
