@@ -1,6 +1,12 @@
 import sqlite3
 
 
+class AccountType:
+    ADMIN = 'ADMIN'
+    PATIENT = 'PATIENT'
+    MONITOR = 'MONITOR'
+
+
 def create_table():
     conn = sqlite3.connect('accounts.db')
     cursor = conn.cursor()
@@ -9,7 +15,8 @@ def create_table():
         CREATE TABLE IF NOT EXISTS accounts (
             id INTEGER PRIMARY KEY,
             username TEXT UNIQUE,
-            password TEXT
+            password TEXT,
+            account_type TEXT
         )
         '''
     )
@@ -18,13 +25,13 @@ def create_table():
     conn.close()
 
 
-def add_account(username: str, password: str):
+def add_account(username: str, password: str, account_type: str):
     conn = sqlite3.connect('accounts.db')
     cursor = conn.cursor()
     try:
         cursor.execute(
-            'INSERT INTO accounts (username, password) VALUES (?, ?)',
-            (username, password),
+            'INSERT INTO accounts (username, password, account_type) VALUES (?, ?, ?)',
+            (username, password, account_type),
         )
         conn.commit()
         cursor.close()
@@ -71,6 +78,20 @@ def authenticate(username: str, password: str) -> bool:
     else:
         print("Invalid username or password.")
         return False
+
+
+def get_account_type(username: str) -> str:
+    conn = sqlite3.connect('accounts.db')
+    cursor = conn.cursor()
+    cursor.execute(
+        'SELECT "account_type" FROM accounts WHERE username = ?',
+        (username,),
+    )
+    account_type = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    return account_type
 
 
 def get_all_accounts():
