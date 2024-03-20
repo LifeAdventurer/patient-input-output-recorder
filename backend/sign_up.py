@@ -15,7 +15,7 @@ ACCOUNT_TYPE = ''
 
 while ACCOUNT_TYPE not in ACCOUNT_TYPES:
     ACCOUNT_TYPE = input('Enter the account type: ')
-            
+
 
 payload = {
     'token': token,
@@ -32,7 +32,7 @@ try:
     response = response.json()
     if response['message'] == 'Account created successfully':
         print('Account created successfully')
-        gen_qr_code.generate_qr_code(ACCOUNT, PASSWORD)
+        gen_qr_code.generate_qr_code(ACCOUNT, PASSWORD, ACCOUNT_TYPE)
     else:
         print(response['message'])
 except requests.exceptions.RequestException as e:
