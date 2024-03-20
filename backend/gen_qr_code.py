@@ -21,6 +21,13 @@ def generate_qr_code(account, password, account_type):
 
 if __name__ == "__main__":
 
-    account = input("Enter the account: ")
-    password = input("Enter the password: ")
-    generate_qr_code(account, password)
+    ACCOUNT_TYPES = ['ADMIN', 'MONITOR', 'PATIENT']
+
+    ACCOUNT = input('Enter the account: ')
+    PASSWORD = input('Enter the password: ')
+    ACCOUNT_TYPE = ''
+
+    while ACCOUNT_TYPE not in ACCOUNT_TYPES:
+        ACCOUNT_TYPE = input('Enter the account type: ')
+
+    generate_qr_code(ACCOUNT, PASSWORD, ACCOUNT_TYPE)
