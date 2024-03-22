@@ -1,5 +1,7 @@
 import sqlite3
 
+ACCOUNTS_DB = 'accounts.db'
+
 
 class AccountType:
     ADMIN = 'ADMIN'
@@ -8,7 +10,7 @@ class AccountType:
 
 
 def create_table():
-    with sqlite3.connect('accounts.db') as conn:
+    with sqlite3.connect(ACCOUNTS_DB) as conn:
         cursor = conn.cursor()
         cursor.execute(
             '''
@@ -24,7 +26,7 @@ def create_table():
 
 
 def add_account(username: str, password: str, account_type: str):
-    with sqlite3.connect('accounts.db') as conn:
+    with sqlite3.connect(ACCOUNTS_DB) as conn:
         cursor = conn.cursor()
         try:
             cursor.execute(
@@ -40,7 +42,7 @@ def add_account(username: str, password: str, account_type: str):
 
 
 def delete_account(username: str):
-    with sqlite3.connect('accounts.db') as conn:
+    with sqlite3.connect(ACCOUNTS_DB) as conn:
         cursor = conn.cursor()
         try:
             cursor.execute(
@@ -55,7 +57,7 @@ def delete_account(username: str):
 
 
 def authenticate(username: str, password: str) -> bool:
-    with sqlite3.connect('accounts.db') as conn:
+    with sqlite3.connect(ACCOUNTS_DB) as conn:
         cursor = conn.cursor()
         cursor.execute(
             'SELECT * FROM accounts WHERE username = ? AND password = ?',
@@ -71,7 +73,7 @@ def authenticate(username: str, password: str) -> bool:
 
 
 def get_account_type(username: str) -> str:
-    with sqlite3.connect('accounts.db') as conn:
+    with sqlite3.connect(ACCOUNTS_DB) as conn:
         cursor = conn.cursor()
         cursor.execute(
             'SELECT account_type FROM accounts WHERE username = ?',
@@ -82,7 +84,7 @@ def get_account_type(username: str) -> str:
 
 
 def get_all_accounts():
-    with sqlite3.connect('accounts.db') as conn:
+    with sqlite3.connect(ACCOUNTS_DB) as conn:
         cursor = conn.cursor()
         cursor.execute('SELECT * FROM accounts')
         accounts = cursor.fetchall()
