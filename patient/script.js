@@ -136,14 +136,14 @@ Vue.createApp({
     },
     addData() {
       const d = new Date();
-      const currentDate = `${d.getFullYear()}_${(d.getMonth() + 1)}_${('0' + d.getDate()).substr(-2)}`;
+      const currentDate = `${d.getFullYear()}_${(d.getMonth() + 1)}_${('0' + d.getDate()).slice(-2)}`;
       // Food, Water, Urination, Defecation
       if (this.inputFood !== 0 || this.inputWater !== 0 || this.inputUrination !== 0 || this.inputDefecation !== 0) {
         if (!this.records[currentDate]) {
           this.initRecords(currentDate);
         }
         const currentData = {
-          'time': `${('0' + d.getHours()).substr(-2)}:${('0' + d.getMinutes()).substr(-2)}  `,
+          'time': `${('0' + d.getHours()).slice(-2)}:${('0' + d.getMinutes()).slice(-2)}  `,
           'food': this.inputFood,
           'water': this.inputWater,
           'urination': this.inputUrination,
@@ -223,8 +223,8 @@ Vue.createApp({
     setInterval(() => {
       const d = new Date();
       const dayOfWeek = this.curLangText.day_of_week;
-      this.currentDate = d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + ('0' + d.getDate()).substr(-2) + ' (' + dayOfWeek[d.getDay()] + ')';
-      this.currentTime = ('0' + d.getHours()).substr(-2) + ':' + ('0' + d.getMinutes()).substr(-2) + ':' + ('0' + d.getSeconds()).substr(-2);
+      this.currentDate = d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + ('0' + d.getDate()).slice(-2) + ' (' + dayOfWeek[d.getDay()] + ')';
+      this.currentTime = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) + ':' + ('0' + d.getSeconds()).slice(-2);
     }, 1000);
   },
   computed: {
