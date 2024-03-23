@@ -97,6 +97,11 @@ async def write_data(post_request: Request):
         return {"message": "write success"}
 
     elif post_request['type'] == 'fetch monitoring account records':
+        if not db.authenticate(
+            post_request['account'], post_request['password']
+        ):
+            return {"message": "unauthorized"}
+
         monitoring_account = post_request['account']
         if db.get_account_type(monitoring_account) == db.AccountType.MONITOR:
             with open('./account_relations.json', 'r') as f:
