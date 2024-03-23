@@ -47,6 +47,10 @@ Vue.createApp({
         alert('帳號或密碼不正確');
         this.account = '';
         this.password = '';
+      } else if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Incorrect account type') {
+        alert('此帳號沒有管理權限')
+        this.account = '';
+        this.password = '';
       } else {
         this.authenticated = true;
         this.patientRecords = fetchedData['patient_records'];

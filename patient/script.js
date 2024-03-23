@@ -102,6 +102,10 @@ Vue.createApp({
         alert(this.curLangText.account_or_password_incorrect);
         this.account = '';
         this.password = '';
+      } else if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Incorrect account type') {
+        alert(this.curLangText.account_without_permission);
+        this.account = '';
+        this.password = '';
       } else {
         this.authenticated = true;
         this.records = fetchedData['account_records'];
