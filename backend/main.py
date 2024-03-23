@@ -32,39 +32,43 @@ async def write_data(post_request: Request):
     with open('./config.json', 'r') as f:
         token = json.load(f)['token']
 
-    if post_request['type'] == 'sign up' and post_request['token'] == token:
-        if post_request['account_type'] not in [
-            db.AccountType.ADMIN,
-            db.AccountType.PATIENT,
-            db.AccountType.MONITOR,
-        ]:
-            return {"message": "Incorrect account type"}
+    if post_request['type'] == 'sign up':
+        if post_request['token'] == token:
+            if post_request['account_type'] not in [
+                db.AccountType.ADMIN,
+                db.AccountType.PATIENT,
+                db.AccountType.MONITOR,
+            ]:
+                return {"message": "Incorrect account type"}
 
-        err = db.add_account(
-            post_request['account'],
-            post_request['password'],
-            post_request['account_type'],
-        )
-        if err is not None:
-            return {"message": "Account already exists"}
+            err = db.add_account(
+                post_request['account'],
+                post_request['password'],
+                post_request['account_type'],
+            )
+            if err is not None:
+                return {"message": "Account already exists"}
 
-        return {"message": "Account created successfully"}
+            return {"message": "Account created successfully"}
+        else:
+            return {"message": "Incorrect token"}
 
-    elif (
-        post_request['type'] == 'del account' and post_request['token'] == token
-    ):
-        err = db.delete_account(post_request['account'])
-        if err is not None:
-            return {"message": "Account does not exists"}
+    elif post_request['type'] == 'del account':
+        if post_request['token'] == token:
+            err = db.delete_account(post_request['account'])
+            if err is not None:
+                return {"message": "Account does not exists"}
 
-        return {"message": "Account deleted successfully"}
+            return {"message": "Account deleted successfully"}
+        else:
+            return {"message": "Incorrect token"}
 
-    elif (
-        post_request['type'] == 'fetch account list'
-        and post_request['token'] == token
-    ):
-        account_list = db.get_all_accounts()
-        return {'account_list': account_list}
+    elif post_request['type'] == 'fetch account list':
+        if post_request['token'] == token:
+            account_list = db.get_all_accounts()
+            return {"message": "Fetch Success", "account_list": account_list}
+        else:
+            return {"message": "Incorrect token"}
 
     elif post_request['type'] == 'update record':
         record = post_request
