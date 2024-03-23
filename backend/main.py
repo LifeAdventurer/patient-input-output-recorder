@@ -91,7 +91,10 @@ async def write_data(post_request: Request):
             return {"message": "Unauthorized"}
 
         patient_account = post_request['account']
-        if db.get_account_type(patient_account) == db.AccountType.PATIENT:
+        if db.get_account_type(patient_account) in [
+            db.AccountType.PATIENT,
+            db.AccountType.ADMIN,
+        ]:
             with open(DATA_FILE_PATH, 'r') as f:
                 data = json.load(f)
                 if patient_account in data:
@@ -102,7 +105,7 @@ async def write_data(post_request: Request):
                 else:
                     return {"message": "Read Success", "account_records": {}}
         else:
-            return {"message": "Incorrect account type."}
+            return {"message": "Incorrect account type"}
 
     elif post_request['type'] == 'fetch monitoring account records':
         if not db.authenticate(
@@ -111,7 +114,10 @@ async def write_data(post_request: Request):
             return {"message": "Unauthorized"}
 
         monitoring_account = post_request['account']
-        if db.get_account_type(monitoring_account) == db.AccountType.MONITOR:
+        if db.get_account_type(monitoring_account) in [
+            db.AccountType.MONITOR,
+            db.AccountType.ADMIN,
+        ]:
             with open('./account_relations.json', 'r') as f:
                 account_relations = json.load(f)
                 if monitoring_account in account_relations['monitor_accounts']:
