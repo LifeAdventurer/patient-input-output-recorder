@@ -80,7 +80,7 @@ def get_account_type(username: str) -> str:
             (username,),
         )
         account_type = cursor.fetchone()
-        return account_type
+        return account_type[0]
 
 
 def get_all_accounts():
