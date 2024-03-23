@@ -25,22 +25,6 @@ app.add_middleware(
 DATA_FILE_PATH = './data.json'
 
 
-@app.get("/")
-def read_data(account: str, password: str):
-    if not db.authenticate(account, password):
-        return {"message": "unauthorized"}
-
-    with open(DATA_FILE_PATH, 'r') as f:
-        data = json.load(f)
-        if account in data:
-            return {
-                "message": "read success",
-                "account_records": data[account],
-            }
-        else:
-            return {"message": "read success", "account_records": {}}
-
-
 @app.post("/")
 async def write_data(post_request: Request):
     post_request = await post_request.json()
@@ -95,6 +79,28 @@ async def write_data(post_request: Request):
             json.dump(account_records, f)
 
         return {"message": "write success"}
+
+    elif post_request['type'] == 'fetch patient records':
+        if not db.authenticate(
+            post_request['account'], post_request['password']
+        ):
+            return {"message": "unauthorized"}
+
+        patient_account = post_request['account']
+        if db.get_account_type(patient_account) == db.AccountType.PATIENT:
+            with open(DATA_FILE_PATH, 'r') as f:
+                data = json.load(f)
+                if patient_account in data:
+                    return {
+                        "message": "read success",
+                        "account_records": data[patient_account],
+                    }
+                else:
+                    return {"message": "read success", "account_records": {}}
+        else:
+            return {
+                "message": "Unable to retrieve data due to incorrect account type."
+            }
 
     elif post_request['type'] == 'fetch monitoring account records':
         if not db.authenticate(

@@ -5,26 +5,37 @@ Vue.createApp({
       password: '',
       showPassword: false,
       authenticated: false,
-      records: {},
+      patientRecords: {},
+      patientAccounts: [],
       apiUrl: 'https://tobiichi3227.eu.org/',
     }
   },
   methods: {
     async fetchRecords() {
-      const fetchUrl = `${this.apiUrl}?account=${this.account}&password=${this.password}`;
+      const fetchUrl = this.apiUrl;
       try {
         const response = await fetch(fetchUrl, {
-          method: 'GET',
+          method: 'POST',
           mode: 'cors',
-        });
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            'type': 'fetch monitoring account records',
+            'account': this.account,
+            'password': this.password,
+          }),
+        })
 
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Failed to fetch record');
         }
 
+        console.log('Successfully fetched the record');
         return await response.json();
       } catch (error) {
-        throw new Error(error.message);
+        throw new Error(error.message)
       }
     },
     togglePasswordVisibility() {
@@ -38,7 +49,7 @@ Vue.createApp({
         this.password = '';
       } else {
         this.authenticated = true;
-        this.records = fetchedData['account_records'];
+        this.patientRecords = fetchedData['patient_records'];
         sessionStorage.setItem('account', this.account);
         sessionStorage.setItem('password', this.password);
       }
@@ -63,7 +74,7 @@ Vue.createApp({
       this.account = account;
       this.password = password;
       const fetchedData = await this.fetchRecords();
-      this.records = fetchedData['account_records'];
+      this.patientRecords = fetchedData['patient_records'];
     }
   },
 }).mount('#app');
