@@ -108,33 +108,34 @@ Vue.createApp({
         sessionStorage.removeItem('password');
       }
     },
-    postData() {
+    async postData() {
       const url = this.apiUrl;
-      fetch(url, {
-        method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          'type': 'update record',
-          'account': this.account,
-          'password': this.password,
-          'data': this.records,
-        }),
-      })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error('Failed to post data');
-            }
-            console.log('Data posted successfully');
-          })
-          .catch((error) => {
-            console.error(error);
-          });
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            'type': 'update record',
+            'account': this.account,
+            'password': this.password,
+            'data': this.records,
+          }),
+        })
+
+        if (!response.ok) {
+          throw new Error('Failed to post data');
+        }
+
+        console.log('Data posted successfully');
+      } catch (error) {
+        throw new Error(error.message)
+      }
     },
-    addData() {
+    async addData() {
       const d = new Date();
       const currentDate = `${d.getFullYear()}_${(d.getMonth() + 1)}_${('0' + d.getDate()).slice(-2)}`;
       // Food, Water, Urination, Defecation
@@ -162,7 +163,7 @@ Vue.createApp({
         this.inputUrination = 0;
         this.inputDefecation = 0;
         // post to database
-        this.postData();
+        await this.postData();
       }
       const inputWeight = parseFloat(this.inputWeight);
       if (Number.isFinite(inputWeight) && inputWeight !== 0 && (inputWeight < 0.01 || inputWeight > 300)) {
@@ -175,14 +176,14 @@ Vue.createApp({
         // init again
         this.inputWeight = 0;
         // post to database
-        this.postData();
+        await this.postData();
       }
     },
     changeLanguage(languageCode) {
       this.selectedLanguage = languageCode;
       localStorage.setItem('selectedLanguageCode', languageCode);
     },
-    removeRecord(target) {
+    async removeRecord(target) {
       if (confirm(this.curLangText.confirm_remove_record)) {
         let [date, index] = target.attributes.id.textContent.split('-');
 
@@ -195,7 +196,7 @@ Vue.createApp({
         this.records[date]['waterSum'] -= record['water'];
         this.records[date]['data'].splice(index, 1);
 
-        this.postData();
+        await this.postData();
       }
     },
   },
