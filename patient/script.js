@@ -98,7 +98,7 @@ Vue.createApp({
     },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
-      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'unauthorized') {
+      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Unauthorized') {
         alert(this.curLangText.account_or_password_incorrect);
         this.account = '';
         this.password = '';

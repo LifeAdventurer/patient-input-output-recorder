@@ -38,7 +38,7 @@ async def write_data(post_request: Request):
             db.AccountType.PATIENT,
             db.AccountType.MONITOR,
         ]:
-            return {"message": "Wrong account type."}
+            return {"message": "Incorrect account type"}
 
         err = db.add_account(
             post_request['account'],
@@ -46,7 +46,7 @@ async def write_data(post_request: Request):
             post_request['account_type'],
         )
         if err is not None:
-            return {"message": "Account already exists."}
+            return {"message": "Account already exists"}
 
         return {"message": "Account created successfully"}
 
@@ -55,7 +55,7 @@ async def write_data(post_request: Request):
     ):
         err = db.delete_account(post_request['account'])
         if err is not None:
-            return {"message": "Account does not exists."}
+            return {"message": "Account does not exists"}
 
         return {"message": "Account deleted successfully"}
 
@@ -69,7 +69,7 @@ async def write_data(post_request: Request):
     elif post_request['type'] == 'update record':
         record = post_request
         if not db.authenticate(record['account'], record['password']):
-            return {"message": "unauthorized"}
+            return {"message": "Unauthorized"}
 
         with open(DATA_FILE_PATH, 'r') as f:
             account_records = json.load(f)
@@ -78,13 +78,13 @@ async def write_data(post_request: Request):
         with open(DATA_FILE_PATH, 'w') as f:
             json.dump(account_records, f)
 
-        return {"message": "write success"}
+        return {"message": "Update Success"}
 
     elif post_request['type'] == 'fetch patient records':
         if not db.authenticate(
             post_request['account'], post_request['password']
         ):
-            return {"message": "unauthorized"}
+            return {"message": "Unauthorized"}
 
         patient_account = post_request['account']
         if db.get_account_type(patient_account) == db.AccountType.PATIENT:
@@ -92,21 +92,19 @@ async def write_data(post_request: Request):
                 data = json.load(f)
                 if patient_account in data:
                     return {
-                        "message": "read success",
+                        "message": "Read Success",
                         "account_records": data[patient_account],
                     }
                 else:
-                    return {"message": "read success", "account_records": {}}
+                    return {"message": "Read Success", "account_records": {}}
         else:
-            return {
-                "message": "Unable to retrieve data due to incorrect account type."
-            }
+            return {"message": "Incorrect account type."}
 
     elif post_request['type'] == 'fetch monitoring account records':
         if not db.authenticate(
             post_request['account'], post_request['password']
         ):
-            return {"message": "unauthorized"}
+            return {"message": "Unauthorized"}
 
         monitoring_account = post_request['account']
         if db.get_account_type(monitoring_account) == db.AccountType.MONITOR:
@@ -124,17 +122,17 @@ async def write_data(post_request: Request):
                             patient_account: data[patient_account]
                         }
                     return {
-                        "message": "fetch success",
+                        "message": "Fetch Success",
                         "patient_accounts": patient_accounts,
                         "patient_records": patient_records,
                     }
                 else:
                     return {
-                        "message": "Monitoring account has no associated patient accounts."
+                        "message": "No associated patient accounts"
                     }
         else:
             return {
-                "message": "Unable to retrieve data due to incorrect account type."
+                "message": "Incorrect account type"
             }
 
 

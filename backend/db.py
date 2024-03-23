@@ -37,7 +37,7 @@ def add_account(username: str, password: str, account_type: str):
             print("Account created successfully.")
             return None
         except sqlite3.IntegrityError:
-            print("Account already exists.")
+            print("Account already exists")
             return "Account already exists"
 
 

@@ -17,7 +17,7 @@ try:
     response = requests.post(URL, json=payload, headers=headers)
     response.raise_for_status()
     response = response.json()
-    if response['message'] == 'fetch success':
+    if response['message'] == 'Fetch Success':
         print(response['patient_records'], response['patient_accounts'])
     else:
         print(response['message'])
