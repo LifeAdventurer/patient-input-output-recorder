@@ -118,22 +118,17 @@ async def write_data(post_request: Request):
                         data = json.load(f)
                     patient_records = {}
                     for patient_account in patient_accounts:
-                        patient_records['patient_records'] = {
-                            patient_account: data[patient_account]
-                        }
+                        patient_records[patient_account] = data[patient_account]
+
                     return {
                         "message": "Fetch Success",
                         "patient_accounts": patient_accounts,
                         "patient_records": patient_records,
                     }
                 else:
-                    return {
-                        "message": "No associated patient accounts"
-                    }
+                    return {"message": "No associated patient accounts"}
         else:
-            return {
-                "message": "Incorrect account type"
-            }
+            return {"message": "Incorrect account type"}
 
 
 if __name__ == '__main__':
