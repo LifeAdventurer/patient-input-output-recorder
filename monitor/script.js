@@ -59,6 +59,15 @@ Vue.createApp({
         sessionStorage.setItem('password', this.password);
       }
     },
+    confirmLogout() {
+      if (confirm('請確認是否要登出')) {
+        this.account = '';
+        this.password = '';
+        this.authenticated = false;
+        sessionStorage.removeItem('account');
+        sessionStorage.removeItem('password');
+      }
+    },
   },
   async mounted() {
     const url = new URL(location.href);
