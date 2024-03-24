@@ -91,8 +91,20 @@ Vue.createApp({
       this.account = account;
       this.password = password;
       const fetchedData = await this.fetchRecords();
-      this.patientRecords = fetchedData['patient_records'];
-      this.patientAccounts = fetchedData['patient_accounts'];
+      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Unauthorized') {
+        alert('帳號或密碼不正確');
+        this.authenticated = false;
+        this.account = '';
+        this.password = '';
+      } else if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Incorrect account type') {
+        alert('此帳號沒有管理權限')
+        this.authenticated = false;
+        this.account = '';
+        this.password = '';
+      } else {
+        this.patientRecords = fetchedData['patient_records'];
+        this.patientAccounts = fetchedData['patient_accounts'];
+      }
     }
     setInterval(() => {
       const d = new Date();
