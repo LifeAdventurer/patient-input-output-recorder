@@ -54,6 +54,7 @@ Vue.createApp({
       } else {
         this.authenticated = true;
         this.patientRecords = fetchedData['patient_records'];
+        this.patientAccounts = fetchedData['patient_accounts'];
         sessionStorage.setItem('account', this.account);
         sessionStorage.setItem('password', this.password);
       }
@@ -79,6 +80,7 @@ Vue.createApp({
       this.password = password;
       const fetchedData = await this.fetchRecords();
       this.patientRecords = fetchedData['patient_records'];
+      this.patientAccounts = fetchedData['patient_accounts'];
     }
   },
 }).mount('#app');
