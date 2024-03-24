@@ -158,7 +158,7 @@ Vue.createApp({
           this.initRecords(currentDate);
         }
         const currentData = {
-          'time': `${('0' + d.getHours()).slice(-2)}:${('0' + d.getMinutes()).slice(-2)}  `,
+          'time': `${('0' + d.getHours()).slice(-2)}:${('0' + d.getMinutes()).slice(-2)}`,
           'food': this.inputFood,
           'water': this.inputWater,
           'urination': this.inputUrination,
