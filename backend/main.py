@@ -55,6 +55,9 @@ async def write_data(post_request: Request):
 
     elif post_request['type'] == 'del account':
         if post_request['token'] == token:
+            if not db.authenticate(post_request['account'], post_request['password']):
+                return {"message": "Unauthorized"}
+            
             err = db.delete_account(post_request['account'])
             if err is not None:
                 return {"message": "Account does not exists"}
