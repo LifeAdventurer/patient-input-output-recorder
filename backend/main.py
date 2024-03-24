@@ -55,9 +55,11 @@ async def write_data(post_request: Request):
 
     elif post_request['type'] == 'del account':
         if post_request['token'] == token:
-            if not db.authenticate(post_request['account'], post_request['password']):
+            if not db.authenticate(
+                post_request['account'], post_request['password']
+            ):
                 return {"message": "Unauthorized"}
-            
+
             err = db.delete_account(post_request['account'])
             if err is not None:
                 return {"message": "Account does not exists"}
@@ -131,7 +133,12 @@ async def write_data(post_request: Request):
                         data = json.load(f)
                     patient_records = {}
                     for patient_account in patient_accounts:
-                        patient_records[patient_account] = data[patient_account]
+                        if patient_account not in data:
+                            patient_records[patient_account] = {}
+                        else:
+                            patient_records[patient_account] = data[
+                                patient_account
+                            ]
 
                     return {
                         "message": "Fetch Success",
