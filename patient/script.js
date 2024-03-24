@@ -229,23 +229,10 @@ Vue.createApp({
     }
 
     if (account !== null && account !== undefined && password !== null && password !== undefined) {
-      this.authenticated = true;
+      this.authenticated = false;
       this.account = account;
       this.password = password;
-      const fetchedData = await this.fetchRecords();
-      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Unauthorized') {
-        alert(this.curLangText.account_or_password_incorrect);
-        this.authenticated = false;
-        this.account = '';
-        this.password = '';
-      } else if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Incorrect account type') {
-        alert(this.curLangText.account_without_permission);
-        this.authenticated = false;
-        this.account = '';
-        this.password = '';
-      } else {
-        this.records = fetchedData['account_records'];
-      }
+      await this.authenticate();
     }
     setInterval(() => {
       const d = new Date();
