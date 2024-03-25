@@ -100,4 +100,17 @@ Vue.createApp({
       this.currentDateYY_MM_DD = `${d.getFullYear()}_${(d.getMonth() + 1)}_${('0' + d.getDate()).slice(-2)}`;
     }, 1000);
   },
+  computed: {
+    reversedPatientRecords() {
+      const reversedData = {};
+      Object.keys(this.patientRecords).forEach((patientAccount) => {
+        const reversedRecord = {};
+        Object.keys(this.patientRecords[patientAccount]).reverse().forEach((key) => {
+          reversedRecord[key] = this.patientRecords[patientAccount][key];
+        });
+        reversedData[patientAccount] = reversedRecord
+      });
+      return reversedData;
+    },
+  },
 }).mount('#app');

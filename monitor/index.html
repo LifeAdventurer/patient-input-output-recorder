@@ -127,7 +127,7 @@
                       <div class="accordion-collapse collapse" :id="`content_${index}`" aria-labelledby="recordSection" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                           <template v-if="JSON.stringify(patientRecords[patientAccount]) !== '{}'">
-                            <div v-for="(dailyRecord, index2) in patientRecords[patientAccount]">
+                            <div v-for="(dailyRecord, index2) in reversedPatientRecords[patientAccount]">
                               <div class="accordion">
                                 <div class="accordion-item shadow bg-light">
                                   <h2 class="accordion-header" id="recordSection">
