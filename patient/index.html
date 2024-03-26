@@ -107,7 +107,7 @@
                 <!-- downdrops -->
                 <div class="col">
                   <select class="form-select" aria-label="Default select example" v-model="inputFood">
-                    <option value="" disabled>(g)</option>
+                    <option value="" disabled>{{ curLangText.unit }}(g)</option>
                     <option selected value="0">0</option>
                     <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
                   </select>
@@ -135,7 +135,7 @@
                 <!-- downdrops -->
                 <div class="col">
                   <select class="form-select" aria-label="Default select example" v-model="inputWater">
-                    <option value="" disabled>(ml)</option>
+                    <option value="" disabled>{{ curLangText.unit }}(ml)</option>
                     <option selected value="0">0</option>
                     <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
                   </select>
@@ -163,7 +163,7 @@
                 <!-- downdrops -->
                 <div class="col">
                   <select class="form-select" aria-label="Default select example" v-model="inputUrination">
-                    <option value="" disabled>(ml)</option>
+                    <option value="" disabled>{{ curLangText.unit }}(ml)</option>
                     <option selected value="0">0</option>
                     <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
                   </select>
@@ -191,7 +191,7 @@
                 <!-- downdrops -->
                 <div class="col">
                   <select class="form-select" aria-label="Default select example" v-model="inputDefecation">
-                    <option value="" disabled>(times)</option>
+                    <option value="" disabled>{{ curLangText.unit }}({{ curLangText.times }})</option>
                     <option selected value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
