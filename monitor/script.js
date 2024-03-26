@@ -62,6 +62,15 @@ Vue.createApp({
         sessionStorage.setItem('password', this.password);
       }
     },
+    getFirstAndLastDates(patientAccount) {
+      const keys = Object.keys(this.patientRecords[patientAccount]);
+      if (keys.length === 0) {
+        return '無紀錄';
+      }
+      const firstDate = keys[0].replace(/_/g, '/');
+      const lastDate = keys[keys.length - 1].replace(/_/g, '/');
+      return `${firstDate} ~ ${lastDate}`;
+    },
     confirmLogout() {
       if (confirm('請確認是否要登出')) {
         this.account = '';

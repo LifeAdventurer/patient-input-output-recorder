@@ -118,8 +118,11 @@
                       <h2 class="accordion-header" id="recordSection">
                         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" :data-bs-target="`#content_${index}`" aria-expanded="false" :aria-controls="`content_${index}`">
                           <div class="row">
-                            <div class="col">
+                            <div class="col-6" style="white-space: nowrap;">
                               <b>所有紀錄</b>
+                            </div>
+                            <div class="col-6" style="white-space: nowrap;">
+                              <b>{{ getFirstAndLastDates(patientAccount) }}</b>
                             </div>
                           </div>
                         </button>
