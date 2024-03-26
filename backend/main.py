@@ -64,6 +64,20 @@ async def write_data(post_request: Request):
             if err is not None:
                 return {"message": "Account does not exists"}
 
+            with open('./account_relations.json', 'r') as f:
+                account_relations = json.load(f)
+
+            for monitor_account, patient_accounts in account_relations[
+                'monitor_accounts'
+            ].items():
+                if post_request['account'] in patient_accounts:
+                    del account_relations['monitor_accounts'][monitor_account][
+                        patient_accounts.index(post_request['account'])
+                    ]
+
+            with open('./account_relations.json', 'w') as f:
+                json.dump(account_relations, f, indent=4)
+
             return {"message": "Account deleted successfully"}
         else:
             return {"message": "Incorrect token"}
