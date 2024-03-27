@@ -98,9 +98,12 @@ Vue.createApp({
     },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
-      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Unauthorized') {
-        alert(this.curLangText.account_or_password_incorrect);
+      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Nonexistent account') {
+        alert(this.curLangText.nonexistent_account);
         this.account = '';
+        this.password = '';
+      } else if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Incorrect password') {
+        alert(this.curLangText.incorrect_password);
         this.password = '';
       } else if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Incorrect account type') {
         alert(this.curLangText.account_without_permission);

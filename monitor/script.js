@@ -46,9 +46,12 @@ Vue.createApp({
     },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
-      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Unauthorized') {
-        alert('帳號或密碼不正確');
+      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Nonexistent account') {
+        alert('帳號不存在');
         this.account = '';
+        this.password = '';
+      } else if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Incorrect password') {
+        alert('密碼錯誤');
         this.password = '';
       } else if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Incorrect account type') {
         alert('此帳號沒有管理權限');

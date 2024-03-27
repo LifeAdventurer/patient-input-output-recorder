@@ -5,7 +5,8 @@ import db
 ACCOUNT = input("Enter the monitor account: ")
 PASSWORD = input("Enter the password: ")
 
-if db.authenticate(ACCOUNT, PASSWORD):
+err = db.authenticate(ACCOUNT, PASSWORD)
+if err == 'Authentication successful':
     if db.get_account_type(ACCOUNT) in [
         db.AccountType.MONITOR,
         db.AccountType.ADMIN,
@@ -38,4 +39,4 @@ if db.authenticate(ACCOUNT, PASSWORD):
     else:
         print("Incorrect account type")
 else:
-    print("Unauthorized")
+    print(err)
