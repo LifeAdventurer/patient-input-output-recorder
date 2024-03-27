@@ -55,10 +55,11 @@ async def write_data(post_request: Request):
 
     elif post_request['type'] == 'del account':
         if post_request['token'] == token:
-            if not db.authenticate(
+            err = db.authenticate(
                 post_request['account'], post_request['password']
-            ):
-                return {"message": "Unauthorized"}
+            )
+            if err != "Authentication successful":
+                return {"message": err}
 
             err = db.delete_account(post_request['account'])
             if err is not None:
@@ -91,8 +92,9 @@ async def write_data(post_request: Request):
 
     elif post_request['type'] == 'update record':
         record = post_request
-        if not db.authenticate(record['account'], record['password']):
-            return {"message": "Unauthorized"}
+        err = db.authenticate(post_request['account'], post_request['password'])
+        if err != "Authentication successful":
+            return {"message": err}
 
         with open(DATA_FILE_PATH, 'r') as f:
             account_records = json.load(f)
@@ -104,10 +106,9 @@ async def write_data(post_request: Request):
         return {"message": "Update Success"}
 
     elif post_request['type'] == 'fetch patient records':
-        if not db.authenticate(
-            post_request['account'], post_request['password']
-        ):
-            return {"message": "Unauthorized"}
+        err = db.authenticate(post_request['account'], post_request['password'])
+        if err != "Authentication successful":
+            return {"message": err}
 
         patient_account = post_request['account']
         if db.get_account_type(patient_account) in [
@@ -127,10 +128,9 @@ async def write_data(post_request: Request):
             return {"message": "Incorrect account type"}
 
     elif post_request['type'] == 'fetch monitoring account records':
-        if not db.authenticate(
-            post_request['account'], post_request['password']
-        ):
-            return {"message": "Unauthorized"}
+        err = db.authenticate(post_request['account'], post_request['password'])
+        if err != "Authentication successful":
+            return {"message": err}
 
         monitoring_account = post_request['account']
         if db.get_account_type(monitoring_account) in [

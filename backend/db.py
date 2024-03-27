@@ -56,9 +56,18 @@ def delete_account(username: str):
             return "Account does not exist"
 
 
-def authenticate(username: str, password: str) -> bool:
+def authenticate(username: str, password: str) -> str:
     with sqlite3.connect(ACCOUNTS_DB) as conn:
         cursor = conn.cursor()
+        cursor.execute(
+            'SELECT * FROM accounts WHERE username = ?',
+            (username,),
+        )
+        account = cursor.fetchone()
+        if account:
+            print("Username not exist.")
+            return "Nonexistent account"
+
         cursor.execute(
             'SELECT * FROM accounts WHERE username = ? AND password = ?',
             (username, password),
@@ -66,10 +75,10 @@ def authenticate(username: str, password: str) -> bool:
         account = cursor.fetchone()
         if account:
             print("Authentication successful.")
-            return True
+            return "Authentication successful"
         else:
             print("Invalid username or password.")
-            return False
+            return "Incorrect password"
 
 
 def get_account_type(username: str) -> str:
