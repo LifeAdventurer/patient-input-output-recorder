@@ -200,7 +200,3 @@ async def write_data(post_request: Request):
                     return {"message": "No associated patient accounts"}
         else:
             return {"message": "Incorrect account type"}
-
-
-if __name__ == '__main__':
-    db.create_table()

@@ -107,3 +107,6 @@ def get_all_accounts():
         cursor.execute('SELECT * FROM accounts')
         accounts = cursor.fetchall()
         return accounts
+
+
+create_table()
