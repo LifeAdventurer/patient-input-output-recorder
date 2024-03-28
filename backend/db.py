@@ -81,6 +81,15 @@ def authenticate(username: str, password: str) -> str:
             return "Incorrect password"
 
 
+def change_account_password(username: str, password: str):
+    with sqlite3.connect(ACCOUNTS_DB) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            'UPDATE accounts SET password = ? WHERE username = ?',
+            (password, username),
+        )
+
+
 def get_account_type(username: str) -> str:
     with sqlite3.connect(ACCOUNTS_DB) as conn:
         cursor = conn.cursor()
