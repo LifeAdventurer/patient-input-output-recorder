@@ -22,7 +22,8 @@ app.add_middleware(
 )
 
 # Constants
-DATA_FILE_PATH = './data.json'
+DATA_JSON_PATH = './data.json'
+ACCT_REL_JSON_PATH = './account_relations.json'
 
 
 @app.post("/")
@@ -72,7 +73,7 @@ async def write_data(post_request: Request):
                 db.AccountType.ADMIN,
             ]:
                 # account_relations.json
-                with open('./account_relations.json', 'r') as f:
+                with open(ACCT_REL_JSON_PATH, 'r') as f:
                     account_relations = json.load(f)
 
                 for monitor_account, patient_accounts in account_relations[
@@ -83,16 +84,16 @@ async def write_data(post_request: Request):
                             monitor_account
                         ][patient_accounts.index(post_request['account'])]
 
-                with open('./account_relations.json', 'w') as f:
+                with open(ACCT_REL_JSON_PATH, 'w') as f:
                     json.dump(account_relations, f, indent=4)
 
                 # data.json
-                with open(DATA_FILE_PATH, 'r') as f:
+                with open(DATA_JSON_PATH, 'r') as f:
                     data = json.load(f)
 
                 del data[post_request['account']]
 
-                with open(DATA_FILE_PATH, 'w') as f:
+                with open(DATA_JSON_PATH, 'w') as f:
                     json.dump(data, f, indent=4)
 
             return {"message": "Account deleted successfully"}
@@ -112,11 +113,11 @@ async def write_data(post_request: Request):
         if err != "Authentication successful":
             return {"message": err}
 
-        with open(DATA_FILE_PATH, 'r') as f:
+        with open(DATA_JSON_PATH, 'r') as f:
             account_records = json.load(f)
 
         account_records[record['account']] = record['data']
-        with open(DATA_FILE_PATH, 'w') as f:
+        with open(DATA_JSON_PATH, 'w') as f:
             json.dump(account_records, f, indent=4)
 
         return {"message": "Update Success"}
@@ -131,7 +132,7 @@ async def write_data(post_request: Request):
             db.AccountType.PATIENT,
             db.AccountType.ADMIN,
         ]:
-            with open(DATA_FILE_PATH, 'r') as f:
+            with open(DATA_JSON_PATH, 'r') as f:
                 data = json.load(f)
                 if patient_account in data:
                     return {
@@ -153,13 +154,13 @@ async def write_data(post_request: Request):
             db.AccountType.MONITOR,
             db.AccountType.ADMIN,
         ]:
-            with open('./account_relations.json', 'r') as f:
+            with open(ACCT_REL_JSON_PATH, 'r') as f:
                 account_relations = json.load(f)
                 if monitoring_account in account_relations['monitor_accounts']:
                     patient_accounts = account_relations['monitor_accounts'][
                         monitoring_account
                     ]
-                    with open(DATA_FILE_PATH, 'r') as f:
+                    with open(DATA_JSON_PATH, 'r') as f:
                         data = json.load(f)
                     patient_records = {}
                     for patient_account in patient_accounts:
