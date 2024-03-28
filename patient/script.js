@@ -162,10 +162,10 @@ Vue.createApp({
         }
         const currentData = {
           'time': `${('0' + d.getHours()).slice(-2)}:${('0' + d.getMinutes()).slice(-2)}`,
-          'food': this.inputFood,
-          'water': this.inputWater,
-          'urination': this.inputUrination,
-          'defecation': this.inputDefecation,
+          'food': parseInt(this.inputFood),
+          'water': parseInt(this.inputWater),
+          'urination': parseInt(this.inputUrination),
+          'defecation': parseInt(this.inputDefecation),
         };
         let lastRecord = this.records[currentDate]['data'].pop();
         if (lastRecord !== undefined) {
