@@ -16,7 +16,11 @@ headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 
 try:
     response = requests.post(URL, json=payload, headers=headers)
-    response.raise_for_status()  # Raise an exception for 4xx or 5xx status codes
-    print('Data posted successfully')
+    response.raise_for_status()
+    response = response.json()
+    if response['message'] == 'Update success':
+        print('Cleared data')
+    else:
+        print(response['message'])
 except requests.exceptions.RequestException as e:
     print('Failed to post data:', e)
