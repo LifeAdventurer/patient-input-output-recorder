@@ -167,7 +167,21 @@ Vue.createApp({
           'urination': this.inputUrination,
           'defecation': this.inputDefecation,
         };
-        this.records[currentDate]['data'].push(currentData);
+        let lastRecord = this.records[currentDate]['data'].pop();
+        if (lastRecord !== undefined) {
+          if (lastRecord['time'] === currentData['time']) {
+            lastRecord['food'] += currentData['food'];
+            lastRecord['water'] += currentData['water'];
+            lastRecord['urination'] += currentData['urination'];
+            lastRecord['defecation'] += currentData['defecation'];
+            this.records[currentDate]['data'].push(lastRecord);
+          } else {
+            this.records[currentDate]['data'].push(lastRecord);
+            this.records[currentDate]['data'].push(currentData);
+          }
+        } else {
+          this.records[currentDate]['data'].push(currentData);
+        }
         this.records[currentDate]['count'] = this.records[currentDate]['data'].length;
         // sums
         this.records[currentDate]['foodSum'] += parseInt(this.inputFood);
