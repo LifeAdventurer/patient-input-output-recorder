@@ -50,6 +50,14 @@ async def write_data(post_request: Request):
             if err is not None:
                 return {"message": "Account already exists"}
 
+            with open(DATA_JSON_PATH, 'r') as f:
+                data = json.load(f)
+
+            data[post_request['account']] = {}
+
+            with open(DATA_JSON_PATH, 'w') as f:
+                json.dump(data, f, indent=4)
+
             return {"message": "Account created successfully"}
         else:
             return {"message": "Incorrect token"}
@@ -149,13 +157,10 @@ async def write_data(post_request: Request):
         ]:
             with open(DATA_JSON_PATH, 'r') as f:
                 data = json.load(f)
-                if patient_account in data:
-                    return {
-                        "message": "Read Success",
-                        "account_records": data[patient_account],
-                    }
-                else:
-                    return {"message": "Read Success", "account_records": {}}
+                return {
+                    "message": "Read Success",
+                    "account_records": data[patient_account],
+                }
         else:
             return {"message": "Incorrect account type"}
 
