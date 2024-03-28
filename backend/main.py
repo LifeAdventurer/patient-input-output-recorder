@@ -104,6 +104,19 @@ async def write_data(post_request: Request):
                 with open(DATA_JSON_PATH, 'w') as f:
                     json.dump(data, f, indent=4)
 
+            if account_type in [db.AccountType.MONITOR, db.AccountType.ADMIN]:
+                with open(ACCT_REL_JSON_PATH, 'r') as f:
+                    account_relations = json.load(f)
+
+                if (
+                    post_request['account']
+                    in account_relations['monitor_accounts'].keys()
+                ):
+                    del account_relations['monitor_accounts'][monitor_account]
+
+                with open(ACCT_REL_JSON_PATH, 'w') as f:
+                    json.dump(account_relations, f, indent=4)
+
             return {"message": "Account deleted successfully"}
         else:
             return {"message": "Incorrect token"}
