@@ -100,6 +100,27 @@ async def write_data(post_request: Request):
         else:
             return {"message": "Incorrect token"}
 
+    elif post_request['type'] == 'change password':
+        if post_request['token'] != token:
+            return {"message": "Incorrect token"}
+
+        err = db.authenticate(post_request['account'], post_request['password'])
+
+        if err != "Authentication successful":
+            return {"message": err}
+
+        if db.get_account_type(post_request['account']) not in [
+            db.AccountType.MONITOR,
+            db.AccountType.ADMIN,
+        ]:
+            return {"message": "Incorrect account type"}
+
+        db.update_account_password(
+            post_request['account'], post_request['changed_password']
+        )
+
+        return {"message": "Account password changed successfully"}
+
     elif post_request['type'] == 'fetch account list':
         if post_request['token'] == token:
             account_list = db.get_all_accounts()
