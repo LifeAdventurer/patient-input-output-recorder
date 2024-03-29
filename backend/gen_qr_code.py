@@ -1,9 +1,10 @@
+import db
 import qrcode
 
 
 def generate_qr_code(account, password, account_type):
 
-    if account_type != 'MONITOR':
+    if account_type in [db.AccountType.ADMIN, db.AccountType.PATIENT]:
         url = f"https://lifeadventurer.github.io/patient-diet-recorder/patient/?acct={account}&pw={password}"
         filename = f"./account_qr_codes/{account_type}/qr_code_acct_{account}_pw_{password}.png"
         qr = qrcode.QRCode(
@@ -19,7 +20,7 @@ def generate_qr_code(account, password, account_type):
         img.save(filename)
         print(f"QR code saved as '{filename}'")
 
-    if account_type != 'PATIENT':
+    if account_type == db.AccountType.MONITOR:
         url = f"https://lifeadventurer.github.io/patient-diet-recorder/monitor/?acct={account}&pw={password}"
         filename = f"./account_qr_codes/{account_type}/qr_code_acct_{account}_pw_{password}.png"
         qr = qrcode.QRCode(
