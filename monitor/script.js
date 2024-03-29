@@ -67,7 +67,7 @@ Vue.createApp({
         sessionStorage.setItem('password', this.password);
       }
     },
-    searchPatient() {
+    searchPatient: _.debounce(function() {
       if (this.searchQuery.trim() === '') {
         this.filteredPatientAccounts = this.patientAccounts;
         return;
@@ -75,7 +75,7 @@ Vue.createApp({
       this.filteredPatientAccounts = this.patientAccounts.filter(patientAccount => {
         return patientAccount.toLowerCase().includes(this.searchQuery.toLowerCase());
       });
-    },
+    }, 200),
     getFirstAndLastDates(patientAccount) {
       const keys = Object.keys(this.patientRecords[patientAccount]);
       if (keys.length === 0) {
