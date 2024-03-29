@@ -22,6 +22,7 @@ Vue.createApp({
       inputUrination: 0,
       inputDefecation: 0,
       inputWeight: 0,
+      showNotification: false,
       records: {},
       apiUrl: 'https://tobiichi3227.eu.org/',
       selectedLanguage: 'zh-TW',
@@ -144,13 +145,24 @@ Vue.createApp({
         })
 
         if (!response.ok) {
-          throw new Error('Failed to post data');
+          console.log('Network response was not ok, failed to post data');
+          return false;
         }
 
-        console.log('Data posted successfully');
+        const responseMessage = (await response.json())['message'];
+        if (responseMessage === 'Update Success') {
+          console.log('Data posted successfully');
+          return true;
+        } else {
+          console.log(`Error: ${responseMessage}`);
+          return false;
+        }
       } catch (error) {
         throw new Error(error.message)
       }
+    },
+    hideNotification() {
+      this.showNotification = false;
     },
     async addData() {
       const d = new Date();
@@ -194,7 +206,12 @@ Vue.createApp({
         this.inputUrination = 0;
         this.inputDefecation = 0;
         // post to database
-        await this.postData();
+        if (await this.postData()) {
+          this.showNotification= true;
+          setTimeout(() => {
+            this.hideNotification();
+          }, 2000);
+        }
       }
       const inputWeight = parseFloat(this.inputWeight);
       if (Number.isFinite(inputWeight) && inputWeight !== 0 && (inputWeight < 0.01 || inputWeight > 300)) {
@@ -207,7 +224,12 @@ Vue.createApp({
         // init again
         this.inputWeight = 0;
         // post to database
-        await this.postData();
+        if ((await this.postData()) && this.showNotification === false) {
+          this.showNotification= true;
+          setTimeout(() => {
+            this.hideNotification();
+          }, 2000);
+        }
       }
     },
     changeLanguage(languageCode) {

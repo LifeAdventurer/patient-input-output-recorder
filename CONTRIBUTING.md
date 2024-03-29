@@ -17,6 +17,7 @@ If you would like to add support for a new language, please follow the format pr
   "unit": "{Translate 'unit' here}",
   "times": "{Translate 'times' here}",
   "create_new_record": "{Translate 'Add' here}",
+  "data_added_successfully": "{Translate 'Data added successfully' here}",
   "weight": "{Translate 'Weight' here}",
   "record_count": "{Translate 'records' here}",
   "timestamp": "{Translate 'Timestamp' here}",

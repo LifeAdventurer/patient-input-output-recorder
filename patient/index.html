@@ -234,7 +234,11 @@
       <!-- Add new record button -->
       <div class="row mb-2">
         <div class="col text-center">
-          <button type="submit" class="btn btn-primary" @click="addData">{{ curLangText.create_new_record }}</button>
+          <button type="submit" class="btn btn-primary mb-2" @click="addData">{{ curLangText.create_new_record }}</button>
+          <div v-if="showNotification" class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ curLangText.data_added_successfully }}
+            <button type="button" class="btn-close" @click="hideNotification" aria-label="Close"></button>
+          </div>
         </div>
       </div>
 
