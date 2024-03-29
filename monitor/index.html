@@ -67,12 +67,20 @@
     </template>
     <template v-else>
       <!-- DATE and TIME -->
-      <div class="time-bar mb-4">
+      <div class="time-bar mb-4 mt-1">
         <div class="row">
           <div class="col-md-3 col-7 fw-bold" style="font-size: 24px;">
             {{ currentDate }}
           </div>
-          <div class="col-md-2 offset-md-7 col-3 offset-1 fw-bold" style="font-size: 24px;">
+          <div class="col-md-4 offset-md-1">
+            <div class="input-group" style="margin-top: 5px;">
+              <input type="text" class="form-control" v-model="searchQuery" placeholder="查詢病床號...">
+              <button class="btn btn-outline-secondary" @click="searchPatient">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-2 offset-md-2 col-3 offset-1 fw-bold" style="font-size: 24px;">
             {{ currentTime }}
           </div>
         </div>
@@ -80,7 +88,7 @@
 
       <!-- Patient Records -->
       <div class="row justify-content-start row-cols-1 row-cols-lg-2 gy-4 mb-2">
-        <div v-for="(patientAccount, index) in patientAccounts" :key="index">
+        <div v-for="(patientAccount, index) in filteredPatientAccounts" :key="index">
           <div class="col">
             <div class="card shadow h-100 bg-light">
               <div class="card-body" style="padding-top: 10px">

@@ -9,6 +9,8 @@ Vue.createApp({
       currentTime: '',
       patientRecords: {},
       patientAccounts: [],
+      filteredPatientAccounts: [],
+      searchQuery: '',
       currentDateMMDD: '', 
       apiUrl: 'https://tobiichi3227.eu.org/',
     }
@@ -65,6 +67,15 @@ Vue.createApp({
         sessionStorage.setItem('password', this.password);
       }
     },
+    searchPatient() {
+      if (this.searchQuery.trim() === '') {
+        this.filteredPatientAccounts = this.patientAccounts;
+        return;
+      }
+      this.filteredPatientAccounts = this.patientAccounts.filter(patientAccount => {
+        return patientAccount.toLowerCase().includes(this.searchQuery.toLowerCase());
+      });
+    },
     getFirstAndLastDates(patientAccount) {
       const keys = Object.keys(this.patientRecords[patientAccount]);
       if (keys.length === 0) {
@@ -87,7 +98,7 @@ Vue.createApp({
   async mounted() {
     const url = new URL(location.href);
     const params = url.searchParams;
-    let account = null; let password = null;
+    let account = null, password = null;
     if (params.has('acct') && params.has('pw')) {
       account = params.get('acct');
       password = params.get('pw');
@@ -104,6 +115,9 @@ Vue.createApp({
       this.password = password;
       await this.authenticate();
     }
+
+    this.filteredPatientAccounts = this.patientAccounts;
+
     setInterval(() => {
       const d = new Date();
       const dayOfWeek = ["日", "一", "二", "三", "四", "五", "六"];
