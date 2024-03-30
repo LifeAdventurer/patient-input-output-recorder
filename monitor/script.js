@@ -14,6 +14,7 @@ Vue.createApp({
       searchQuery: '',
       currentDateMMDD: '', 
       apiUrl: 'https://tobiichi3227.eu.org/',
+      showScrollButton: false,
     }
   },
   methods: {
@@ -102,6 +103,19 @@ Vue.createApp({
         sessionStorage.removeItem('password');
       }
     },
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    },
+    handleScroll() {
+      if (window.scrollY > 20) {
+        this.showScrollButton = true;
+      } else {
+        this.showScrollButton = false;
+      }
+    },
   },
   async mounted() {
     const url = new URL(location.href);
@@ -132,6 +146,8 @@ Vue.createApp({
         }
       }
     }, 3000);
+
+    window.addEventListener('scroll', this.handleScroll);
   },
   computed: {
     reversedPatientRecords() {
