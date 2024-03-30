@@ -327,6 +327,9 @@
           <button class="btn btn-dark" @click="confirmLogout">{{ curLangText.logout }}</button>
         </div>
       </div>
+      <button class="btn btn-dark position-fixed bottom-0 end-0 m-3" id="scrollToTopBtn" @click="scrollToTop" v-show="showScrollButton">
+        <i class="fas fa-arrow-up"></i>
+      </button>
     </template>
   </div>
 

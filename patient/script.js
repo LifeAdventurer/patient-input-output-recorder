@@ -28,6 +28,7 @@ Vue.createApp({
       selectedLanguage: 'zh-TW',
       supportedLanguages: [],
       curLangTexts: {},
+      showScrollButton: false,
     };
   },
   async created() {
@@ -256,6 +257,19 @@ Vue.createApp({
         await this.postData();
       }
     },
+    scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    },
+    handleScroll() {
+      if (window.scrollY > 20) {
+        this.showScrollButton = true;
+      } else {
+        this.showScrollButton = false;
+      }
+    },
   },
   async mounted() {
     const url = new URL(location.href);
@@ -276,6 +290,11 @@ Vue.createApp({
       this.currentTime = `${('0' + d.getHours()).slice(-2)}:${('0' + d.getMinutes()).slice(-2)}:${('0' + d.getSeconds()).slice(-2)}`;
       this.currentDateYY_MM_DD = `${d.getFullYear()}_${d.getMonth() + 1}_${('0' + d.getDate()).slice(-2)}`;
     }, 1000);
+
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
   },
   computed: {
     curLangText() {
