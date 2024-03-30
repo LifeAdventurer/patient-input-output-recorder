@@ -32,7 +32,7 @@ Vue.createApp({
             'account': this.account,
             'password': this.password,
           }),
-        })
+        });
 
         if (!response.ok) {
           throw new Error('Failed to fetch record');
@@ -41,7 +41,7 @@ Vue.createApp({
         console.log('Successfully fetched the record');
         return await response.json();
       } catch (error) {
-        throw new Error(error.message)
+        throw new Error(error.message);
       }
     },
     togglePasswordVisibility() {
@@ -122,6 +122,15 @@ Vue.createApp({
       this.currentTime = `${('0' + d.getHours()).slice(-2)}:${('0' + d.getMinutes()).slice(-2)}:${('0' + d.getSeconds()).slice(-2)}`;
       this.currentDateYY_MM_DD = `${d.getFullYear()}_${d.getMonth() + 1}_${('0' + d.getDate()).slice(-2)}`;
     }, 1000);
+
+    setInterval(async () => {
+      if (this.authenticated) {
+        const fetchedData = await this.fetchRecords();
+        if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Fetch Success') {
+          this.patientRecords = fetchedData['patient_records'];
+        }
+      }
+    }, 3000);
   },
   computed: {
     reversedPatientRecords() {
