@@ -31,8 +31,8 @@ Vue.createApp({
     };
   },
   async created() {
-    this.loadSupportedLanguages();
-    this.loadLangTexts();
+    await this.loadSupportedLanguages();
+    await this.loadLangTexts();
     this.loadSelectedLanguage();
   },
   methods: {
@@ -59,12 +59,10 @@ Vue.createApp({
     },
     loadSelectedLanguage() {
       const languageCode = localStorage.getItem('selectedLanguageCode');
-      if (languageCode !== null && languageCode !== undefined) {
-        if (this.supportedLanguages.some((language) => language.code === languageCode)) {
-          this.selectedLanguage = languageCode;
-        } else {
-          localStorage.setItem('selectedLanguageCode', this.selectedLanguage);
-        }
+      if (languageCode && this.supportedLanguages.some((language) => language.code === languageCode)) {
+        this.selectedLanguage = languageCode;
+      } else {
+        localStorage.setItem('selectedLanguageCode', this.selectedLanguage);
       }
     },
     async fetchRecords() {
@@ -82,7 +80,7 @@ Vue.createApp({
             'account': this.account,
             'password': this.password,
           }),
-        })
+        });
 
         if (!response.ok) {
           throw new Error('Failed to fetch record');
@@ -91,7 +89,7 @@ Vue.createApp({
         console.log('Successfully fetched the record');
         return await response.json();
       } catch (error) {
-        throw new Error(error.message)
+        throw new Error(error.message);
       }
     },
     togglePasswordVisibility() {
@@ -99,22 +97,27 @@ Vue.createApp({
     },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
-      if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Nonexistent account') {
-        alert(this.curLangText.nonexistent_account);
-        this.account = '';
-        this.password = '';
-      } else if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Incorrect password') {
-        alert(this.curLangText.incorrect_password);
-        this.password = '';
-      } else if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Incorrect account type') {
-        alert(this.curLangText.account_without_permission);
-        this.account = '';
-        this.password = '';
-      } else {
-        this.authenticated = true;
-        this.records = fetchedData['account_records'];
-        sessionStorage.setItem('account', this.account);
-        sessionStorage.setItem('password', this.password);
+      if (fetchedData.hasOwnProperty('message')) {
+        switch (fetchedData.message) {
+          case 'Nonexistent account':
+            alert(this.curLangText.nonexistent_account);
+            this.account = '';
+            this.password = '';
+            break;
+          case 'Incorrect password':
+            alert(this.curLangText.incorrect_password);
+            this.password = '';
+            break;
+          case 'Incorrect account type':
+            alert(this.curLangText.account_without_permission);
+            this.account = '';
+            this.password = '';
+          default:
+            this.authenticated = true;
+            this.records = fetchedData['account_records'];
+            sessionStorage.setItem('account', this.account);
+            sessionStorage.setItem('password', this.password);
+        }
       }
     },
     confirmLogout() {
@@ -142,23 +145,24 @@ Vue.createApp({
             'password': this.password,
             'data': this.records,
           }),
-        })
+        });
 
         if (!response.ok) {
-          console.log('Network response was not ok, failed to post data');
+          console.error('Network response was not ok, failed to post data');
           return false;
         }
 
-        const responseMessage = (await response.json())['message'];
-        if (responseMessage === 'Update Success') {
+        const { message } = await response.json();
+        if (message === 'Update Success') {
           console.log('Data posted successfully');
           return true;
         } else {
-          console.log(`Error: ${responseMessage}`);
+          console.error('Error:', message);
           return false;
         }
       } catch (error) {
-        throw new Error(error.message)
+        console.error('Error during posting data:', error);
+        return false;
       }
     },
     hideNotification() {
@@ -168,7 +172,7 @@ Vue.createApp({
       const d = new Date();
       const currentDate = `${d.getFullYear()}_${(d.getMonth() + 1)}_${('0' + d.getDate()).slice(-2)}`;
       // Food, Water, Urination, Defecation
-      if (this.inputFood !== 0 || this.inputWater !== 0 || this.inputUrination !== 0 || this.inputDefecation !== 0) {
+      if (this.inputFood || this.inputWater || this.inputUrination || this.inputDefecation) {
         if (!this.records[currentDate]) {
           this.initRecords(currentDate);
         }
@@ -179,7 +183,7 @@ Vue.createApp({
           'urination': parseInt(this.inputUrination),
           'defecation': parseInt(this.inputDefecation),
         };
-        let lastRecord = this.records[currentDate]['data'].pop();
+        const lastRecord = this.records[currentDate]['data'].pop();
         if (lastRecord !== undefined) {
           if (lastRecord['time'] === currentData['time']) {
             lastRecord['food'] += currentData['food'];
@@ -240,7 +244,6 @@ Vue.createApp({
       if (confirm(this.curLangText.confirm_remove_record)) {
         let [date, index] = target.attributes.id.textContent.split('-');
 
-        index = parseInt(index);
         const record = this.records[date]['data'][index];
         this.records[date]['count'] -= 1;
         this.records[date]['defecationSum'] -= record['defecation'];
@@ -256,18 +259,10 @@ Vue.createApp({
   async mounted() {
     const url = new URL(location.href);
     const params = url.searchParams;
-    let account = null; let password = null;
-    if (params.has('acct') && params.has('pw')) {
-      account = params.get('acct');
-      password = params.get('pw');
-    }
+    let account = params.has('acct') ? params.get('acct') : sessionStorage.getItem('account');
+    let password = params.has('pw') ? params.get('pw') : sessionStorage.getItem('password');
 
-    if (account === null && password === null) {
-      account = sessionStorage.getItem('account');
-      password = sessionStorage.getItem('password');
-    }
-
-    if (account !== null && account !== undefined && password !== null && password !== undefined) {
+    if (account && password) {
       this.authenticated = false;
       this.account = account;
       this.password = password;
@@ -276,8 +271,9 @@ Vue.createApp({
     setInterval(() => {
       const d = new Date();
       const dayOfWeek = this.curLangText.day_of_week;
-      this.currentDate = d.getFullYear() + '.' + (d.getMonth() + 1) + '.' + ('0' + d.getDate()).slice(-2) + ' (' + dayOfWeek[d.getDay()] + ')';
-      this.currentTime = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2) + ':' + ('0' + d.getSeconds()).slice(-2);
+      this.currentDate = `${d.getFullYear()}.${d.getMonth() + 1}.${('0' + d.getDate()).slice(-2)} (${dayOfWeek[d.getDay()]})`;
+      this.currentTime = `${('0' + d.getHours()).slice(-2)}:${('0' + d.getMinutes()).slice(-2)}:${('0' + d.getSeconds()).slice(-2)}`;
+      this.currentDateYY_MM_DD = `${d.getFullYear()}_${d.getMonth() + 1}_${('0' + d.getDate()).slice(-2)}`;
     }, 1000);
   },
   computed: {
