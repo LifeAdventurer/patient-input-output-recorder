@@ -112,6 +112,7 @@ Vue.createApp({
             alert(this.curLangText.account_without_permission);
             this.account = '';
             this.password = '';
+            break;
           default:
             this.authenticated = true;
             this.records = fetchedData['account_records'];

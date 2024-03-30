@@ -64,6 +64,7 @@ Vue.createApp({
             alert('此帳號沒有管理權限');
             this.account = '';
             this.password = '';
+            break;
           default:
             this.authenticated = true;
             this.patientRecords = fetchedData['patient_records'];
