@@ -149,6 +149,9 @@ Vue.createApp({
 
     window.addEventListener('scroll', this.handleScroll);
   },
+  beforeUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  },
   computed: {
     reversedPatientRecords() {
       const reversedData = {};
