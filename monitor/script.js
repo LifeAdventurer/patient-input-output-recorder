@@ -7,6 +7,7 @@ Vue.createApp({
       authenticated: false,
       currentDate: '',
       currentTime: '',
+      currentDateYY_MM_DD: '',
       patientRecords: {},
       patientAccounts: [],
       filteredPatientAccounts: [],
@@ -63,6 +64,7 @@ Vue.createApp({
         this.authenticated = true;
         this.patientRecords = fetchedData['patient_records'];
         this.patientAccounts = fetchedData['patient_accounts'];
+        this.filteredPatientAccounts = this.patientAccounts;
         sessionStorage.setItem('account', this.account);
         sessionStorage.setItem('password', this.password);
       }
@@ -115,8 +117,6 @@ Vue.createApp({
       this.password = password;
       await this.authenticate();
     }
-
-    this.filteredPatientAccounts = this.patientAccounts;
 
     setInterval(() => {
       const d = new Date();
