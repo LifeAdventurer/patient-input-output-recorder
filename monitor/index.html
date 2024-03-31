@@ -96,10 +96,14 @@
                   <h3 class="col-4 card-title mb-3">{{ patientAccount }}</h3>
                   <div class="col input-group mb-3">
                     <div v-if="patientRecords[patientAccount]['isEditing']" class="input-group-text">
-                      <input type="checkbox" :id="'food-checkbox-' + index" v-model="patientRecords[patientAccount]['foodCheckboxChecked']">
-                      <label :for="'food-checkbox-' + index">吃</label>
-                      <input type="checkbox" :id="'water-checkbox-' + index" v-model="patientRecords[patientAccount]['waterCheckboxChecked']">
-                      <label :for="'water-checkbox-' + index">水</label>
+                      <div class="form-check" style="margin-right: 10px;">
+                        <input class="form-check-input" type="checkbox" :id="'food-checkbox-' + index" v-model="patientRecords[patientAccount]['foodCheckboxChecked']">
+                        <label class="form-check-label" :for="'food-checkbox-' + index">吃</label>
+                      </div>
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" :id="'water-checkbox-' + index" v-model="patientRecords[patientAccount]['waterCheckboxChecked']">
+                        <label class="form-check-label" :for="'water-checkbox-' + index">水</label>
+                      </div>
                     </div>
                     <input v-if="patientRecords[patientAccount]['isEditing']" v-model="patientRecords[patientAccount]['limitAmount']" @input="handleInput($event.target.value, patientAccount)" type="text" class="form-control" pattern="\d*">
                     <input v-else :value="restrictionContext[patientAccount] || '尚未設定限制'" type="text" class="form-control text-center" readonly>
