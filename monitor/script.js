@@ -12,11 +12,13 @@ Vue.createApp({
       patientAccounts: [],
       filteredPatientAccounts: [],
       searchQuery: '',
-      currentDateMMDD: '', 
-      limitAmount: {},
-      isEditing: {},
-      foodCheckboxChecked: {},
-      waterCheckboxChecked: {},
+      currentDateMMDD: '',
+      keysToFilter: {
+        'isEditing': false,
+        'limitAmount': '',
+        'foodCheckboxChecked': false,
+        'waterCheckboxChecked': false
+      },
       restrictionContext: {},
       apiUrl: 'https://tobiichi3227.eu.org/',
       showScrollButton: false,
@@ -53,6 +55,43 @@ Vue.createApp({
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
+    async postData(patientAccount) {
+      const url = this.apiUrl;
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            'type': 'update patient record from monitor',
+            'account': this.account,
+            'password': this.password,
+            'patient_account': patientAccount,
+            'data': this.patientRecords[patientAccount],
+          }),
+        });
+
+        if (!response.ok) {
+          console.error('Network response was not ok, failed to post data');
+          return false;
+        }
+
+        const { message } = await response.json();
+        if (message === 'Update Success') {
+          console.log('Data posted successfully');
+          return true;
+        } else {
+          console.error('Error:', message);
+          return false;
+        }
+      } catch (error) {
+        console.error('Error during posting data:', error);
+        return false;
+      }
+    },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
       if (fetchedData.hasOwnProperty('message')) {
@@ -75,6 +114,19 @@ Vue.createApp({
             this.authenticated = true;
             this.patientRecords = fetchedData['patient_records'];
             this.patientAccounts = fetchedData['patient_accounts'];
+            this.patientAccounts.forEach(patientAccount => {
+              let modified = false;
+              Object.entries(this.keysToFilter).forEach(([key, value]) => {
+                if (!(key in this.patientRecords[patientAccount])) {
+                  this.patientRecords[patientAccount][key] = value;
+                  modified = true;
+                }
+              });
+              if (modified) {
+                this.postData(patientAccount);
+              }
+            });
+
             this.filteredPatientAccounts = this.patientAccounts;
             sessionStorage.setItem('account', this.account);
             sessionStorage.setItem('password', this.password);
@@ -91,7 +143,9 @@ Vue.createApp({
       });
     }, 200),
     getFirstAndLastDates(patientAccount) {
-      const keys = Object.keys(this.patientRecords[patientAccount]);
+      const keys = Object.keys(this.patientRecords[patientAccount]).filter(key => {
+        return !(key in this.keysToFilter);
+      });
       if (keys.length === 0) {
         return '無紀錄';
       }
@@ -100,25 +154,25 @@ Vue.createApp({
       return `${firstDate} ~ ${lastDate}`;
     },
     toggleEdit(patientAccount) {
-      if (this.isEditing[patientAccount] && !this.foodCheckboxChecked[patientAccount] && !this.waterCheckboxChecked[patientAccount]) {
+      if (this.patientRecords[patientAccount]['isEditing'] && !this.patientRecords[patientAccount]['foodCheckboxChecked'] && !this.patientRecords[patientAccount]['waterCheckboxChecked']) {
         alert('請勾選選項');
         return;
       }
-      this.isEditing[patientAccount] = !this.isEditing[patientAccount];
-      if (!this.isEditing[patientAccount]) {
+      this.patientRecords[patientAccount]['isEditing'] = !this.patientRecords[patientAccount]['isEditing'];
+      if (!this.patientRecords[patientAccount]['isEditing']) {
         let context;
-        if (this.foodCheckboxChecked[patientAccount] && this.waterCheckboxChecked[patientAccount]) {
-          context = `限制進食加喝水不超過${this.limitAmount[patientAccount]}公克`
-        } else if (this.foodCheckboxChecked[patientAccount]) {
-          context = `限制進食不超過${this.limitAmount[patientAccount]}公克`
+        if (this.patientRecords[patientAccount]['foodCheckboxChecked'] && this.patientRecords[patientAccount]['waterCheckboxChecked']) {
+          context = `限制進食加喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+        } else if (this.patientRecords[patientAccount]['foodCheckboxChecked']) {
+          context = `限制進食不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
         } else {
-          context = `限制喝水不超過${this.limitAmount[patientAccount]}公克`
+          context = `限制喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
         }
         this.restrictionContext[patientAccount] = context;
       }
     },
     handleInput(value) {
-      this.limitAmount[patientAccount] = parseInt(value);
+      this.patientRecords[patientAccount]['limitAmount'] = parseInt(value);
     },
     confirmLogout() {
       if (confirm('請確認是否要登出')) {

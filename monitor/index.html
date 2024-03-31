@@ -95,16 +95,16 @@
                 <div class="row">
                   <h3 class="col-4 card-title mb-3">{{ patientAccount }}</h3>
                   <div class="col input-group mb-3">
-                    <div v-if="isEditing[patientAccount]" class="input-group-text">
-                      <input type="checkbox" :id="'food-checkbox-' + index" v-model="foodCheckboxChecked[patientAccount]">
+                    <div v-if="patientRecords[patientAccount]['isEditing']" class="input-group-text">
+                      <input type="checkbox" :id="'food-checkbox-' + index" v-model="patientRecords[patientAccount]['foodCheckboxChecked']">
                       <label :for="'food-checkbox-' + index">吃</label>
-                      <input type="checkbox" :id="'water-checkbox-' + index" v-model="waterCheckboxChecked[patientAccount]">
+                      <input type="checkbox" :id="'water-checkbox-' + index" v-model="patientRecords[patientAccount]['waterCheckboxChecked']">
                       <label :for="'water-checkbox-' + index">水</label>
                     </div>
-                    <input v-if="isEditing[patientAccount]" v-model="limitAmount[patientAccount]" @input="handleInput($event.target.value, patientAccount)" type="text" class="form-control" pattern="\d*">
+                    <input v-if="patientRecords[patientAccount]['isEditing']" v-model="patientRecords[patientAccount]['limitAmount']" @input="handleInput($event.target.value, patientAccount)" type="text" class="form-control" pattern="\d*">
                     <input v-else :value="restrictionContext[patientAccount] || '尚未設定限制'" type="text" class="form-control text-center" readonly>
                     <button class="btn btn-primary" @click="toggleEdit(patientAccount)">
-                      <i v-if="isEditing[patientAccount]" class="fas fa-check"></i>
+                      <i v-if="patientRecords[patientAccount]['isEditing']" class="fas fa-check"></i>
                       <i v-else class="fas fa-pencil-alt"></i>
                     </button>
                   </div>

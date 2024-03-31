@@ -158,6 +158,26 @@ async def write_data(post_request: Request):
 
         return {"message": "Update Success"}
 
+    elif post_request['type'] == 'update patient record from monitor':
+        err = db.authenticate(post_request['account'], post_request['password'])
+        if err != "Authentication successful":
+            return {"message": err}
+
+        if db.get_account_type(post_request['account']) in [
+            db.AccountType.MONITOR,
+            db.AccountType.ADMIN,
+        ]:
+            return {"message": "Incorrect account type"}
+
+        with open(DATA_JSON_PATH, 'r') as f:
+            account_records = json.load(f)
+
+        account_records[post_request['patient_account']] = post_request['data']
+        with open(DATA_JSON_PATH, 'w') as f:
+            json.dump(account_records, f, indent=4)
+
+        return {"message": "Update Success"}
+
     elif post_request['type'] == 'fetch patient records':
         err = db.authenticate(post_request['account'], post_request['password'])
         if err != "Authentication successful":
