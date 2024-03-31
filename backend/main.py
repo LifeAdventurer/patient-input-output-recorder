@@ -163,10 +163,10 @@ async def write_data(post_request: Request):
         if err != "Authentication successful":
             return {"message": err}
 
-        if db.get_account_type(post_request['account']) in [
-            db.AccountType.MONITOR,
-            db.AccountType.ADMIN,
-        ]:
+        if (
+            db.get_account_type(post_request['account'])
+            == db.AccountType.PATIENT
+        ):
             return {"message": "Incorrect account type"}
 
         with open(DATA_JSON_PATH, 'r') as f:
