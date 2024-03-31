@@ -17,6 +17,9 @@ try:
     response = requests.post(URL, json=payload, headers=headers)
     response.raise_for_status()
     response = response.json()
-    print(response['account_list'])
+    if response['message'] == 'Fetch Success':
+        print(response['account_list'])
+    else:
+        print(response['message'])
 except requests.exceptions.RequestException as e:
     print('Failed to post data:', e)

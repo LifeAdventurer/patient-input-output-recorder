@@ -171,7 +171,7 @@ async def write_data(post_request: Request):
             with open(DATA_JSON_PATH, 'r') as f:
                 data = json.load(f)
                 return {
-                    "message": "Read Success",
+                    "message": "Fetch Success",
                     "account_records": data[patient_account],
                 }
         else:
