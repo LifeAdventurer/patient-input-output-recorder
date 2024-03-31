@@ -213,3 +213,36 @@ async def write_data(post_request: Request):
                     return {"message": "No associated patient accounts"}
         else:
             return {"message": "Incorrect account type"}
+
+    elif post_request['type'] == 'add patient account to monitoring list':
+        monitor_account = post_request['account']
+        err = db.authenticate(post_request['account'], post_request['password'])
+        if err != "Authentication successful":
+            return {"message": err}
+
+        if db.get_account_type(monitor_account) == db.AccountType.PATIENT:
+            return {"message": "Incorrect account type"}
+
+        with open('./account_relations.json', 'r') as f:
+            account_relations = json.load(f)
+
+        if monitor_account not in account_relations['monitor_accounts']:
+            account_relations['monitor_accounts'][monitor_account] = []
+
+        patient_account = post_request['patient_account']
+        patient_account_type = db.get_account_type(patient_account)
+        if patient_account_type is None:
+            return {"message": "No such account"}
+        elif patient_account_type == db.AccountType.PATIENT:
+            if (
+                patient_account
+                not in account_relations['monitor_accounts'][monitor_account]
+            ):
+                account_relations['monitor_accounts'][monitor_account].append(
+                    patient_account
+                )
+                with open('./account_relations.json', 'w') as f:
+                    json.dump(account_relations, f, indent=4)
+            return {"message": "Added"}
+        else:
+            return {"message": f"Account: '{patient_account}' is not a PATIENT"}

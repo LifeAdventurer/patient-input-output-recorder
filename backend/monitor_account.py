@@ -1,42 +1,38 @@
 import json
 
-import db
+import requests
+from constants import URL
 
 ACCOUNT = input("Enter the monitor account: ")
 PASSWORD = input("Enter the password: ")
 
-err = db.authenticate(ACCOUNT, PASSWORD)
-if err == 'Authentication successful':
-    if db.get_account_type(ACCOUNT) in [
-        db.AccountType.MONITOR,
-        db.AccountType.ADMIN,
-    ]:
-        with open('./account_relations.json', 'r') as f:
-            account_relations = json.load(f)
 
-        if ACCOUNT not in account_relations['monitor_accounts']:
-            account_relations['monitor_accounts'][ACCOUNT] = []
-        print(
-            "Start entering the accounts you want to monitor: \n  (enter 'end' to stop task)"
-        )
-        while True:
-            patient_account = input()
-            if patient_account == 'end':
-                break
+def add_patient_account_to_monitoring_list(patient_account: str) -> str:
+    payload = {
+        'type': 'add patient account to monitoring list',
+        'account': ACCOUNT,
+        'password': PASSWORD,
+        'patient_account': patient_account,
+    }
+    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    try:
+        response = requests.post(URL, json=payload, headers=headers)
+        response.raise_for_status()
+        return response.json()['message']
+    except requests.exceptions.RequestException as e:
+        return f"Failed to post data: {e}"
 
-            patient_account_type = db.get_account_type(patient_account)
-            if patient_account_type is None:
-                print("No such account")
-            elif patient_account_type == db.AccountType.PATIENT:
-                account_relations['monitor_accounts'][ACCOUNT].append(
-                    patient_account
-                )
-            else:
-                print(f"Account: '{patient_account}' is not a PATIENT")
-        with open('./account_relations.json', 'w') as f:
-            json.dump(account_relations, f, indent=4)
-        print("Task ended")
-    else:
-        print("Incorrect account type")
-else:
-    print(err)
+
+print(
+    "Start entering the patient accounts you want to monitor: (one account per line)"
+)
+print("  (enter 'end' to stop task)")
+while True:
+    patient_account = input()
+    if patient_account.lower() == 'end':
+        break
+
+    response_message = add_patient_account_to_monitoring_list(patient_account)
+    print(response_message)
+
+print("Task ended")

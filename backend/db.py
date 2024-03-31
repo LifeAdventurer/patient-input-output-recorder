@@ -98,7 +98,10 @@ def get_account_type(username: str) -> str:
             (username,),
         )
         account_type = cursor.fetchone()
-        return account_type[0]
+        if account_type == None:
+            return None
+        else:
+            return account_type[0]
 
 
 def get_all_accounts():
