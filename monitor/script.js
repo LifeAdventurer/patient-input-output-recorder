@@ -125,6 +125,7 @@ Vue.createApp({
               if (modified) {
                 this.postData(patientAccount);
               }
+              this.updateRestrictionContext(patientAccount);
             });
 
             this.filteredPatientAccounts = this.patientAccounts;
@@ -153,6 +154,17 @@ Vue.createApp({
       const lastDate = keys[keys.length - 1].replace(/_/g, '/');
       return `${firstDate} ~ ${lastDate}`;
     },
+    updateRestrictionContext(patientAccount) {
+      let context;
+      if (this.patientRecords[patientAccount]['foodCheckboxChecked'] && this.patientRecords[patientAccount]['waterCheckboxChecked']) {
+        context = `限制進食加喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+      } else if (this.patientRecords[patientAccount]['foodCheckboxChecked']) {
+        context = `限制進食不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+      } else {
+        context = `限制喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+      }
+      this.restrictionContext[patientAccount] = context;
+    },
     toggleEdit(patientAccount) {
       if (this.patientRecords[patientAccount]['isEditing'] && !this.patientRecords[patientAccount]['foodCheckboxChecked'] && !this.patientRecords[patientAccount]['waterCheckboxChecked']) {
         alert('請勾選選項');
@@ -160,15 +172,8 @@ Vue.createApp({
       }
       this.patientRecords[patientAccount]['isEditing'] = !this.patientRecords[patientAccount]['isEditing'];
       if (!this.patientRecords[patientAccount]['isEditing']) {
-        let context;
-        if (this.patientRecords[patientAccount]['foodCheckboxChecked'] && this.patientRecords[patientAccount]['waterCheckboxChecked']) {
-          context = `限制進食加喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
-        } else if (this.patientRecords[patientAccount]['foodCheckboxChecked']) {
-          context = `限制進食不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
-        } else {
-          context = `限制喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
-        }
-        this.restrictionContext[patientAccount] = context;
+        this.updateRestrictionContext(patientAccount);
+        this.postData(patientAccount);
       }
     },
     handleInput(value, patientAccount) {
