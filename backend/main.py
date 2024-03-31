@@ -241,6 +241,8 @@ async def write_data(post_request: Request):
                 account_relations['monitor_accounts'][monitor_account].append(
                     patient_account
                 )
+                account_relations['monitor_accounts'][monitor_account].sort()
+
                 with open('./account_relations.json', 'w') as f:
                     json.dump(account_relations, f, indent=4)
             return {"message": "Added"}
