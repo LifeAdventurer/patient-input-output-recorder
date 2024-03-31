@@ -247,7 +247,9 @@ Vue.createApp({
       Object.keys(this.patientRecords).forEach((patientAccount) => {
         const reversedRecord = {};
         Object.keys(this.patientRecords[patientAccount]).reverse().forEach((key) => {
-          reversedRecord[key] = this.patientRecords[patientAccount][key];
+          if (!(key in this.keysToFilter)){
+            reversedRecord[key] = this.patientRecords[patientAccount][key];
+          }
         });
         reversedData[patientAccount] = reversedRecord;
       });

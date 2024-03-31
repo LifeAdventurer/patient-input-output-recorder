@@ -302,8 +302,11 @@ Vue.createApp({
     },
     reversedRecord() {
       const reversedData = {};
+      const keysToFilter = ['isEditing', 'limitAmount', 'foodCheckboxChecked', 'waterCheckboxChecked'];
       Object.keys(this.records).reverse().forEach((key) => {
-        reversedData[key] = this.records[key];
+        if (!keysToFilter.includes(key)) {
+          reversedData[key] = this.records[key];
+        }
       });
       return reversedData;
     },
