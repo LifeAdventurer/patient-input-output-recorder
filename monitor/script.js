@@ -13,6 +13,11 @@ Vue.createApp({
       filteredPatientAccounts: [],
       searchQuery: '',
       currentDateMMDD: '', 
+      limitAmount: {},
+      isEditing: {},
+      foodCheckboxChecked: {},
+      waterCheckboxChecked: {},
+      restrictionContext: {},
       apiUrl: 'https://tobiichi3227.eu.org/',
       showScrollButton: false,
     }
@@ -93,6 +98,27 @@ Vue.createApp({
       const firstDate = keys[0].replace(/_/g, '/');
       const lastDate = keys[keys.length - 1].replace(/_/g, '/');
       return `${firstDate} ~ ${lastDate}`;
+    },
+    toggleEdit(patientAccount) {
+      if (this.isEditing[patientAccount] && !this.foodCheckboxChecked[patientAccount] && !this.waterCheckboxChecked[patientAccount]) {
+        alert('請勾選選項');
+        return;
+      }
+      this.isEditing[patientAccount] = !this.isEditing[patientAccount];
+      if (!this.isEditing[patientAccount]) {
+        let context;
+        if (this.foodCheckboxChecked[patientAccount] && this.waterCheckboxChecked[patientAccount]) {
+          context = `限制進食加喝水不超過${this.limitAmount[patientAccount]}公克`
+        } else if (this.foodCheckboxChecked[patientAccount]) {
+          context = `限制進食不超過${this.limitAmount[patientAccount]}公克`
+        } else {
+          context = `限制喝水不超過${this.limitAmount[patientAccount]}公克`
+        }
+        this.restrictionContext[patientAccount] = context;
+      }
+    },
+    handleInput(value) {
+      this.limitAmount[patientAccount] = parseInt(value);
     },
     confirmLogout() {
       if (confirm('請確認是否要登出')) {

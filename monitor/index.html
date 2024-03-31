@@ -92,7 +92,23 @@
           <div class="col">
             <div class="card shadow h-100 bg-light">
               <div class="card-body" style="padding-top: 10px">
-                <h3 class="card-title mb-3">{{ patientAccount }}</h3>
+                <div class="row">
+                  <h3 class="col-4 card-title mb-3">{{ patientAccount }}</h3>
+                  <div class="col input-group mb-3">
+                    <div v-if="isEditing[patientAccount]" class="input-group-text">
+                      <input type="checkbox" :id="'food-checkbox-' + index" v-model="foodCheckboxChecked[patientAccount]">
+                      <label :for="'food-checkbox-' + index">吃</label>
+                      <input type="checkbox" :id="'water-checkbox-' + index" v-model="waterCheckboxChecked[patientAccount]">
+                      <label :for="'water-checkbox-' + index">水</label>
+                    </div>
+                    <input v-if="isEditing[patientAccount]" v-model="limitAmount[patientAccount]" @input="handleInput($event.target.value, patientAccount)" type="text" class="form-control" pattern="\d*">
+                    <input v-else :value="restrictionContext[patientAccount] || '尚未設定限制'" type="text" class="form-control text-center" readonly>
+                    <button class="btn btn-primary" @click="toggleEdit(patientAccount)">
+                      <i v-if="isEditing[patientAccount]" class="fas fa-check"></i>
+                      <i v-else class="fas fa-pencil-alt"></i>
+                    </button>
+                  </div>
+                </div>
                 <div class="row">
                   <template v-if="patientRecords[patientAccount][currentDateYY_MM_DD]">
                     <table class="table table-striped table-bordered">
