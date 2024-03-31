@@ -19,6 +19,7 @@ Vue.createApp({
         'foodCheckboxChecked': false,
         'waterCheckboxChecked': false
       },
+      isEditing: false,
       restrictionContext: {},
       apiUrl: 'https://tobiichi3227.eu.org/',
       showScrollButton: false,
@@ -174,6 +175,9 @@ Vue.createApp({
       if (!this.patientRecords[patientAccount]['isEditing']) {
         this.updateRestrictionContext(patientAccount);
         this.postData(patientAccount);
+        this.isEditing = false;
+      } else {
+        this.isEditing = true;
       }
     },
     handleInput(value, patientAccount) {
@@ -224,7 +228,7 @@ Vue.createApp({
     }, 1000);
 
     setInterval(async () => {
-      if (this.authenticated) {
+      if (this.authenticated && !this.isEditing) {
         const fetchedData = await this.fetchRecords();
         if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Fetch Success') {
           this.patientRecords = fetchedData['patient_records'];
