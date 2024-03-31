@@ -171,7 +171,7 @@ Vue.createApp({
         this.restrictionContext[patientAccount] = context;
       }
     },
-    handleInput(value) {
+    handleInput(value, patientAccount) {
       this.patientRecords[patientAccount]['limitAmount'] = parseInt(value);
     },
     confirmLogout() {
