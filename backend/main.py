@@ -117,7 +117,10 @@ async def write_data(post_request: Request):
                 with open(ACCT_REL_JSON_PATH, 'w') as f:
                     json.dump(account_relations, f, indent=4)
 
-            return {"message": "Account deleted successfully"}
+            return {
+                "message": "Account deleted successfully",
+                "account_type": account_type,
+            }
         else:
             return {"message": "Incorrect token"}
 
