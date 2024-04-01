@@ -189,7 +189,7 @@ Vue.createApp({
         this.isEditing = true;
         if (this.currentEditingPatient !== '' && patientAccount !== this.currentEditingPatient) {
           this.patientRecords[this.currentEditingPatient]['isEditing'] = false;
-          this.postData(patientAccount);
+          this.postData(this.currentEditingPatient);
         }
         this.currentEditingPatient = patientAccount;
       }
