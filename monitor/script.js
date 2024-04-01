@@ -246,6 +246,7 @@ Vue.createApp({
         const fetchedData = await this.fetchRecords();
         if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Fetch Success') {
           this.processFetchedData(fetchedData);
+          this.searchPatient();
         }
       }
     }, 3000);
