@@ -27,6 +27,9 @@ Vue.createApp({
     }
   },
   methods: {
+    togglePasswordVisibility() {
+      this.showPassword = !this.showPassword;
+    },
     async fetchRecords() {
       const fetchUrl = this.apiUrl;
       try {
@@ -54,8 +57,24 @@ Vue.createApp({
         throw new Error(error.message);
       }
     },
-    togglePasswordVisibility() {
-      this.showPassword = !this.showPassword;
+    processFetchedData(fetchedData) {
+      this.patientRecords = fetchedData['patient_records'];
+      this.patientAccounts = fetchedData['patient_accounts'];
+      this.patientAccounts.forEach(patientAccount => {
+        let modified = false;
+        Object.entries(this.keysToFilter).forEach(([key, value]) => {
+          if (!(key in this.patientRecords[patientAccount])) {
+            this.patientRecords[patientAccount][key] = value;
+            modified = true;
+          }
+        });
+        if (modified) {
+          this.postData(patientAccount);
+        }
+        if (this.patientRecords[patientAccount]['limitAmount'] !== '') {
+          this.updateRestrictionContext(patientAccount);
+        }
+      });
     },
     async postData(patientAccount) {
       const url = this.apiUrl;
@@ -114,23 +133,7 @@ Vue.createApp({
             break;
           default:
             this.authenticated = true;
-            this.patientRecords = fetchedData['patient_records'];
-            this.patientAccounts = fetchedData['patient_accounts'];
-            this.patientAccounts.forEach(patientAccount => {
-              let modified = false;
-              Object.entries(this.keysToFilter).forEach(([key, value]) => {
-                if (!(key in this.patientRecords[patientAccount])) {
-                  this.patientRecords[patientAccount][key] = value;
-                  modified = true;
-                }
-              });
-              if (modified) {
-                this.postData(patientAccount);
-              }
-              if (this.patientRecords[patientAccount]['limitAmount'] !== '') {
-                this.updateRestrictionContext(patientAccount);
-              }
-            });
+            this.processFetchedData(fetchedData);
 
             this.filteredPatientAccounts = this.patientAccounts;
             sessionStorage.setItem('account', this.account);
@@ -242,7 +245,7 @@ Vue.createApp({
       if (this.authenticated && !this.isEditing) {
         const fetchedData = await this.fetchRecords();
         if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Fetch Success') {
-          this.patientRecords = fetchedData['patient_records'];
+          this.processFetchedData(fetchedData);
         }
       }
     }, 3000);
