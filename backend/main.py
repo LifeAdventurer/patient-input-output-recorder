@@ -134,7 +134,10 @@ async def write_data(post_request: Request):
             post_request['account'], post_request['changed_password']
         )
 
-        return {"message": "Account password changed successfully"}
+        return {
+            "message": "Account password changed successfully",
+            "account_type": db.get_account_type(post_request['account']),
+        }
 
     elif post_request['type'] == 'fetch account list':
         if post_request['token'] == token:
