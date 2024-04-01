@@ -20,6 +20,7 @@ Vue.createApp({
         'waterCheckboxChecked': false
       },
       isEditing: false,
+      currentEditingPatient: '',
       restrictionContext: {},
       apiUrl: 'https://tobiichi3227.eu.org/',
       showScrollButton: false,
@@ -126,7 +127,9 @@ Vue.createApp({
               if (modified) {
                 this.postData(patientAccount);
               }
-              this.updateRestrictionContext(patientAccount);
+              if (this.patientRecords[patientAccount]['limitAmount'] !== '') {
+                this.updateRestrictionContext(patientAccount);
+              }
             });
 
             this.filteredPatientAccounts = this.patientAccounts;
@@ -173,11 +176,19 @@ Vue.createApp({
       }
       this.patientRecords[patientAccount]['isEditing'] = !this.patientRecords[patientAccount]['isEditing'];
       if (!this.patientRecords[patientAccount]['isEditing']) {
-        this.updateRestrictionContext(patientAccount);
+        if (this.patientRecords[patientAccount]['limitAmount'] !== '') {
+          this.updateRestrictionContext(patientAccount);
+          this.currentEditingPatient = '';
+        }
         this.postData(patientAccount);
         this.isEditing = false;
       } else {
         this.isEditing = true;
+        if (this.currentEditingPatient !== '' && patientAccount !== this.currentEditingPatient) {
+          this.patientRecords[this.currentEditingPatient]['isEditing'] = false;
+          this.postData(patientAccount);
+        }
+        this.currentEditingPatient = patientAccount;
       }
     },
     handleInput(value, patientAccount) {
