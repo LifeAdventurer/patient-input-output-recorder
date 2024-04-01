@@ -24,7 +24,7 @@ Vue.createApp({
       inputWeight: 0,
       showNotification: false,
       records: {},
-      apiUrl: 'https://tobiichi3227.eu.org/',
+      apiUrl: 'https://lifeadventurer.tobiichi3227.eu.org/',
       selectedLanguage: 'zh-TW',
       supportedLanguages: [],
       curLangTexts: {},

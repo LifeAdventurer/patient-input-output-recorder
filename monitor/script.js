@@ -22,7 +22,7 @@ Vue.createApp({
       isEditing: false,
       currentEditingPatient: '',
       restrictionContext: {},
-      apiUrl: 'https://tobiichi3227.eu.org/',
+      apiUrl: 'https://lifeadventurer.tobiichi3227.eu.org/',
       showScrollButton: false,
     }
   },
