@@ -99,15 +99,16 @@ Vue.createApp({
     },
     processRestrictionText() {
       if (this.records['limitAmount']) {
-        let text;
+        let text = [];
         if (this.records['foodCheckboxChecked'] && this.records['waterCheckboxChecked']) {
-          text = `限制進食加喝水不超過${this.records['limitAmount']}公克`
+          text.push(this.curLangText.limit_food_and_water_to_no_more_than);
         } else if (this.records['foodCheckboxChecked']) {
-          text = `限制進食不超過${this.records['limitAmount']}公克`
+          text.push(this.curLangText.limit_food_to_no_more_than);
         } else {
-          text = `限制喝水不超過${this.records['limitAmount']}公克`
+          text.push(this.curLangText.limit_water_to_no_more_than);
         }
-        this.restrictionText = text;
+        text.push(this.records['limitAmount'], this.curLangText.grams);
+        this.restrictionText = text.join('');
       }
     },
     async authenticate() {
@@ -256,6 +257,7 @@ Vue.createApp({
     changeLanguage(languageCode) {
       this.selectedLanguage = languageCode;
       localStorage.setItem('selectedLanguageCode', languageCode);
+      this.processRestrictionText();
     },
     async removeRecord(target) {
       if (confirm(this.curLangText.confirm_remove_record)) {
