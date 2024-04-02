@@ -7,6 +7,7 @@ Vue.createApp({
       authenticated: false,
       currentDate: '',
       currentTime: '',
+      restrictionText: '',
       options: [
         {value: 50, label: '50'},
         {value: 100, label: '100'},
@@ -96,6 +97,19 @@ Vue.createApp({
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
+    processRestrictionText() {
+      if (this.records['limitAmount']) {
+        let text;
+        if (this.records['foodCheckboxChecked'] && this.records['waterCheckboxChecked']) {
+          text = `限制進食加喝水不超過${this.records['limitAmount']}公克`
+        } else if (this.records['foodCheckboxChecked']) {
+          text = `限制進食不超過${this.records['limitAmount']}公克`
+        } else {
+          text = `限制喝水不超過${this.records['limitAmount']}公克`
+        }
+        this.restrictionText = text;
+      }
+    },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
       if (fetchedData.hasOwnProperty('message')) {
@@ -117,6 +131,7 @@ Vue.createApp({
           default:
             this.authenticated = true;
             this.records = fetchedData['account_records'];
+            this.processRestrictionText();
             sessionStorage.setItem('account', this.account);
             sessionStorage.setItem('password', this.password);
         }

@@ -106,7 +106,7 @@
                       </div>
                     </div>
                     <input v-if="patientRecords[patientAccount]['isEditing']" v-model="patientRecords[patientAccount]['limitAmount']" @input="handleInput($event.target.value, patientAccount)" type="text" class="form-control" pattern="\d*">
-                    <input v-else :value="restrictionContext[patientAccount] || '尚未設定限制'" type="text" class="form-control text-center" readonly>
+                    <input v-else :value="restrictionText[patientAccount] || '尚未設定限制'" type="text" class="form-control text-center" readonly>
                     <button class="btn btn-primary" @click="toggleEdit(patientAccount)">
                       <i v-if="patientRecords[patientAccount]['isEditing']" class="fas fa-check"></i>
                       <i v-else class="fas fa-pencil-alt"></i>

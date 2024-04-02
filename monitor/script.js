@@ -21,7 +21,7 @@ Vue.createApp({
       },
       isEditing: false,
       currentEditingPatient: '',
-      restrictionContext: {},
+      restrictionText: {},
       apiUrl: 'https://lifeadventurer.tobiichi3227.eu.org/',
       showScrollButton: false,
     }
@@ -72,7 +72,7 @@ Vue.createApp({
           this.postData(patientAccount);
         }
         if (this.patientRecords[patientAccount]['limitAmount'] !== '') {
-          this.updateRestrictionContext(patientAccount);
+          this.updateRestrictionText(patientAccount);
         }
       });
     },
@@ -161,16 +161,16 @@ Vue.createApp({
       const lastDate = keys[keys.length - 1].replace(/_/g, '/');
       return `${firstDate} ~ ${lastDate}`;
     },
-    updateRestrictionContext(patientAccount) {
-      let context;
+    updateRestrictionText(patientAccount) {
+      let text;
       if (this.patientRecords[patientAccount]['foodCheckboxChecked'] && this.patientRecords[patientAccount]['waterCheckboxChecked']) {
-        context = `限制進食加喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+        text = `限制進食加喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
       } else if (this.patientRecords[patientAccount]['foodCheckboxChecked']) {
-        context = `限制進食不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+        text = `限制進食不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
       } else {
-        context = `限制喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+        text = `限制喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
       }
-      this.restrictionContext[patientAccount] = context;
+      this.restrictionText[patientAccount] = text;
     },
     toggleEdit(patientAccount) {
       if (this.patientRecords[patientAccount]['isEditing'] && !this.patientRecords[patientAccount]['foodCheckboxChecked'] && !this.patientRecords[patientAccount]['waterCheckboxChecked']) {
@@ -180,7 +180,7 @@ Vue.createApp({
       this.patientRecords[patientAccount]['isEditing'] = !this.patientRecords[patientAccount]['isEditing'];
       if (!this.patientRecords[patientAccount]['isEditing']) {
         if (this.patientRecords[patientAccount]['limitAmount'] !== '') {
-          this.updateRestrictionContext(patientAccount);
+          this.updateRestrictionText(patientAccount);
           this.currentEditingPatient = '';
         }
         this.postData(patientAccount);
