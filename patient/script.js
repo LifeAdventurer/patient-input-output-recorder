@@ -308,6 +308,16 @@ Vue.createApp({
       this.currentDateYY_MM_DD = `${d.getFullYear()}_${d.getMonth() + 1}_${('0' + d.getDate()).slice(-2)}`;
     }, 1000);
 
+    setInterval(async () => {
+      if (this.authenticated) {
+        const fetchedData = await this.fetchRecords();
+        if (fetchedData.hasOwnProperty('message') && fetchedData.message === 'Fetch Success') {
+          this.records = fetchedData['account_records'];
+          this.processRestrictionText();
+        }
+      }
+    }, 3000);
+
     window.addEventListener('scroll', this.handleScroll);
   },
   beforeUnmount() {
