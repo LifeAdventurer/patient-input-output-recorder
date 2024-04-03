@@ -7,7 +7,7 @@ ACCOUNT = input('Enter the account you want to clear data: ')
 PASSWORD = input('Enter the password: ')
 
 payload = {
-    'type': 'update record',
+    'event': 'update record',
     'account': ACCOUNT,
     'password': PASSWORD,
     'data': {},

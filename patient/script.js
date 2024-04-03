@@ -78,7 +78,7 @@ Vue.createApp({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            'type': 'fetch patient records',
+            'event': 'fetch patient records',
             'account': this.account,
             'password': this.password,
           }),
@@ -158,7 +158,7 @@ Vue.createApp({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            'type': 'update record',
+            'event': 'update record',
             'account': this.account,
             'password': this.password,
             'data': this.records,

@@ -7,7 +7,7 @@ ACCOUNT = input('Enter the account: ')
 PASSWORD = input('Enter the password: ')
 
 payload = {
-    'type': 'fetch monitoring account records',
+    'event': 'fetch monitoring account records',
     'account': ACCOUNT,
     'password': PASSWORD,
 }

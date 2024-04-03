@@ -9,7 +9,7 @@ PASSWORD = input("Enter the password: ")
 
 def add_patient_account_to_monitoring_list(patient_account: str) -> str:
     payload = {
-        'type': 'add patient account to monitoring list',
+        'event': 'add patient account to monitoring list',
         'account': ACCOUNT,
         'password': PASSWORD,
         'patient_account': patient_account,

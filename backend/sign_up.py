@@ -19,7 +19,7 @@ while ACCOUNT_TYPE not in ACCOUNT_TYPES:
 
 payload = {
     'token': token,
-    'type': 'sign up',
+    'event': 'sign up',
     'account': ACCOUNT,
     'password': PASSWORD,
     'account_type': ACCOUNT_TYPE,

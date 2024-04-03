@@ -15,7 +15,7 @@ NEW_PASSWORD = input('Enter the new password: ')
 
 payload = {
     'token': token,
-    'type': 'change password',
+    'event': 'change password',
     'account': ACCOUNT,
     'password': PASSWORD,
     'changed_password': NEW_PASSWORD,

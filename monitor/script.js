@@ -41,7 +41,7 @@ Vue.createApp({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            'type': 'fetch monitoring account records',
+            'event': 'fetch monitoring account records',
             'account': this.account,
             'password': this.password,
           }),
@@ -87,7 +87,7 @@ Vue.createApp({
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            'type': 'update patient record from monitor',
+            'event': 'update patient record from monitor',
             'account': this.account,
             'password': this.password,
             'patient_account': patientAccount,

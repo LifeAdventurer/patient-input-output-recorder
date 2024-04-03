@@ -9,7 +9,7 @@ with open('./config.json', 'r') as f:
 
 payload = {
     'token': token,
-    'type': 'fetch account list',
+    'event': 'fetch account list',
 }
 headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
 

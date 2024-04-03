@@ -33,7 +33,7 @@ async def write_data(post_request: Request):
     with open('./config.json', 'r') as f:
         token = json.load(f)['token']
 
-    if post_request['type'] == 'sign up':
+    if post_request['event'] == 'sign up':
         if post_request['token'] == token:
             if post_request['account_type'] not in [
                 db.AccountType.ADMIN,
@@ -62,7 +62,7 @@ async def write_data(post_request: Request):
         else:
             return {"message": "Incorrect token"}
 
-    elif post_request['type'] == 'del account':
+    elif post_request['event'] == 'del account':
         if post_request['token'] == token:
             err = db.authenticate(
                 post_request['account'], post_request['password']
@@ -124,7 +124,7 @@ async def write_data(post_request: Request):
         else:
             return {"message": "Incorrect token"}
 
-    elif post_request['type'] == 'change password':
+    elif post_request['event'] == 'change password':
         if post_request['token'] != token:
             return {"message": "Incorrect token"}
 
@@ -142,14 +142,14 @@ async def write_data(post_request: Request):
             "account_type": db.get_account_type(post_request['account']),
         }
 
-    elif post_request['type'] == 'fetch account list':
+    elif post_request['event'] == 'fetch account list':
         if post_request['token'] == token:
             account_list = db.get_all_accounts()
             return {"message": "Fetch Success", "account_list": account_list}
         else:
             return {"message": "Incorrect token"}
 
-    elif post_request['type'] == 'update record':
+    elif post_request['event'] == 'update record':
         record = post_request
         err = db.authenticate(post_request['account'], post_request['password'])
         if err != "Authentication successful":
@@ -164,7 +164,7 @@ async def write_data(post_request: Request):
 
         return {"message": "Update Success"}
 
-    elif post_request['type'] == 'update patient record from monitor':
+    elif post_request['event'] == 'update patient record from monitor':
         err = db.authenticate(post_request['account'], post_request['password'])
         if err != "Authentication successful":
             return {"message": err}
@@ -184,7 +184,7 @@ async def write_data(post_request: Request):
 
         return {"message": "Update Success"}
 
-    elif post_request['type'] == 'fetch patient records':
+    elif post_request['event'] == 'fetch patient records':
         err = db.authenticate(post_request['account'], post_request['password'])
         if err != "Authentication successful":
             return {"message": err}
@@ -203,7 +203,7 @@ async def write_data(post_request: Request):
         else:
             return {"message": "Incorrect account type"}
 
-    elif post_request['type'] == 'fetch monitoring account records':
+    elif post_request['event'] == 'fetch monitoring account records':
         err = db.authenticate(post_request['account'], post_request['password'])
         if err != "Authentication successful":
             return {"message": err}
@@ -240,7 +240,7 @@ async def write_data(post_request: Request):
         else:
             return {"message": "Incorrect account type"}
 
-    elif post_request['type'] == 'add patient account to monitoring list':
+    elif post_request['event'] == 'add patient account to monitoring list':
         monitor_account = post_request['account']
         err = db.authenticate(post_request['account'], post_request['password'])
         if err != "Authentication successful":

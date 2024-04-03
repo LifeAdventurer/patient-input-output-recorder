@@ -13,7 +13,7 @@ PASSWORD = input('Enter the password: ')
 
 payload = {
     'token': token,
-    'type': 'del account',
+    'event': 'del account',
     'account': ACCOUNT,
     'password': PASSWORD,
 }
