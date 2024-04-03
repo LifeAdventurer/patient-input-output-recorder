@@ -197,6 +197,22 @@ Vue.createApp({
     handleInput(value, patientAccount) {
       this.patientRecords[patientAccount]['limitAmount'] = parseInt(value);
     },
+    getFoodSumColor(patientAccount) {
+      let exceed = false;
+      const patientRecord = this.patientRecords[patientAccount];
+      if (patientRecord['foodCheckboxChecked']) {
+        exceed = patientRecord[this.currentDateYY_MM_DD]['foodSum'] + (patientRecord['waterCheckboxChecked'] ? patientRecord[this.currentDateYY_MM_DD]['waterSum'] : 0) > patientRecord['limitAmount'];
+      }
+      return exceed ? 'red' : 'inherit';
+    },
+    getWaterSumColor(patientAccount) {
+      let exceed = false;
+      const patientRecord = this.patientRecords[patientAccount];
+      if (patientRecord['waterCheckboxChecked']) {
+        exceed = (patientRecord[this.currentDateYY_MM_DD]['waterSum'] + (patientRecord['foodCheckboxChecked'] ? patientRecord[this.currentDateYY_MM_DD]['foodSum'] : 0)) > patientRecord['limitAmount'];
+      }
+      return exceed ? 'red' : 'inherit';
+    },
     confirmLogout() {
       if (confirm('請確認是否要登出')) {
         this.account = '';

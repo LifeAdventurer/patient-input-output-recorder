@@ -128,8 +128,12 @@
                       <tbody>
                         <tr class="text-center fw-bold">
                           <td>總和</td>
-                          <td>{{ patientRecords[patientAccount][currentDateYY_MM_DD]['foodSum'] }}g</td>
-                          <td>{{ patientRecords[patientAccount][currentDateYY_MM_DD]['waterSum'] }}ml</td>
+                          <td :style="{ color: getFoodSumColor(patientAccount) }">
+                            {{ patientRecords[patientAccount][currentDateYY_MM_DD]['foodSum'] }}g
+                          </td>
+                          <td :style="{ color: getWaterSumColor(patientAccount) }">
+                            {{ patientRecords[patientAccount][currentDateYY_MM_DD]['waterSum'] }}ml
+                          </td>
                           <td>{{ patientRecords[patientAccount][currentDateYY_MM_DD]['urinationSum'] }}ml</td>
                           <td>{{ patientRecords[patientAccount][currentDateYY_MM_DD]['defecationSum'] }}次</td>
                         </tr>
