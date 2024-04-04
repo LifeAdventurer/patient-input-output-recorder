@@ -235,10 +235,13 @@ Vue.createApp({
           }, 2000);
         }
       }
+      if (this.inputWeight === 0) {
+        return;
+      }
       const inputWeight = parseFloat(this.inputWeight);
-      if (Number.isFinite(inputWeight) && inputWeight !== 0 && (inputWeight < 0.01 || inputWeight > 300)) {
+      if (isNaN(inputWeight) || inputWeight < 0.01 || inputWeight > 300) {
         alert(this.curLangText.weight_abnormal);
-      } else if (Number.isFinite(inputWeight) && inputWeight !== 0) {
+      } else {
         if (!this.records[currentDate]) {
           this.initRecords(currentDate);
         }
