@@ -189,6 +189,7 @@ Vue.createApp({
         this.isEditing = true;
         if (this.currentEditingPatient !== '' && patientAccount !== this.currentEditingPatient) {
           this.patientRecords[this.currentEditingPatient]['isEditing'] = false;
+          this.updateRestrictionText(this.currentEditingPatient);
           this.postData(this.currentEditingPatient);
         }
         this.currentEditingPatient = patientAccount;
