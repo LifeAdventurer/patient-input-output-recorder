@@ -248,6 +248,38 @@
         </div>
       </div>
 
+      <div class="row">
+        <template v-if="records[currentDateYY_MM_DD]">
+          <table class="table table-striped table-bordered">
+            <thead>
+              <tr class="text-center">
+                <th scope="col">{{ records[currentDateYY_MM_DD]['recordDate'] }}</th>
+                <th scope="col">{{ curLangText.food_intake }}</th>
+                <th scope="col">{{ curLangText.water_consumption }}</th>
+                <th scope="col">{{ curLangText.urination }}</th>
+                <th scope="col">{{ curLangText.defecation }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="text-center fw-bold">
+                <td>{{ curLangText.sum }}</td>
+                <td :style="{ color: getFoodSumColor() }">
+                  {{ records[currentDateYY_MM_DD]['foodSum'] }}
+                </td>
+                <td :style="{ color: getWaterSumColor() }">
+                  {{ records[currentDateYY_MM_DD]['waterSum'] }}
+                </td>
+                <td>{{ records[currentDateYY_MM_DD]['urinationSum'] }}</td>
+                <td>{{ records[currentDateYY_MM_DD]['defecationSum'] }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </template>
+        <template v-else>
+          <h4 class="text-center">今日尚無紀錄</h4>
+        </template>
+      </div>
+
       <!-- Records -->
       <div class="row">
         <div class="col">

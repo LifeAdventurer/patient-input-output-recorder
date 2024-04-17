@@ -7,6 +7,7 @@ Vue.createApp({
       authenticated: false,
       currentDate: '',
       currentTime: '',
+      currentDateYY_MM_DD: '',
       restrictionText: '',
       options: [
         {value: 50, label: '50'},
@@ -137,6 +138,20 @@ Vue.createApp({
             sessionStorage.setItem('password', this.password);
         }
       }
+    },
+    getFoodSumColor() {
+      let exceed = false;
+      if (this.records['foodCheckboxChecked']) {
+        exceed = this.records[this.currentDateYY_MM_DD]['foodSum'] + (this.records['waterCheckboxChecked'] ? this.records[this.currentDateYY_MM_DD]['waterSum'] : 0) > this.records['limitAmount'];
+      }
+      return exceed ? 'red' : 'inherit';
+    },
+    getWaterSumColor() {
+      let exceed = false;
+      if (this.records['waterCheckboxChecked']) {
+        exceed = (this.records[this.currentDateYY_MM_DD]['waterSum'] + (this.records['foodCheckboxChecked'] ? this.records[this.currentDateYY_MM_DD]['foodSum'] : 0)) > this.records['limitAmount'];
+      }
+      return exceed ? 'red' : 'inherit';
     },
     confirmLogout() {
       if (confirm(this.curLangText.confirm_logout)) {
