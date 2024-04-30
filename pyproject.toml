@@ -9,13 +9,13 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.10"
 uvicorn = "^0.29.0"
-fastapi = "^0.110.0"
-pydantic = "^2.6.4"
+fastapi = "^0.110.3"
+pydantic = "^2.7.1"
 qrcode = "^7.4.2"
 
 
 [tool.poetry.group.dev.dependencies]
-black = "^24.3.0"
+black = "^24.4.2"
 isort = "^5.13.2"
 
 [build-system]
