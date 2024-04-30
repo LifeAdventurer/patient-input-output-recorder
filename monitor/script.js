@@ -71,9 +71,7 @@ Vue.createApp({
         if (modified) {
           this.postData(patientAccount);
         }
-        if (this.patientRecords[patientAccount]['limitAmount'] !== '') {
-          this.updateRestrictionText(patientAccount);
-        }
+        this.updateRestrictionText(patientAccount);
       });
     },
     async postData(patientAccount) {
@@ -162,24 +160,40 @@ Vue.createApp({
       return `${firstDate} ~ ${lastDate}`;
     },
     updateRestrictionText(patientAccount) {
-      let text;
-      if (this.patientRecords[patientAccount]['foodCheckboxChecked'] && this.patientRecords[patientAccount]['waterCheckboxChecked']) {
-        text = `限制進食加喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
-      } else if (this.patientRecords[patientAccount]['foodCheckboxChecked']) {
-        text = `限制進食不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+      const limitAmount = String(this.patientRecords[patientAccount]['limitAmount']).trim();
+      if (!isNaN(limitAmount) && limitAmount !== '') {
+        let text;
+        if (this.patientRecords[patientAccount]['foodCheckboxChecked'] && this.patientRecords[patientAccount]['waterCheckboxChecked']) {
+          text = `限制進食加喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+        } else if (this.patientRecords[patientAccount]['foodCheckboxChecked']) {
+          text = `限制進食不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+        } else if (this.patientRecords[patientAccount]['waterCheckboxChecked']) {
+          text = `限制喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+        }
+        this.restrictionText[patientAccount] = text;
       } else {
-        text = `限制喝水不超過${this.patientRecords[patientAccount]['limitAmount']}公克`
+        this.restrictionText[patientAccount] = '';
       }
-      this.restrictionText[patientAccount] = text;
     },
     toggleEdit(patientAccount) {
-      if (this.patientRecords[patientAccount]['isEditing'] && !this.patientRecords[patientAccount]['foodCheckboxChecked'] && !this.patientRecords[patientAccount]['waterCheckboxChecked']) {
-        alert('請勾選選項');
-        return;
+      const limitAmount = String(this.patientRecords[patientAccount]['limitAmount']).trim();
+      if (this.patientRecords[patientAccount]['isEditing']) {
+        if (!this.patientRecords[patientAccount]['foodCheckboxChecked'] && !this.patientRecords[patientAccount]['waterCheckboxChecked']) {
+          if (isNaN(limitAmount)) {
+            alert('請勾選選項並輸入數字');
+            return;
+          } else if(limitAmount !== '') {
+            alert('請勾選選項');
+            return;
+          }
+        } else if (isNaN(limitAmount) || limitAmount === '') {
+          alert('請輸入數字');
+          return;
+        }
       }
       this.patientRecords[patientAccount]['isEditing'] = !this.patientRecords[patientAccount]['isEditing'];
       if (!this.patientRecords[patientAccount]['isEditing']) {
-        if (this.patientRecords[patientAccount]['limitAmount'] !== '') {
+        if (limitAmount !== '') {
           this.updateRestrictionText(patientAccount);
           this.currentEditingPatient = '';
         }
@@ -196,7 +210,10 @@ Vue.createApp({
       }
     },
     handleInput(value, patientAccount) {
-      this.patientRecords[patientAccount]['limitAmount'] = parseInt(value);
+      const intValue = parseInt(value);
+      if (!isNaN(intValue)) {
+        this.patientRecords[patientAccount]['limitAmount'] = intValue;
+      }
     },
     getFoodSumColor(patientAccount) {
       let exceed = false;

@@ -99,13 +99,13 @@ Vue.createApp({
       this.showPassword = !this.showPassword;
     },
     processRestrictionText() {
-      if (this.records['limitAmount']) {
+      if (!isNaN(this.records['limitAmount']) && String(this.records['limitAmount']).trim() !== '') {
         let text = [];
         if (this.records['foodCheckboxChecked'] && this.records['waterCheckboxChecked']) {
           text.push(this.curLangText.limit_food_and_water_to_no_more_than);
         } else if (this.records['foodCheckboxChecked']) {
           text.push(this.curLangText.limit_food_to_no_more_than);
-        } else {
+        } else if (this.records['waterCheckboxChecked']) {
           text.push(this.curLangText.limit_water_to_no_more_than);
         }
         text.push(this.records['limitAmount'], this.curLangText.grams);
