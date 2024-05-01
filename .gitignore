@@ -10,3 +10,5 @@ config.json
 
 # Generated QR codes
 qr_code*
+
+docs/
