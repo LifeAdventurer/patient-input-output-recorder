@@ -189,6 +189,9 @@ Vue.createApp({
         } else if (isNaN(limitAmount) || limitAmount === '') {
           alert('請輸入數字');
           return;
+        } else if (limitAmount[0] === '-' || limitAmount[0] === '.') {
+          alert('請輸入正整數');
+          return;
         }
       }
       this.patientRecords[patientAccount]['isEditing'] = !this.patientRecords[patientAccount]['isEditing'];
