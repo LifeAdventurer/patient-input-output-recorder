@@ -12,6 +12,7 @@ uvicorn = "^0.29.0"
 fastapi = "^0.110.3"
 pydantic = "^2.7.1"
 qrcode = "^7.4.2"
+pillow = "^10.3.0"
 
 
 [tool.poetry.group.dev.dependencies]
