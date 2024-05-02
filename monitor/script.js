@@ -189,7 +189,7 @@ Vue.createApp({
         } else if (isNaN(limitAmount) || limitAmount === '') {
           alert('請輸入數字');
           return;
-        } else if (limitAmount[0] === '-' || limitAmount[0] === '.') {
+        } else if (limitAmount.startsWith('-') || limitAmount.startsWith('.')) {
           alert('請輸入正整數');
           return;
         }
