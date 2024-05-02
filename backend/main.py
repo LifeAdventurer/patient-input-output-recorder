@@ -22,9 +22,15 @@ app.add_middleware(
 )
 
 # Constants
+# Paths
 DATA_JSON_PATH = './data.json'
 ACCT_REL_JSON_PATH = './account_relations.json'
 CONFIG_JSON_PATH = './config.json'
+
+# Messages
+ERR_ACCT_TYPE = 'Incorrect account type'
+FETCH_SUCCESS = 'Fetch Success'
+UPDATE_SUCCESS = 'Update Success'
 
 
 def load_json_file(file_path):
@@ -79,7 +85,7 @@ def handle_request_without_authentication(post_request):
             db.AccountType.PATIENT,
             db.AccountType.MONITOR,
         ]:
-            return {"message": "Incorrect account type"}
+            return {"message": ERR_ACCT_TYPE}
 
         err = db.add_account(
             post_request['account'],
@@ -97,7 +103,7 @@ def handle_request_without_authentication(post_request):
 
     elif post_request['event'] == 'fetch account list':
         account_list = db.get_all_accounts()
-        return {"message": "Fetch Success", "account_list": account_list}
+        return {"message": FETCH_SUCCESS, "account_list": account_list}
 
     err = db.authenticate(post_request['account'], post_request['password'])
     if err != "Authentication successful":
@@ -161,20 +167,20 @@ def handle_request_without_authentication(post_request):
         data[post_request['account']] = post_request['data']
         write_json_file(DATA_JSON_PATH, data)
 
-        return {"message": "Update Success"}
+        return {"message": UPDATE_SUCCESS}
 
     elif post_request['event'] == 'update patient record from monitor':
         if (
             db.get_account_type(post_request['account'])
             == db.AccountType.PATIENT
         ):
-            return {"message": "Incorrect account type"}
+            return {"message": ERR_ACCT_TYPE}
 
         data = load_json_file(DATA_JSON_PATH)
         data[post_request['patient_account']] = post_request['data']
         write_json_file(DATA_JSON_PATH, data)
 
-        return {"message": "Update Success"}
+        return {"message": UPDATE_SUCCESS}
 
     elif post_request['event'] == 'fetch patient records':
         patient_account = post_request['account']
@@ -184,11 +190,11 @@ def handle_request_without_authentication(post_request):
         ]:
             data = load_json_file(DATA_JSON_PATH)
             return {
-                "message": "Fetch Success",
+                "message": FETCH_SUCCESS,
                 "account_records": data[patient_account],
             }
         else:
-            return {"message": "Incorrect account type"}
+            return {"message": ERR_ACCT_TYPE}
 
     elif post_request['event'] == 'fetch monitoring account records':
         monitoring_account = post_request['account']
@@ -210,19 +216,19 @@ def handle_request_without_authentication(post_request):
                         patient_records[patient_account] = data[patient_account]
 
                 return {
-                    "message": "Fetch Success",
+                    "message": FETCH_SUCCESS,
                     "patient_accounts": patient_accounts,
                     "patient_records": patient_records,
                 }
             else:
                 return {"message": "No associated patient accounts"}
         else:
-            return {"message": "Incorrect account type"}
+            return {"message": ERR_ACCT_TYPE}
 
     elif post_request['event'] == 'add patient account to monitoring list':
         monitor_account = post_request['account']
         if db.get_account_type(monitor_account) == db.AccountType.PATIENT:
-            return {"message": "Incorrect account type"}
+            return {"message": ERR_ACCT_TYPE}
 
         account_relations = load_json_file(ACCT_REL_JSON_PATH)
         if monitor_account not in account_relations['monitor_accounts']:
