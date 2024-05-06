@@ -18,6 +18,8 @@ If you would like to add support for a new language, please follow the format pr
   "water_consumption": "{Translate 'Water' here}",
   "urination": "{Translate 'Urination' here}",
   "defecation": "{Translate 'Defecation' here}",
+  "custom": "{Translate 'custom' here}",
+  "please_enter_a_positive_integer": "{Translate 'Please enter a positive integer' here}",
   "unit": "{Translate 'unit' here}",
   "times": "{Translate 'times' here}",
   "create_new_record": "{Translate 'Add' here}",

@@ -23,6 +23,9 @@ Vue.createApp({
       inputWater: 0,
       inputUrination: 0,
       inputDefecation: 0,
+      customInputFood: '',
+      customInputWater: '',
+      customInputUrination: '',
       inputWeight: 0,
       showNotification: false,
       records: {},
@@ -201,6 +204,27 @@ Vue.createApp({
     hideNotification() {
       this.showNotification = false;
     },
+    handleCustomInput() {
+      if (this.inputFood === 'custom') {
+        const intValue = parseInt(this.customInputFood);
+        if (isNaN(intValue) || intValue <= 0) return false;
+        this.inputFood = intValue;
+        this.customInputFood = '';
+      }
+      if (this.inputWater === 'custom') {
+        const intValue = parseInt(this.customInputWater);
+        if (isNaN(intValue) || intValue <= 0) return false;
+        this.inputWater = intValue;
+        this.customInputWater = '';
+      }
+      if (this.inputUrination === 'custom') {
+        const intValue = parseInt(this.customInputUrination);
+        if (isNaN(intValue) || intValue <= 0) return false;
+        this.inputUrination = intValue;
+        this.customInputUrination = '';
+      }
+      return true;
+    },
     async addData() {
       const d = new Date();
       const currentDate = `${d.getFullYear()}_${(d.getMonth() + 1)}_${('0' + d.getDate()).slice(-2)}`;
@@ -208,6 +232,10 @@ Vue.createApp({
       if (this.inputFood || this.inputWater || this.inputUrination || this.inputDefecation) {
         if (!this.records[currentDate]) {
           this.initRecords(currentDate);
+        }
+        if (!this.handleCustomInput()) {
+          alert(this.curLangText.please_enter_a_positive_integer);
+          return;
         }
         const currentData = {
           'time': `${('0' + d.getHours()).slice(-2)}:${('0' + d.getMinutes()).slice(-2)}`,
@@ -242,6 +270,9 @@ Vue.createApp({
         this.inputWater = 0;
         this.inputUrination = 0;
         this.inputDefecation = 0;
+        this.customInputFood = '';
+        this.customInputWater = '';
+        this.customInputUrination = '';
         // post to database
         if (await this.postData()) {
           this.showNotification= true;

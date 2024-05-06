@@ -109,12 +109,14 @@
               </div>
 
               <div class="row">
-                <!-- downdrops -->
+                <!-- dropdown -->
                 <div class="col">
                   <select class="form-select" aria-label="Default select example" v-model="inputFood">
                     <option value="" disabled>{{ curLangText.unit }}(g)</option>
                     <option selected value="0">0</option>
                     <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
+                    <option value="custom">{{ curLangText.custom }}</option>
+                    <input v-show="inputFood === 'custom'" class="form-control" v-model="customInputFood" pattern="\d*">
                   </select>
                 </div>
               </div>
@@ -137,12 +139,14 @@
               </div>
 
               <div class="row">
-                <!-- downdrops -->
+                <!-- dropdown -->
                 <div class="col">
                   <select class="form-select" aria-label="Default select example" v-model="inputWater">
                     <option value="" disabled>{{ curLangText.unit }}(ml)</option>
                     <option selected value="0">0</option>
                     <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
+                    <option value="custom">{{ curLangText.custom }}</option>
+                    <input v-show="inputWater === 'custom'" class="form-control" v-model="customInputWater" pattern="\d*">
                   </select>
                 </div>
               </div>
@@ -165,12 +169,14 @@
               </div>
 
               <div class="row">
-                <!-- downdrops -->
+                <!-- dropdown -->
                 <div class="col">
                   <select class="form-select" aria-label="Default select example" v-model="inputUrination">
                     <option value="" disabled>{{ curLangText.unit }}(ml)</option>
                     <option selected value="0">0</option>
                     <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
+                    <option value="custom">{{ curLangText.custom }}</option>
+                    <input v-show="inputUrination === 'custom'" class="form-control" v-model="customInputUrination" pattern="\d*">
                   </select>
                 </div>
               </div>
@@ -193,7 +199,7 @@
               </div>
 
               <div class="row checkbox-row">
-                <!-- downdrops -->
+                <!-- dropdown -->
                 <div class="col">
                   <select class="form-select" aria-label="Default select example" v-model="inputDefecation">
                     <option value="" disabled>{{ curLangText.unit }}({{ curLangText.times }})</option>
@@ -201,6 +207,8 @@
                     <option value=1>1</option>
                     <option value=2>2</option>
                     <option value=3>3</option>
+                    <option value=4>4</option>
+                    <option value=5>5</option>
                   </select>
                 </div>
               </div>
