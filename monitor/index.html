@@ -114,7 +114,7 @@
                     <input v-if="patientRecords[patientAccount]['isEditing']"
                       v-model="patientRecords[patientAccount]['limitAmount']"
                       @input="handleInput($event.target.value, patientAccount)" type="text" class="form-control"
-                      pattern="\d*" />
+                      pattern="\d*" placeholder="單位(公克)"/>
                     <input v-else :value="restrictionText[patientAccount] || '尚未設定限制'" type="text"
                       class="form-control text-center"
                       :style="{ 'background-color': restrictionText[patientAccount] ? '#fff9db' : 'white' }" readonly />
