@@ -1,5 +1,12 @@
 # Contributing
 
+## Getting Started
+
+```bash
+poetry install
+pre-commit install
+```
+
 ## Language
 
 If you would like to add support for a new language, please follow the format provided below:
