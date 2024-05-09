@@ -116,7 +116,7 @@
                     <option selected value="0">0</option>
                     <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
                     <option value="custom">{{ curLangText.custom }}</option>
-                    <input v-show="inputFood === 'custom'" class="form-control" v-model="customInputFood" pattern="\d*">
+                    <input v-show="inputFood === 'custom'" class="form-control" v-model="customInputFood" pattern="\d*" :placeholder="`${curLangText.unit}(g)`">
                   </select>
                 </div>
               </div>
@@ -146,7 +146,7 @@
                     <option selected value="0">0</option>
                     <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
                     <option value="custom">{{ curLangText.custom }}</option>
-                    <input v-show="inputWater === 'custom'" class="form-control" v-model="customInputWater" pattern="\d*">
+                    <input v-show="inputWater === 'custom'" class="form-control" v-model="customInputWater" pattern="\d*" :placeholder="`${curLangText.unit}(ml)`">
                   </select>
                 </div>
               </div>
@@ -176,7 +176,7 @@
                     <option selected value="0">0</option>
                     <option v-for="option in options" :key="option.value" :value="option.value">{{ option.label }}</option>
                     <option value="custom">{{ curLangText.custom }}</option>
-                    <input v-show="inputUrination === 'custom'" class="form-control" v-model="customInputUrination" pattern="\d*">
+                    <input v-show="inputUrination === 'custom'" class="form-control" v-model="customInputUrination" pattern="\d*" :placeholder="`${curLangText.unit}(ml)`">
                   </select>
                 </div>
               </div>
@@ -300,7 +300,7 @@
                     <div class="row">
                       <div class="col-2" style="font-size: 20px; margin-left: -10px;">
                         <div class="recordDate">
-                          <b>{{ dailyRecord['recordDate'] }}</b> 
+                          <b>{{ dailyRecord['recordDate'] }}</b>
                         </div>
                       </div>
                       <div class="col-6" style="font-size: 18px; margin-left: 6px;">
