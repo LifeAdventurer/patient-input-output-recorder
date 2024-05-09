@@ -26,8 +26,17 @@ UPDATE_SUCCESS = 'Update Success'
 
 
 def load_json_file(file_path):
-    with open(file_path, 'r') as file:
-        return json.load(file)
+    try:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+    except FileNotFoundError:
+        data = {}
+        if file_path == ACCT_REL_JSON_PATH:
+            data.setdefault('monitor_accounts', {})
+        with open(file_path, 'w') as file:
+            json.dump(data, file, indent=4)
+
+    return data
 
 
 def write_json_file(file_path, data):
