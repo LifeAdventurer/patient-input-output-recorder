@@ -3,14 +3,6 @@ import json
 import db
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-
-
-class PatientDietRecord(BaseModel):
-    password: str
-    account: str
-    data: str
-
 
 app = FastAPI()
 app.add_middleware(
