@@ -275,6 +275,24 @@ Vue.createApp({
         sessionStorage.removeItem("password");
       }
     },
+    async removeRecord(target, patientAccount) {
+      if (confirm("請確認是否移除這筆資料")) {
+        let [date, index] = target.attributes.id.textContent.split("-");
+
+        const record = this.patientRecords[patientAccount][date]["data"][index];
+        this.patientRecords[patientAccount][date]["count"] -= 1;
+        this.patientRecords[patientAccount][date]["defecationSum"] -=
+          record["defecation"];
+        this.patientRecords[patientAccount][date]["foodSum"] -= record["food"];
+        this.patientRecords[patientAccount][date]["urinationSum"] -=
+          record["urination"];
+        this.patientRecords[patientAccount][date]["waterSum"] -=
+          record["water"];
+        this.patientRecords[patientAccount][date]["data"].splice(index, 1);
+
+        await this.postData(patientAccount);
+      }
+    },
     scrollToTop() {
       window.scrollTo({
         top: 0,

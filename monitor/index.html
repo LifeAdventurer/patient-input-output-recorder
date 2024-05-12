@@ -114,7 +114,7 @@
                     <input v-if="patientRecords[patientAccount]['isEditing']"
                       v-model="patientRecords[patientAccount]['limitAmount']"
                       @input="handleInput($event.target.value, patientAccount)" type="text" class="form-control"
-                      pattern="\d*" placeholder="單位(公克)"/>
+                      pattern="\d*" placeholder="單位(公克)" />
                     <input v-else :value="restrictionText[patientAccount] || '尚未設定限制'" type="text"
                       class="form-control text-center"
                       :style="{ 'background-color': restrictionText[patientAccount] ? '#fff9db' : 'white' }" readonly />
@@ -242,12 +242,21 @@
                                             <th scope="col">喝水</th>
                                             <th scope="col">排尿</th>
                                             <th scope="col">排便</th>
+                                            <th scope="col"></th>
                                           </tr>
                                         </thead>
                                         <tbody>
                                           <tr v-for="(data, index3) in dailyRecord['data']" :key="index3">
                                             <td v-for="content in data" class="text-center">
                                               {{ content }}
+                                            </td>
+                                            <td class="justify-content-center align-items-center"
+                                              style="text-align: center">
+                                              <span @click="removeRecord($event.target, patientAccount)"
+                                                :id="`${index2}-${index3}`" class="material-symbols-outlined"
+                                                style="display: inline-block; margin-left: 0px">
+                                                delete
+                                              </span>
                                             </td>
                                           </tr>
                                           <tr class="text-center fw-bold">
@@ -266,6 +275,7 @@
                                               {{ dailyRecord['defecationSum']
                                               }}
                                             </td>
+                                            <td></td>
                                           </tr>
                                         </tbody>
                                       </table>
