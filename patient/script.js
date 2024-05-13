@@ -19,6 +19,7 @@ Vue.createApp({
         { value: 350, label: "350" },
         { value: 400, label: "400" },
       ],
+      dietaryItems: ["food", "water", "urination", "defecation"],
       inputFood: 0,
       inputWater: 0,
       inputUrination: 0,
@@ -278,10 +279,9 @@ Vue.createApp({
         const lastRecord = this.records[currentDate]["data"].pop();
         if (lastRecord !== undefined) {
           if (lastRecord["time"] === currentData["time"]) {
-            lastRecord["food"] += currentData["food"];
-            lastRecord["water"] += currentData["water"];
-            lastRecord["urination"] += currentData["urination"];
-            lastRecord["defecation"] += currentData["defecation"];
+            for (dietaryItem of this.dietaryItems) {
+              lastRecord[dietaryItem] += currentData[dietaryItem];
+            }
             this.records[currentDate]["data"].push(lastRecord);
           } else {
             this.records[currentDate]["data"].push(lastRecord);
@@ -352,10 +352,9 @@ Vue.createApp({
 
         const record = this.records[date]["data"][index];
         this.records[date]["count"] -= 1;
-        this.records[date]["defecationSum"] -= record["defecation"];
-        this.records[date]["foodSum"] -= record["food"];
-        this.records[date]["urinationSum"] -= record["urination"];
-        this.records[date]["waterSum"] -= record["water"];
+        for (dietaryItem of this.dietaryItems) {
+          this.records[date][`${dietaryItem}Sum`] -= record[dietaryItem];
+        }
         this.records[date]["data"].splice(index, 1);
 
         await this.postData();

@@ -8,6 +8,7 @@ Vue.createApp({
       currentDate: "",
       currentTime: "",
       currentDateYY_MM_DD: "",
+      dietaryItems: ["food", "water", "urination", "defecation"],
       patientRecords: {},
       patientAccounts: [],
       filteredPatientAccounts: [],
@@ -247,23 +248,16 @@ Vue.createApp({
       if (this.editingRecordIndex === -1) {
         this.editingRecordIndex = parseInt(recordIndex);
         this.editingRecordPatientAccount = patientAccount;
-        this.tempPatientRecord = {
-          food: record["food"],
-          water: record["water"],
-          urination: record["urination"],
-          defecation: record["defecation"],
-        };
+        for (dietaryItem of this.dietaryItems) {
+          this.tempPatientRecord[dietaryItem] = record[dietaryItem];
+        }
       } else {
         this.editingRecordIndex = -1;
         this.editingRecordPatientAccount = "";
-        this.patientRecords[patientAccount][date]["foodSum"] +=
-          record["food"] - this.tempPatientRecord["food"];
-        this.patientRecords[patientAccount][date]["waterSum"] +=
-          record["water"] - this.tempPatientRecord["water"];
-        this.patientRecords[patientAccount][date]["urinationSum"] +=
-          record["urination"] - this.tempPatientRecord["urination"];
-        this.patientRecords[patientAccount][date]["defecationSum"] +=
-          record["defecation"] - this.tempPatientRecord["defecation"];
+        for (dietaryItem of this.dietaryItems) {
+          this.patientRecords[patientAccount][date][`${dietaryItem}Sum`] +=
+            record[dietaryItem] - this.tempPatientRecord[dietaryItem];
+        }
         await this.postData(patientAccount);
       }
     },
@@ -314,13 +308,10 @@ Vue.createApp({
 
         const record = this.patientRecords[patientAccount][date]["data"][index];
         this.patientRecords[patientAccount][date]["count"] -= 1;
-        this.patientRecords[patientAccount][date]["defecationSum"] -=
-          record["defecation"];
-        this.patientRecords[patientAccount][date]["foodSum"] -= record["food"];
-        this.patientRecords[patientAccount][date]["urinationSum"] -=
-          record["urination"];
-        this.patientRecords[patientAccount][date]["waterSum"] -=
-          record["water"];
+        for (dietaryItem of this.dietaryItems) {
+          this.patientRecords[patientAccount][date][`${dietaryItem}Sum`] -=
+            record[dietaryItem];
+        }
         this.patientRecords[patientAccount][date]["data"].splice(index, 1);
 
         await this.postData(patientAccount);
