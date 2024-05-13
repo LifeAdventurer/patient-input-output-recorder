@@ -251,7 +251,7 @@
                                               :key="columnIndex">
                                               <input
                                                 v-if="columnIndex !== 'time' && editingRecordPatientAccount === patientAccount && editingRecordIndex === index3"
-                                                class="form-control" type="text"
+                                                class="form-control" type="number"
                                                 v-model="dailyRecord['data'][index3][columnIndex]">
                                               <span v-else>
                                                 {{ content }}
