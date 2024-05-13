@@ -230,19 +230,19 @@ Vue.createApp({
     handleCustomInput() {
       if (this.inputFood === "custom") {
         const intValue = parseInt(this.customInputFood);
-        if (isNaN(intValue) || intValue <= 0) return false;
+        if (isNaN(intValue) || intValue < 0) return false;
         this.inputFood = intValue;
         this.customInputFood = "";
       }
       if (this.inputWater === "custom") {
         const intValue = parseInt(this.customInputWater);
-        if (isNaN(intValue) || intValue <= 0) return false;
+        if (isNaN(intValue) || intValue < 0) return false;
         this.inputWater = intValue;
         this.customInputWater = "";
       }
       if (this.inputUrination === "custom") {
         const intValue = parseInt(this.customInputUrination);
-        if (isNaN(intValue) || intValue <= 0) return false;
+        if (isNaN(intValue) || intValue < 0) return false;
         this.inputUrination = intValue;
         this.customInputUrination = "";
       }
@@ -254,6 +254,10 @@ Vue.createApp({
         "0" + d.getDate()
       ).slice(-2)}`;
       // Food, Water, Urination, Defecation
+      if (!this.handleCustomInput()) {
+        alert(this.curLangText.please_enter_a_positive_integer);
+        return;
+      }
       if (
         this.inputFood ||
         this.inputWater ||
@@ -262,10 +266,6 @@ Vue.createApp({
       ) {
         if (!this.records[currentDate]) {
           this.initRecords(currentDate);
-        }
-        if (!this.handleCustomInput()) {
-          alert(this.curLangText.please_enter_a_positive_integer);
-          return;
         }
         const currentData = {
           time: `${("0" + d.getHours()).slice(-2)}:${(
