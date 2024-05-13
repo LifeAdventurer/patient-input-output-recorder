@@ -13,21 +13,24 @@ Vue.createApp({
       filteredPatientAccounts: [],
       searchQuery: "",
       currentDateMMDD: "",
-      keysToFilter: {
-        isEditing: false,
-        limitAmount: "",
-        foodCheckboxChecked: false,
-        waterCheckboxChecked: false,
-      },
-      isEditingRestriction: false,
       editingRecordIndex: -1,
       editingRecordPatientAccount: "",
-      tempPatientRecord: {},
-      currentEditingPatient: "",
       restrictionText: {},
-      apiUrl: "https://lifeadventurer.tobiichi3227.eu.org/",
       showScrollButton: false,
     };
+  },
+  created() {
+    this.apiUrl = "https://lifeadventurer.tobiichi3227.eu.org/";
+    this.dietaryItems = ["food", "water", "urination", "defecation"];
+    this.keysToFilter = {
+      isEditing: false,
+      limitAmount: "",
+      foodCheckboxChecked: false,
+      waterCheckboxChecked: false,
+    };
+    this.isEditingRestriction = false;
+    this.tempPatientRecord = {};
+    this.currentEditingPatient = "";
   },
   methods: {
     togglePasswordVisibility() {

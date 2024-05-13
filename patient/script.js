@@ -29,7 +29,6 @@ Vue.createApp({
       inputWeight: 0,
       showNotification: false,
       records: {},
-      apiUrl: "https://lifeadventurer.tobiichi3227.eu.org/",
       selectedLanguage: "zh-TW",
       supportedLanguages: [],
       curLangTexts: {},
@@ -37,6 +36,8 @@ Vue.createApp({
     };
   },
   async created() {
+    this.apiUrl = "https://lifeadventurer.tobiichi3227.eu.org/";
+    this.dietaryItems = ["food", "water", "urination", "defecation"];
     await this.loadSupportedLanguages();
     await this.loadLangTexts();
     this.loadSelectedLanguage();
