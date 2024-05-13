@@ -376,7 +376,7 @@
                           <td class="justify-content-center align-items-center" style="text-align: center">
                             <span @click="removeRecord($event.target)" :id="`${index}-${index2}`"
                               class="material-symbols-outlined" style="display: inline-block; margin-left: 0px">
-                              delete
+                              {{ removingRecord ? 'hourglass_top' : 'delete' }}
                             </span>
                           </td>
                         </tr>

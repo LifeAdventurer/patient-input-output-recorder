@@ -18,6 +18,7 @@ Vue.createApp({
       editingRecordPatientAccount: "",
       restrictionText: {},
       showScrollButton: false,
+      removingRecord: false,
     };
   },
   created() {
@@ -32,6 +33,7 @@ Vue.createApp({
     this.isEditingRestriction = false;
     this.tempPatientRecord = {};
     this.currentEditingPatient = "";
+    this.confirming = false;
   },
   methods: {
     togglePasswordVisibility() {
@@ -306,7 +308,9 @@ Vue.createApp({
       }
     },
     async removeRecord(target, patientAccount) {
+      this.confirming = true;
       if (confirm("請確認是否移除這筆資料")) {
+        this.removingRecord = true;
         let [date, index] = target.attributes.id.textContent.split("-");
 
         const record = this.patientRecords[patientAccount][date]["data"][index];
@@ -318,7 +322,9 @@ Vue.createApp({
         this.patientRecords[patientAccount][date]["data"].splice(index, 1);
 
         await this.postData(patientAccount);
+        this.removingRecord = false;
       }
+      this.confirming = false;
     },
     scrollToTop() {
       window.scrollTo({
@@ -369,10 +375,12 @@ Vue.createApp({
       if (
         this.authenticated &&
         !this.isEditingRestriction &&
-        this.editingRecordIndex === -1
+        this.editingRecordIndex === -1 &&
+        !this.confirming
       ) {
         const fetchedData = await this.fetchRecords();
         if (
+          !this.confirming &&
           fetchedData.hasOwnProperty("message") &&
           fetchedData.message === "Fetch Success"
         ) {

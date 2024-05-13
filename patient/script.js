@@ -34,11 +34,13 @@ Vue.createApp({
       supportedLanguages: [],
       curLangTexts: {},
       showScrollButton: false,
+      removingRecord: false,
     };
   },
   async created() {
     this.apiUrl = "https://lifeadventurer.tobiichi3227.eu.org/";
     this.dietaryItems = ["food", "water", "urination", "defecation"];
+    this.confirming = false;
     await this.loadSupportedLanguages();
     await this.loadLangTexts();
     this.loadSelectedLanguage();
@@ -347,7 +349,9 @@ Vue.createApp({
       this.processRestrictionText();
     },
     async removeRecord(target) {
+      this.confirming = true;
       if (confirm(this.curLangText.confirm_remove_record)) {
+        this.removingRecord = true;
         let [date, index] = target.attributes.id.textContent.split("-");
 
         const record = this.records[date]["data"][index];
@@ -358,7 +362,9 @@ Vue.createApp({
         this.records[date]["data"].splice(index, 1);
 
         await this.postData();
+        this.removingRecord = false;
       }
+      this.confirming = false;
     },
     scrollToTop() {
       window.scrollTo({
@@ -405,9 +411,10 @@ Vue.createApp({
     }, 1000);
 
     setInterval(async () => {
-      if (this.authenticated) {
+      if (this.authenticated && !this.confirming) {
         const fetchedData = await this.fetchRecords();
         if (
+          !this.confirming &&
           fetchedData.hasOwnProperty("message") &&
           fetchedData.message === "Fetch Success"
         ) {

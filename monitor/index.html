@@ -267,7 +267,7 @@
                                               <span @click="removeRecord($event.target, patientAccount)"
                                                 :id="`${index2}-${index3}`" class="material-symbols-outlined"
                                                 style="display: inline-block; margin-left: 4px;">
-                                                delete
+                                                {{ removingRecord ? 'hourglass_top' : 'delete' }}
                                               </span>
                                             </td>
                                           </tr>
