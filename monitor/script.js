@@ -255,6 +255,9 @@ Vue.createApp({
         this.editingRecordIndex = -1;
         this.editingRecordPatientAccount = "";
         for (dietaryItem of this.dietaryItems) {
+          if (record[dietaryItem] === "") {
+            record[dietaryItem] = 0;
+          }
           this.patientRecords[patientAccount][date][`${dietaryItem}Sum`] +=
             record[dietaryItem] - this.tempPatientRecord[dietaryItem];
         }
