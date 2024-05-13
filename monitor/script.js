@@ -19,7 +19,10 @@ Vue.createApp({
         foodCheckboxChecked: false,
         waterCheckboxChecked: false,
       },
-      isEditing: false,
+      isEditingRestriction: false,
+      editingRecordIndex: -1,
+      editingRecordPatientAccount: "",
+      tempPatientRecord: {},
       currentEditingPatient: "",
       restrictionText: {},
       apiUrl: "https://lifeadventurer.tobiichi3227.eu.org/",
@@ -188,7 +191,7 @@ Vue.createApp({
         this.restrictionText[patientAccount] = "";
       }
     },
-    toggleEdit(patientAccount) {
+    toggleRestrictionEdit(patientAccount) {
       const limitAmount = String(
         this.patientRecords[patientAccount]["limitAmount"]
       ).trim();
@@ -220,9 +223,9 @@ Vue.createApp({
           this.currentEditingPatient = "";
         }
         this.postData(patientAccount);
-        this.isEditing = false;
+        this.isEditingRestriction = false;
       } else {
-        this.isEditing = true;
+        this.isEditingRestriction = true;
         if (
           this.currentEditingPatient !== "" &&
           patientAccount !== this.currentEditingPatient
@@ -232,6 +235,33 @@ Vue.createApp({
           this.postData(this.currentEditingPatient);
         }
         this.currentEditingPatient = patientAccount;
+      }
+    },
+    async toggleRecordEdit(target, patientAccount) {
+      let [date, recordIndex] = target.attributes.id.textContent.split("-");
+      const record =
+        this.patientRecords[patientAccount][date]["data"][recordIndex];
+      if (this.editingRecordIndex === -1) {
+        this.editingRecordIndex = parseInt(recordIndex);
+        this.editingRecordPatientAccount = patientAccount;
+        this.tempPatientRecord = {
+          food: record["food"],
+          water: record["water"],
+          urination: record["urination"],
+          defecation: record["defecation"],
+        };
+      } else {
+        this.editingRecordIndex = -1;
+        this.editingRecordPatientAccount = "";
+        this.patientRecords[patientAccount][date]["foodSum"] +=
+          record["food"] - this.tempPatientRecord["food"];
+        this.patientRecords[patientAccount][date]["waterSum"] +=
+          record["water"] - this.tempPatientRecord["water"];
+        this.patientRecords[patientAccount][date]["urinationSum"] +=
+          record["urination"] - this.tempPatientRecord["urination"];
+        this.patientRecords[patientAccount][date]["defecationSum"] +=
+          record["defecation"] - this.tempPatientRecord["defecation"];
+        await this.postData(patientAccount);
       }
     },
     handleInput(value, patientAccount) {
@@ -339,7 +369,11 @@ Vue.createApp({
     }, 1000);
 
     setInterval(async () => {
-      if (this.authenticated && !this.isEditing) {
+      if (
+        this.authenticated &&
+        !this.isEditingRestriction &&
+        this.editingRecordIndex === -1
+      ) {
         const fetchedData = await this.fetchRecords();
         if (
           fetchedData.hasOwnProperty("message") &&
