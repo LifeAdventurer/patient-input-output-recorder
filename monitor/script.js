@@ -264,6 +264,11 @@ Vue.createApp({
             record[dietaryItem] - this.tempPatientRecord[dietaryItem];
         }
         await this.postData(patientAccount);
+        if (
+          this.dietaryItems.every((dietaryItem) => record[dietaryItem] === 0)
+        ) {
+          await this.removeRecord(target, patientAccount);
+        }
       }
     },
     handleInput(value, patientAccount) {
