@@ -1,4 +1,5 @@
 import json
+import subprocess
 
 import db
 from fastapi import FastAPI, Request
@@ -54,6 +55,7 @@ async def handle_request(post_request: Request):
         'del account',
         'change password',
         'fetch account list',
+        'update server code',
     ]:
         return handle_authenticated_request(post_request)
 
@@ -105,6 +107,16 @@ def handle_request_without_authentication(post_request):
     elif post_request['event'] == 'fetch account list':
         account_list = db.get_all_accounts()
         return {"message": FETCH_SUCCESS, "account_list": account_list}
+
+    elif post_request['event'] == 'update server code':
+        try:
+            subprocess.check_output(
+                'cd .. && git fetch --all && git reset --hard origin/main',
+                shell=True,
+            )
+            return {"message": UPDATE_SUCCESS}
+        except subprocess.CalledProcessError as e:
+            return {"message": f"Update failed: {e}"}
 
     err = db.authenticate(post_request['account'], post_request['password'])
     if err != "Authentication successful":
