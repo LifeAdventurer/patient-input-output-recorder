@@ -314,11 +314,22 @@ Vue.createApp({
     },
     async removeRecord(target, patientAccount) {
       this.confirming = true;
-      if (confirm("請確認是否移除這筆資料")) {
+      let [date, index] = target.attributes.id.textContent.split("-");
+      const record = this.patientRecords[patientAccount][date]["data"][index];
+      const confirmMessageLines = [
+        "請確認是否移除這筆資料:",
+        `床號: ${patientAccount}`,
+        `日期: ${date.replaceAll("_", "/")}`,
+        `時間: ${record['time']}`,
+        `進食: ${record['food']}`,
+        `喝水: ${record['water']}`,
+        `排尿: ${record['urination']}`,
+        `排便: ${record['defecation']}`
+      ];
+      const confirmMessage = confirmMessageLines.join('\n');
+      if (confirm(confirmMessage)) {
         this.removingRecord = true;
-        let [date, index] = target.attributes.id.textContent.split("-");
 
-        const record = this.patientRecords[patientAccount][date]["data"][index];
         this.patientRecords[patientAccount][date]["count"] -= 1;
         for (dietaryItem of this.dietaryItems) {
           this.patientRecords[patientAccount][date][`${dietaryItem}Sum`] -=
