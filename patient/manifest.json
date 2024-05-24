@@ -1,0 +1,32 @@
+{
+    "short_name": "Patient Diet Recoder",
+    "name": "Patient Diet Recoder (Patient)",
+    "description": "",
+    "background_color": "#1a1b1e",
+    "theme_color": "#1a1b1e",
+    "icons": [
+        {
+            "src": "../images/lifeadventurer-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "../images/lifeadventurer-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "../images/lifeadventurer-180x180.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "../images/lifeadventurer-270x270.png",
+            "sizes": "270x270",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/patient-diet-recorder/patient/",
+    "display": "standalone",
+    "orientation": "portrait"
+}
