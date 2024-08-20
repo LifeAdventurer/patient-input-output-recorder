@@ -4,7 +4,6 @@ from PIL import ImageDraw, ImageFont
 
 
 def generate_qr_code(account, password, account_type):
-
     if account_type in [db.AccountType.ADMIN, db.AccountType.PATIENT]:
         url = f"https://lifeadventurer.github.io/patient-diet-recorder/patient/?acct={account}&pw={password}"
     elif account_type == db.AccountType.MONITOR:
@@ -27,20 +26,19 @@ def generate_qr_code(account, password, account_type):
     image = ImageDraw.Draw(img)
     position = (200, 10)
     font = ImageFont.truetype("arial.ttf", 20)
-    image.text(position, f"{account}", fill=('#000000'), font=font)
+    image.text(position, f"{account}", fill=("#000000"), font=font)
     img.save(filename)
     print(f"QR code saved as '{filename}'")
 
 
 if __name__ == "__main__":
+    ACCOUNT_TYPES = ["ADMIN", "MONITOR", "PATIENT"]
 
-    ACCOUNT_TYPES = ['ADMIN', 'MONITOR', 'PATIENT']
-
-    ACCOUNT = input('Enter the account: ')
-    PASSWORD = input('Enter the password: ')
-    ACCOUNT_TYPE = ''
+    ACCOUNT = input("Enter the account: ")
+    PASSWORD = input("Enter the password: ")
+    ACCOUNT_TYPE = ""
 
     while ACCOUNT_TYPE not in ACCOUNT_TYPES:
-        ACCOUNT_TYPE = input('Enter the account type: ')
+        ACCOUNT_TYPE = input("Enter the account type: ")
 
     generate_qr_code(ACCOUNT, PASSWORD, ACCOUNT_TYPE)
