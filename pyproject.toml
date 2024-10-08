@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "patient-diet-recorder"
+name = "patient-input-output-recorder"
 version = "0.5.1"
 description = ""
 authors = ["lifeadventurer <life0adventurer@gmail.com>"]

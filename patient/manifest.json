@@ -1,6 +1,6 @@
 {
-    "short_name": "Patient Diet Recoder",
-    "name": "Patient Diet Recoder (Patient)",
+    "short_name": "Patient Input/Output Recoder",
+    "name": "Patient Input/Output Recoder (Patient)",
     "description": "",
     "background_color": "#1a1b1e",
     "theme_color": "#1a1b1e",
@@ -26,7 +26,7 @@
             "type": "image/png"
         }
     ],
-    "start_url": "/patient-diet-recorder/patient/",
+    "start_url": "/patient-input-output-recorder/patient/",
     "display": "standalone",
     "orientation": "portrait"
 }

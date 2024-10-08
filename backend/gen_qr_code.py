@@ -5,9 +5,9 @@ from PIL import ImageDraw, ImageFont
 
 def generate_qr_code(account, password, account_type):
     if account_type in [db.AccountType.ADMIN, db.AccountType.PATIENT]:
-        url = f"https://lifeadventurer.github.io/patient-diet-recorder/patient/?acct={account}&pw={password}"
+        url = f"https://lifeadventurer.github.io/patient-input-output-recorder/patient/?acct={account}&pw={password}"
     elif account_type == db.AccountType.MONITOR:
-        url = f"https://lifeadventurer.github.io/patient-diet-recorder/monitor/?acct={account}&pw={password}"
+        url = f"https://lifeadventurer.github.io/patient-input-output-recorder/monitor/?acct={account}&pw={password}"
     else:
         return
 
