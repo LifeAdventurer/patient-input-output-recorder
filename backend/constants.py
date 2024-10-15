@@ -1,1 +1,1 @@
-URL = "https://lifeadventurer.tobiichi3227.eu.org/"
+URL = "https://lifeadventurer.tfcis.org/"

@@ -38,7 +38,7 @@ Vue.createApp({
     };
   },
   async created() {
-    this.apiUrl = "https://lifeadventurer.tobiichi3227.eu.org/";
+    this.apiUrl = "https://lifeadventurer.tfcis.org/";
     this.dietaryItems = ["food", "water", "urination", "defecation"];
     this.confirming = false;
     await this.loadSupportedLanguages();

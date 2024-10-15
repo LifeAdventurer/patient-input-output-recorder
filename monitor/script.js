@@ -22,7 +22,7 @@ Vue.createApp({
     };
   },
   created() {
-    this.apiUrl = "https://lifeadventurer.tobiichi3227.eu.org/";
+    this.apiUrl = "https://lifeadventurer.tfcis.org/";
     this.dietaryItems = ["food", "water", "urination", "defecation"];
     this.keysToFilter = {
       isEditing: false,
