@@ -116,7 +116,7 @@ Vue.createApp({
         !isNaN(this.records["limitAmount"]) &&
         String(this.records["limitAmount"]).trim() !== ""
       ) {
-        let text = [];
+        const text = [];
         if (
           this.records["foodCheckboxChecked"] &&
           this.records["waterCheckboxChecked"]
@@ -353,7 +353,7 @@ Vue.createApp({
       this.confirming = true;
       if (confirm(this.curLangText.confirm_remove_record)) {
         this.removingRecord = true;
-        let [date, index] = target.attributes.id.textContent.split("-");
+        const [date, index] = target.attributes.id.textContent.split("-");
 
         const record = this.records[date]["data"][index];
         this.records[date]["count"] -= 1;
@@ -384,10 +384,10 @@ Vue.createApp({
   async mounted() {
     const url = new URL(location.href);
     const params = url.searchParams;
-    let account = params.has("acct")
+    const account = params.has("acct")
       ? params.get("acct")
       : sessionStorage.getItem("account");
-    let password = params.has("pw")
+    const password = params.has("pw")
       ? params.get("pw")
       : sessionStorage.getItem("password");
 

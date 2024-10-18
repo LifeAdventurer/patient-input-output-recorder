@@ -245,7 +245,7 @@ Vue.createApp({
       }
     },
     async toggleRecordEdit(target, patientAccount) {
-      let [date, recordIndex] = target.attributes.id.textContent.split("-");
+      const [date, recordIndex] = target.attributes.id.textContent.split("-");
       const record =
         this.patientRecords[patientAccount][date]["data"][recordIndex];
       if (this.editingRecordIndex === -1) {
@@ -315,7 +315,7 @@ Vue.createApp({
     },
     async removeRecord(target, patientAccount) {
       this.confirming = true;
-      let [date, index] = target.attributes.id.textContent.split("-");
+      const [date, index] = target.attributes.id.textContent.split("-");
       const record = this.patientRecords[patientAccount][date]["data"][index];
       const confirmMessageLines = [
         "請確認是否移除這筆資料:",
@@ -360,10 +360,10 @@ Vue.createApp({
   async mounted() {
     const url = new URL(location.href);
     const params = url.searchParams;
-    let account = params.has("acct")
+    const account = params.has("acct")
       ? params.get("acct")
       : sessionStorage.getItem("account");
-    let password = params.has("pw")
+    const password = params.has("pw")
       ? params.get("pw")
       : sessionStorage.getItem("password");
 
