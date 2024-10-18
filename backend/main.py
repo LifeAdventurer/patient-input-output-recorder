@@ -2,13 +2,14 @@ import json
 import subprocess
 
 import db
+from constants import FRONTEND_PORT
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*", "http://localhost:5500"],
+    allow_origins=["*", f"http://localhost:{FRONTEND_PORT}"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
