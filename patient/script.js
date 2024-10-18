@@ -93,6 +93,7 @@ Vue.createApp({
           },
           body: JSON.stringify({
             event: "fetch patient records",
+            account_type: "PATIENT",
             account: this.account,
             password: this.password,
           }),

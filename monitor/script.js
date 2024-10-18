@@ -52,6 +52,7 @@ Vue.createApp({
           },
           body: JSON.stringify({
             event: "fetch monitoring account records",
+            account_type: "MONITOR",
             account: this.account,
             password: this.password,
           }),

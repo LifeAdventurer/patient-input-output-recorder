@@ -74,6 +74,18 @@ async def handle_request(post_request: Request):
 
 
 def handle_authenticated_request(post_request):
+    account_type = post_request.get("account_type")
+    if (
+        post_request.get("event")
+        in ["sign up", "del account", "change password", "fetch account list"]
+        and account_type == db.AccountType.MONITOR
+    ):
+        err = db.authenticate(post_request["account"], post_request["password"])
+        if err != "Authentication successful":
+            return {"message": err}
+
+        return handle_request_without_authentication(post_request)
+
     token = load_json_file(CONFIG_JSON_PATH).get("token")
 
     if not token or post_request.get("token") != token:
