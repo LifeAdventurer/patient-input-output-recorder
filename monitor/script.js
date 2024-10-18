@@ -23,6 +23,7 @@ Vue.createApp({
   },
   created() {
     this.apiUrl = "https://lifeadventurer.tfcis.org/";
+    this.apiUrl = "http://localhost:8000/";
     this.dietaryItems = ["food", "water", "urination", "defecation"];
     this.keysToFilter = {
       isEditing: false,

@@ -39,6 +39,7 @@ Vue.createApp({
   },
   async created() {
     this.apiUrl = "https://lifeadventurer.tfcis.org/";
+    this.apiUrl = "http://localhost:8000/";
     this.dietaryItems = ["food", "water", "urination", "defecation"];
     this.confirming = false;
     await this.loadSupportedLanguages();
