@@ -45,7 +45,7 @@ Vue.createApp({
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
-    async fetchData(event) {
+    async fetchData(payload) {
       try {
         const response = await fetch(this.apiUrl, {
           method: "POST",
@@ -54,12 +54,7 @@ Vue.createApp({
             Accept: "application/json",
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            event: event,
-            account_type: "MONITOR",
-            account: this.account,
-            password: this.password,
-          }),
+          body: JSON.stringify(payload),
         });
 
         if (!response.ok) {
@@ -126,7 +121,12 @@ Vue.createApp({
       }
     },
     async authenticate() {
-      const fetchedData = await this.fetchData("fetch monitoring account records");
+      const fetchedData = await this.fetchData({
+          event: this.events,
+          account: this.account,
+          password: this.password,
+          // TODO: patient:
+      });
       if (fetchedData.hasOwnProperty("message")) {
         switch (fetchedData.message) {
           case "Nonexistent account.":
@@ -399,7 +399,12 @@ Vue.createApp({
         this.editingRecordIndex === -1 &&
         !this.confirming
       ) {
-        const fetchedData = await this.fetchData("fetch monitoring account records");
+        const fetchedData = await this.fetchData({
+          event: this.events,
+          account: this.account,
+          password: this.password,
+          // TODO: patient:
+        });
         if (
           !this.confirming &&
           fetchedData.hasOwnProperty("message") &&

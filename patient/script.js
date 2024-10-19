@@ -100,14 +100,15 @@ Vue.createApp({
             event: this.events.FETCH_RECORD,
             account: this.account,
             password: this.password,
+            patient: this.account,
           }),
         });
 
         if (!response.ok) {
-          throw new Error("Failed to fetch record");
+          throw new Error("Failed to fetch records.");
         }
 
-        console.log("Successfully fetched the record");
+        console.log("Successfully fetched the records.");
         return await response.json();
       } catch (error) {
         throw new Error(error.message);

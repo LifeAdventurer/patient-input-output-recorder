@@ -10,6 +10,7 @@ from constants import (
     DATA_JSON_PATH,
     DELETE_PATIENT,
     FETCH_RECORD,
+    FETCH_RECORD_SUCCESS,
     FRONTEND_PORT,
     INVALID_ACCT_TYPE,
     INVALID_EVENT,
@@ -133,15 +134,31 @@ async def handle_request(request: Request):
         return {"message": "WIP"}
 
     elif event in [UPDATE_RECORD, FETCH_RECORD] and authenticate(post_request):
-        if event == UPDATE_RECORD:
-            data = load_json_file(DATA_JSON_PATH)
-            data[post_request["patient"]] = post_request["data"]
-            write_json_file(DATA_JSON_PATH, data)
+        # Both event needs `patient` as a parameter
+        if not has_parameters(post_request, ["patient"]):
+            return {"message": MISSING_PARAMETER}
 
-            return {"message": UPDATE_RECORD_SUCCESS}
+        if event == UPDATE_RECORD:
+            patient_account = post_request["patient"]
+            if db.get_account_type(patient_account) == db.AccountType.PATIENT:
+                data = load_json_file(DATA_JSON_PATH)
+                data[patient_account] = post_request["data"]
+                write_json_file(DATA_JSON_PATH, data)
+
+                return {"message": UPDATE_RECORD_SUCCESS}
+            else:
+                return {"message": INVALID_ACCT_TYPE}
 
         if event == FETCH_RECORD:
-            return {"message": "WIP"}
+            patient_account = post_request["patient"]
+            if db.get_account_type(patient_account) == db.AccountType.PATIENT:
+                data = load_json_file(DATA_JSON_PATH)
+                return {
+                    "message": FETCH_RECORD_SUCCESS,
+                    "account_records": data[patient_account],
+                }
+            else:
+                return {"message": INVALID_ACCT_TYPE}
 
     else:
         return {"message": INVALID_EVENT}
