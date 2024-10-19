@@ -20,8 +20,14 @@ FETCH_RECORD = "fetch_record"
 
 # Messages
 ACCT_CREATED = "Account created."
+ACCT_DELETED = "Account deleted."
 ACCT_ALREADY_EXISTS = "Account already exists."
+ACCT_NOT_EXIST = "Nonexistent account."
 INVALID_ACCT_TYPE = "Invalid account type."
+
+AUTH_SUCCESS = "Authentication successful."
+AUTH_FAIL_PASSWORD = "Incorrect password."
+
 ADD_PATIENT_SUCCESS = "Patient added to monitor list."
 REMOVE_PATIENT_SUCCESS = "Patient removed from monitor list."
 DELETE_PATIENT_SUCCESS = "Patient account deleted."
