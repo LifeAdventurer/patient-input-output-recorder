@@ -11,6 +11,7 @@ from constants import (
     DATA_JSON_PATH,
     DELETE_PATIENT,
     FETCH_MONITORING_PATIENTS,
+    FETCH_MONITORING_PATIENTS_SUCCESS,
     FETCH_RECORD,
     FETCH_RECORD_SUCCESS,
     FETCH_UNMONITORED_PATIENTS,
@@ -80,6 +81,7 @@ def sign_up_account(account_type: str, account: str, password: str) -> dict:
     return {"message": ACCT_CREATED}
 
 
+# TODO: Return messages
 def authenticate(post_request: dict):
     return has_parameters(
         post_request, ["account", "password"]
@@ -111,11 +113,17 @@ async def handle_request(request: Request):
         ):
             return {"message": MISSING_PARAMETER}
 
-        return sign_up_account(
+        response = sign_up_account(
             post_request["account_type"],
             post_request["account"],
             post_request["password"],
         )
+
+        if response == ACCT_CREATED:
+            account_relations = load_json_file(ACCT_REL_JSON_PATH)
+            account_relations[post_request["account"]] = []
+
+        return response
 
     if (
         event
@@ -137,7 +145,21 @@ async def handle_request(request: Request):
         )
     ):
         if event == FETCH_MONITORING_PATIENTS:
-            return {"message": "WIP"}
+            account_relations = load_json_file(ACCT_REL_JSON_PATH)
+            patient_accounts = []
+            for patient_account in account_relations["monitor_accounts"][
+                post_request["account"]
+            ]:
+                patient_password = db.get_password(patient_account)
+                if patient_password:
+                    patient_accounts.append(
+                        (patient_account, db.get_password(patient_account))
+                    )
+
+            return {
+                "message": FETCH_MONITORING_PATIENTS_SUCCESS,
+                "patients": patient_accounts,
+            }
 
         if event == FETCH_UNMONITORED_PATIENTS:
             return {"message": "WIP"}
@@ -291,32 +313,6 @@ async def handle_request(request: Request):
 #                 "message": FETCH_RECORD_SUCCESS,
 #                 "account_records": data[patient_account],
 #             }
-#         else:
-#             return {"message": INVALID_ACCT_TYPE}
-#
-#     elif post_request["event"] == "fetch monitoring account records":
-#         monitoring_account = post_request["account"]
-#         if db.get_account_type(monitoring_account) == db.AccountType.MONITOR:
-#             account_relations = load_json_file(ACCT_REL_JSON_PATH)
-#             if monitoring_account in account_relations["monitor_accounts"]:
-#                 patient_accounts = account_relations["monitor_accounts"][
-#                     monitoring_account
-#                 ]
-#                 data = load_json_file(DATA_JSON_PATH)
-#                 patient_records = {}
-#                 for patient_account in patient_accounts:
-#                     if patient_account not in data:
-#                         patient_records[patient_account] = {}
-#                     else:
-#                         patient_records[patient_account] = data[patient_account]
-#
-#                 return {
-#                     "message": FETCH_RECORD_SUCCESS,
-#                     "patient_accounts": patient_accounts,
-#                     "patient_records": patient_records,
-#                 }
-#             else:
-#                 return {"message": "No associated patient accounts"}
 #         else:
 #             return {"message": INVALID_ACCT_TYPE}
 #
