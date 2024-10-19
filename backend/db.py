@@ -1,6 +1,6 @@
 import sqlite3
 
-from backend.constants import (
+from constants import (
     ACCT_ALREADY_EXISTS,
     ACCT_CREATED,
     ACCT_DELETED,

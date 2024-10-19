@@ -34,3 +34,6 @@ DELETE_PATIENT_SUCCESS = "Patient account deleted."
 SET_RESTRICTS_SUCCESS = "Restrictions set."
 UPDATE_RECORD_SUCCESS = "Update successful."
 FETCH_RECORD_SUCCESS = "Fetch successful."
+
+MISSING_PARAMETER = "Missing parameter."
+INVALID_EVENT = "Invalid event."
