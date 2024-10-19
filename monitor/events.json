@@ -5,5 +5,7 @@
     "DELETE_PATIENT": "delete_patient",
     "SET_RESTRICTS": "set_restricts",
     "UPDATE_RECORD": "update_record",
-    "FETCH_RECORD": "fetch_record"
+    "FETCH_RECORD": "fetch_record",
+    "FETCH_MONITORING_PATIENTS": "fetch_monitoring_patients",
+    "FETCT_UNMONITORED_PATIENTS": "fetct_unmonitored_patients"
 }

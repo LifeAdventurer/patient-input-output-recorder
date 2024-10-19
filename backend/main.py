@@ -84,9 +84,11 @@ def sign_up_account(account_type: str, account: str, password: str) -> dict:
 
 # TODO: Return messages
 def authenticate(post_request: dict):
-    return has_parameters(
-        post_request, ["account", "password"]
-    ) and db.authenticate(post_request["account"], post_request["password"])
+    return (
+        has_parameters(post_request, ["account", "password"])
+        and db.authenticate(post_request["account"], post_request["password"])
+        == AUTH_SUCCESS
+    )
 
 
 def has_parameters(post_request: dict, required_parameters: list[str]) -> bool:
@@ -104,7 +106,7 @@ async def handle_request(request: Request):
 
     token = load_json_file(CONFIG_JSON_PATH).get("token")
     post_request_token = post_request.get("token")
-    if not token or post_request_token != token:
+    if not token or (post_request_token and post_request_token != token):
         return {"message": "Incorrect token"}
 
     event = post_request.get("event")
@@ -120,29 +122,27 @@ async def handle_request(request: Request):
             post_request["password"],
         )
 
-        if response == ACCT_CREATED:
+        if response["message"] == ACCT_CREATED:
             account_relations = load_json_file(ACCT_REL_JSON_PATH)
-            account_relations[post_request["account"]] = []
+            account_relations["monitor_accounts"][post_request["account"]] = []
+            write_json_file(ACCT_REL_JSON_PATH, account_relations)
 
         return response
 
-    if (
-        event
-        in [
-            SIGN_UP_PATIENT,  # 7
-            ADD_PATIENT,
-            REMOVE_PATIENT,
-            DELETE_PATIENT,
-            SET_RESTRICTS,
-            FETCH_MONITORING_PATIENTS,  # 1
-            FETCH_UNMONITORED_PATIENTS,  # 2
-        ]
-        and post_request_token
+    if event in [
+        FETCH_MONITORING_PATIENTS,  # 1
+        FETCH_UNMONITORED_PATIENTS,  # 2
+        ADD_PATIENT,
+        REMOVE_PATIENT,
+        DELETE_PATIENT,
+        SET_RESTRICTS,
+        SIGN_UP_PATIENT,  # 7
+    ] and (
+        post_request_token
         or (
             authenticate(post_request)
-            and db.get_account_type(
-                post_request["account"] == db.AccountType.MONITOR
-            ),
+            and db.get_account_type(post_request["account"])
+            == db.AccountType.MONITOR
         )
     ):
         if event == FETCH_MONITORING_PATIENTS:
@@ -157,9 +157,18 @@ async def handle_request(request: Request):
                         (patient_account, db.get_password(patient_account))
                     )
 
+            data = load_json_file(DATA_JSON_PATH)
+            patient_records = {}
+            for patient_account in patient_accounts:
+                if patient_account not in data:
+                    patient_records[patient_account] = {}
+                else:
+                    patient_records[patient_account] = data[patient_account]
+
             return {
                 "message": FETCH_MONITORING_PATIENTS_SUCCESS,
-                "patients": patient_accounts,
+                "patient_accounts": patient_accounts,
+                "patient_records": patient_records,
             }
 
         if event == FETCH_UNMONITORED_PATIENTS:

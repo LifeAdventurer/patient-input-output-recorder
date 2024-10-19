@@ -11,6 +11,7 @@ Vue.createApp({
       dietaryItems: ["food", "water", "urination", "defecation"],
       patientRecords: {},
       patientAccounts: [],
+      patientAccountsWithPasswords: [],
       filteredPatientAccounts: [],
       searchQuery: "",
       currentDateMMDD: "",
@@ -69,7 +70,10 @@ Vue.createApp({
     },
     processFetchedData(fetchedData) {
       this.patientRecords = fetchedData["patient_records"];
-      this.patientAccounts = fetchedData["patient_accounts"];
+      this.patientAccountsWithPasswords = fetchedData["patient_accounts"];
+      console.log(JSON.stringify(this.patientAccountsWithPasswords));
+      this.patientAccounts = this.patientAccountsWithPasswords.map(account => account[0]);
+      console.log(JSON.stringify(this.patientAccounts));
       this.patientAccounts.forEach((patientAccount) => {
         let modified = false;
         Object.entries(this.keysToFilter).forEach(([key, value]) => {
@@ -122,10 +126,9 @@ Vue.createApp({
     },
     async authenticate() {
       const fetchedData = await this.fetchData({
-          event: this.events,
+          event: this.events.FETCH_MONITORING_PATIENTS,
           account: this.account,
           password: this.password,
-          // TODO: patient:
       });
       if (Object.prototype.hasOwnProperty.call(fetchedData, "message")) {
         switch (fetchedData.message) {
@@ -140,6 +143,11 @@ Vue.createApp({
             break;
           case "Invalid account type.":
             alert("此帳號沒有管理權限");
+            this.account = "";
+            this.password = "";
+            break;
+          case "Invalid event.":
+            alert("帳號或密碼錯誤");
             this.account = "";
             this.password = "";
             break;
@@ -400,10 +408,9 @@ Vue.createApp({
         !this.confirming
       ) {
         const fetchedData = await this.fetchData({
-          event: this.events,
+          event: this.events.FETCH_MONITORING_PATIENTS,
           account: this.account,
           password: this.password,
-          // TODO: patient:
         });
         if (
           !this.confirming &&
