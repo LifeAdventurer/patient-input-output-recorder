@@ -56,6 +56,7 @@ async def handle_request(post_request: Request):
         "del account",
         "change password",
         "fetch account list",
+        "fetch unmonitored patients",
         "update server code",
     ]:
         return handle_authenticated_request(post_request)
@@ -77,7 +78,12 @@ def handle_authenticated_request(post_request):
     account_type = post_request.get("account_type")
     if (
         post_request.get("event")
-        in ["sign up", "del account", "change password", "fetch account list"]
+        in [
+            "sign up",
+            "del account",
+            "change password",
+            "fetch unmonitored patients",
+        ]
         and account_type == db.AccountType.MONITOR
     ):
         err = db.authenticate(post_request["account"], post_request["password"])
@@ -116,6 +122,21 @@ def handle_request_without_authentication(post_request):
         write_json_file(DATA_JSON_PATH, data)
 
         return {"message": "Account created successfully"}
+
+    elif post_request["event"] == "fetch unmonitored patients":
+        account_list = db.get_all_accounts()
+        account_relations = load_json_file(ACCT_REL_JSON_PATH)
+        monitored_patients = set()
+        for account in account_relations["monitor_accounts"].values():
+            monitored_patients.update(account)
+        patient_accounts = [
+            account
+            for account in account_list
+            if account[3] == db.AccountType.PATIENT
+            and account[1] not in monitored_patients
+        ]
+
+        return {"message": FETCH_SUCCESS, "account_list": patient_accounts}
 
     elif post_request["event"] == "fetch account list":
         account_list = db.get_all_accounts()
