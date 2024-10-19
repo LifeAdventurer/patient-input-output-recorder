@@ -6,6 +6,7 @@ from constants import (
     ACCT_CREATED,
     ACCT_REL_JSON_PATH,
     ADD_PATIENT,
+    AUTH_SUCCESS,
     CONFIG_JSON_PATH,
     DATA_JSON_PATH,
     DELETE_PATIENT,
@@ -119,13 +120,13 @@ async def handle_request(request: Request):
     if (
         event
         in [
-            SIGN_UP_PATIENT,
+            SIGN_UP_PATIENT,  # 7
             ADD_PATIENT,
             REMOVE_PATIENT,
             DELETE_PATIENT,
             SET_RESTRICTS,
-            FETCH_MONITORING_PATIENTS,
-            FETCH_UNMONITORED_PATIENTS,
+            FETCH_MONITORING_PATIENTS,  # 1
+            FETCH_UNMONITORED_PATIENTS,  # 2
         ]
         and post_request_token
         or (
@@ -135,7 +136,39 @@ async def handle_request(request: Request):
             ),
         )
     ):
-        return {"message": "WIP"}
+        if event == FETCH_MONITORING_PATIENTS:
+            return {"message": "WIP"}
+
+        if event == FETCH_UNMONITORED_PATIENTS:
+            return {"message": "WIP"}
+
+        if not has_parameters(post_request, ["patient", "patient_password"]):
+            return {"message": MISSING_PARAMETER}
+
+        # The events below requires `patient` and `patient_password`
+        # The account must be a `PATIENT`
+        patient = post_request["patient"]
+        patient_password = post_request["patient_password"]
+        err = db.authenticate(patient, patient_password)
+        if err != AUTH_SUCCESS:
+            return {"message": err}
+        if db.get_account_type(patient) != db.AccountType.PATIENT:
+            return {"message": INVALID_ACCT_TYPE}
+
+        if event == ADD_PATIENT:
+            return {"message": "WIP"}
+
+        if event == REMOVE_PATIENT:
+            return {"message": "WIP"}
+
+        if event == DELETE_PATIENT:
+            return {"message": "WIP"}
+
+        if event == SET_RESTRICTS:
+            return {"message": "WIP"}
+
+        if event == SIGN_UP_PATIENT:
+            return {"message": "WIP"}
 
     elif event in [UPDATE_RECORD, FETCH_RECORD] and authenticate(post_request):
         # Both event needs `patient` as a parameter
