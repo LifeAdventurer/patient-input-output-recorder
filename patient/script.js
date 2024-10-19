@@ -42,7 +42,7 @@ Vue.createApp({
     this.apiUrl = "http://localhost:8000/";
     this.dietaryItems = ["food", "water", "urination", "defecation"];
     this.confirming = false;
-    await loadAPIEvents();
+    await this.loadAPIEvents();
     await this.loadSupportedLanguages();
     await this.loadLangTexts();
     this.loadSelectedLanguage();
@@ -197,9 +197,8 @@ Vue.createApp({
       }
     },
     async postData() {
-      const url = this.apiUrl;
       try {
-        const response = await fetch(url, {
+        const response = await fetch(this.apiUrl, {
           method: "POST",
           mode: "cors",
           headers: {

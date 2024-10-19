@@ -35,7 +35,7 @@ Vue.createApp({
     this.tempPatientRecord = {};
     this.currentEditingPatient = "";
     this.confirming = false;
-    await loadAPIEvents()
+    await this.loadAPIEvents()
   },
   methods: {
     async loadAPIEvents() {
