@@ -84,15 +84,14 @@ Vue.createApp({
           }
         });
         if (modified) {
-          this.postData(patientAccount);
+          this.updateRecords(patientAccount);
         }
         this.updateRestrictionText(patientAccount);
       });
     },
-    async postData(patientAccount) {
-      const url = this.apiUrl;
+    async updateRecords(patientAccount) {
       try {
-        const response = await fetch(url, {
+        const response = await fetch(this.apiUrl, {
           method: "POST",
           mode: "cors",
           headers: {
@@ -100,29 +99,29 @@ Vue.createApp({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            event: "update patient record from monitor",
+            event: this.events.UPDATE_RECORD,
             account: this.account,
             password: this.password,
-            patient_account: patientAccount,
+            patient: patientAccount,
             data: this.patientRecords[patientAccount],
           }),
         });
 
         if (!response.ok) {
-          console.error("Network response was not ok, failed to post data");
+          console.error("Network response was not ok, failed to post patient records.");
           return false;
         }
 
         const { message } = await response.json();
         if (message === "Update successful.") {
-          console.log("Data posted successfully");
+          console.log("Patient records posted successfully");
           return true;
         } else {
           console.error("Error:", message);
           return false;
         }
       } catch (error) {
-        console.error("Error during posting data:", error);
+        console.error("Error during posting patient records:", error);
         return false;
       }
     },
@@ -234,7 +233,7 @@ Vue.createApp({
           this.updateRestrictionText(patientAccount);
           this.currentEditingPatient = "";
         }
-        this.postData(patientAccount);
+        this.updateRecords(patientAccount);
         this.isEditingRestriction = false;
       } else {
         this.isEditingRestriction = true;
@@ -244,7 +243,7 @@ Vue.createApp({
         ) {
           this.patientRecords[this.currentEditingPatient]["isEditing"] = false;
           this.updateRestrictionText(this.currentEditingPatient);
-          this.postData(this.currentEditingPatient);
+          this.updateRecords(this.currentEditingPatient);
         }
         this.currentEditingPatient = patientAccount;
       }
@@ -269,7 +268,7 @@ Vue.createApp({
           this.patientRecords[patientAccount][date][`${dietaryItem}Sum`] +=
             record[dietaryItem] - this.tempPatientRecord[dietaryItem];
         }
-        await this.postData(patientAccount);
+        await this.updateRecords(patientAccount);
         if (
           this.dietaryItems.every((dietaryItem) => record[dietaryItem] === 0)
         ) {
@@ -343,7 +342,7 @@ Vue.createApp({
         }
         this.patientRecords[patientAccount][date]["data"].splice(index, 1);
 
-        await this.postData(patientAccount);
+        await this.updateRecords(patientAccount);
         this.removingRecord = false;
       }
       this.confirming = false;

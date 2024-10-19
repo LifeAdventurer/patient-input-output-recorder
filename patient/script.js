@@ -196,7 +196,7 @@ Vue.createApp({
         sessionStorage.removeItem("password");
       }
     },
-    async postData() {
+    async updateRecords() {
       try {
         const response = await fetch(this.apiUrl, {
           method: "POST",
@@ -209,25 +209,26 @@ Vue.createApp({
             event: this.events.UPDATE_RECORD,
             account: this.account,
             password: this.password,
+            patient: this.account,
             data: this.records,
           }),
         });
 
         if (!response.ok) {
-          console.error("Network response was not ok, failed to post data");
+          console.error("Network response was not ok, failed to post patient records.");
           return false;
         }
 
         const { message } = await response.json();
         if (message === "Update successful.") {
-          console.log("Data posted successfully");
+          console.log("Patient records posted successfully");
           return true;
         } else {
           console.error("Error:", message);
           return false;
         }
       } catch (error) {
-        console.error("Error during posting data:", error);
+        console.error("Error during posting patient records:", error);
         return false;
       }
     },
@@ -317,7 +318,7 @@ Vue.createApp({
         this.customInputWater = "";
         this.customInputUrination = "";
         // post to database
-        if (await this.postData()) {
+        if (await this.updateRecords()) {
           this.showNotification = true;
           setTimeout(() => {
             this.hideNotification();
@@ -340,7 +341,7 @@ Vue.createApp({
         // init again
         this.inputWeight = 0;
         // post to database
-        if ((await this.postData()) && this.showNotification === false) {
+        if ((await this.updateRecords()) && this.showNotification === false) {
           this.showNotification = true;
           setTimeout(() => {
             this.hideNotification();
@@ -366,7 +367,7 @@ Vue.createApp({
         }
         this.records[date]["data"].splice(index, 1);
 
-        await this.postData();
+        await this.updateRecords();
         this.removingRecord = false;
       }
       this.confirming = false;

@@ -19,6 +19,7 @@ from constants import (
     SIGN_UP_MONITOR,
     SIGN_UP_PATIENT,
     UPDATE_RECORD,
+    UPDATE_RECORD_SUCCESS,
 )
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -132,7 +133,15 @@ async def handle_request(request: Request):
         return {"message": "WIP"}
 
     elif event in [UPDATE_RECORD, FETCH_RECORD] and authenticate(post_request):
-        return {"message": "WIP"}
+        if event == UPDATE_RECORD:
+            data = load_json_file(DATA_JSON_PATH)
+            data[post_request["patient"]] = post_request["data"]
+            write_json_file(DATA_JSON_PATH, data)
+
+            return {"message": UPDATE_RECORD_SUCCESS}
+
+        if event == FETCH_RECORD:
+            return {"message": "WIP"}
 
     else:
         return {"message": INVALID_EVENT}
@@ -206,13 +215,6 @@ async def handle_request(request: Request):
 #             "account_type": account_type,
 #         }
 #
-#
-#     elif post_request["event"] == "update record":
-#         data = load_json_file(DATA_JSON_PATH)
-#         data[post_request["account"]] = post_request["data"]
-#         write_json_file(DATA_JSON_PATH, data)
-#
-#         return {"message": UPDATE_RECORD_SUCCESS}
 #
 #     elif post_request["event"] == "update patient record from monitor":
 #         if (
