@@ -15,6 +15,7 @@ from constants import (
     FETCH_RECORD,
     FETCH_RECORD_SUCCESS,
     FETCH_UNMONITORED_PATIENTS,
+    FETCH_UNMONITORED_PATIENTS_SUCCESS,
     FRONTEND_PORT,
     INVALID_ACCT_TYPE,
     INVALID_EVENT,
@@ -162,7 +163,24 @@ async def handle_request(request: Request):
             }
 
         if event == FETCH_UNMONITORED_PATIENTS:
-            return {"message": "WIP"}
+            account_list = db.get_patient_accounts()
+            account_relations = load_json_file(ACCT_REL_JSON_PATH)
+            monitored_patients = set()
+            for patients in account_relations["monitor_accounts"].values():
+                for patient in patients:
+                    monitored_patients.update(patient)
+
+            patient_accounts = [
+                account
+                for account in account_list
+                if account[1]
+                not in monitored_patients  # account[1] -> account name
+            ]
+
+            return {
+                "message": FETCH_UNMONITORED_PATIENTS_SUCCESS,
+                "unmonitored_patients": patient_accounts,
+            }
 
         if not has_parameters(post_request, ["patient", "patient_password"]):
             return {"message": MISSING_PARAMETER}
