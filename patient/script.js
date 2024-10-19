@@ -42,6 +42,7 @@ Vue.createApp({
     this.apiUrl = "http://localhost:8000/";
     this.dietaryItems = ["food", "water", "urination", "defecation"];
     this.confirming = false;
+    await loadAPIEvents();
     await this.loadSupportedLanguages();
     await this.loadLangTexts();
     this.loadSelectedLanguage();
@@ -59,6 +60,10 @@ Vue.createApp({
         defecationSum: 0,
         weight: "NaN",
       };
+    },
+    async loadAPIEvents() {
+      const response = await fetch("./events.json")
+      this.events = await response.json()
     },
     async loadSupportedLanguages() {
       const response = await fetch("./supported_languages.json");
@@ -92,8 +97,7 @@ Vue.createApp({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            event: "fetch patient records",
-            account_type: "PATIENT",
+            event: this.events.FETCH_RECORD,
             account: this.account,
             password: this.password,
           }),
@@ -203,7 +207,7 @@ Vue.createApp({
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            event: "update record",
+            event: this.events.UPDATE_RECORD,
             account: this.account,
             password: this.password,
             data: this.records,

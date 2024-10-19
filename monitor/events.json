@@ -1,0 +1,9 @@
+{
+    "SIGN_UP_PATIENT": "sign_up_patient",
+    "ADD_PATIENT": "add_patient",
+    "REMOVE_PATIENT": "remove_patient",
+    "DELETE_PATIENT": "delete_patient",
+    "SET_RESTRICTS": "set_restricts",
+    "UPDATE_RECORD": "update_record",
+    "FETCH_RECORD": "fetch_record"
+}

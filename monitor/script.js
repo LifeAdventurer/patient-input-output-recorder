@@ -21,7 +21,7 @@ Vue.createApp({
       removingRecord: false,
     };
   },
-  created() {
+  async created() {
     this.apiUrl = "https://lifeadventurer.tfcis.org/";
     this.apiUrl = "http://localhost:8000/";
     this.dietaryItems = ["food", "water", "urination", "defecation"];
@@ -35,8 +35,13 @@ Vue.createApp({
     this.tempPatientRecord = {};
     this.currentEditingPatient = "";
     this.confirming = false;
+    await loadAPIEvents()
   },
   methods: {
+    async loadAPIEvents() {
+      const response = await fetch("./events.json")
+      this.events = await response.json()
+    },
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
@@ -109,7 +114,7 @@ Vue.createApp({
         }
 
         const { message } = await response.json();
-        if (message === "Update Success") {
+        if (message === "Update successfully.") {
           console.log("Data posted successfully");
           return true;
         } else {
