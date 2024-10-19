@@ -112,6 +112,20 @@ def get_account_type(username: str) -> str | None:
             return account_type[0]
 
 
+def get_password(username: str) -> str | None:
+    with sqlite3.connect(ACCOUNTS_DB) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT password FROM accounts WHERE username = ?",
+            (username,),
+        )
+        password = cursor.fetchone()
+        if password is None:
+            return None
+        else:
+            return password[0]
+
+
 def get_all_accounts():
     with sqlite3.connect(ACCOUNTS_DB) as conn:
         cursor = conn.cursor()
