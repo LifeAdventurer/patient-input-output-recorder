@@ -120,4 +120,15 @@ def get_all_accounts():
         return accounts
 
 
+def get_patient_accounts():
+    with sqlite3.connect(ACCOUNTS_DB) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT * FROM accounts WHERE account_type = ?",
+            (AccountType.PATIENT,),
+        )
+        patient_accounts = cursor.fetchall()
+        return patient_accounts
+
+
 create_table()
