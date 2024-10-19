@@ -114,7 +114,7 @@ Vue.createApp({
         }
 
         const { message } = await response.json();
-        if (message === "Update successfully.") {
+        if (message === "Update successful.") {
           console.log("Data posted successfully");
           return true;
         } else {
@@ -130,16 +130,16 @@ Vue.createApp({
       const fetchedData = await this.fetchData("fetch monitoring account records");
       if (fetchedData.hasOwnProperty("message")) {
         switch (fetchedData.message) {
-          case "Nonexistent account":
+          case "Nonexistent account.":
             alert("帳號不存在");
             this.account = "";
             this.password = "";
             break;
-          case "Incorrect password":
+          case "Incorrect password.":
             alert("密碼錯誤");
             this.password = "";
             break;
-          case "Incorrect account type":
+          case "Invalid account type.":
             alert("此帳號沒有管理權限");
             this.account = "";
             this.password = "";
@@ -404,7 +404,7 @@ Vue.createApp({
         if (
           !this.confirming &&
           fetchedData.hasOwnProperty("message") &&
-          fetchedData.message === "Fetch Success"
+          fetchedData.message === "Fetch successful."
         ) {
           this.processFetchedData(fetchedData);
           this.searchPatient();

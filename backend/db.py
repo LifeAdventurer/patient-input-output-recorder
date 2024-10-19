@@ -1,10 +1,18 @@
 import sqlite3
 
+from backend.constants import (
+    ACCT_ALREADY_EXISTS,
+    ACCT_CREATED,
+    ACCT_DELETED,
+    ACCT_NOT_EXIST,
+    AUTH_FAIL_PASSWORD,
+    AUTH_SUCCESS,
+)
+
 ACCOUNTS_DB = "accounts.db"
 
 
 class AccountType:
-    ADMIN = "ADMIN"
     PATIENT = "PATIENT"
     MONITOR = "MONITOR"
 
@@ -34,11 +42,11 @@ def add_account(username: str, password: str, account_type: str):
                 (username, password, account_type),
             )
             conn.commit()
-            print("Account created successfully.")
+            print(ACCT_CREATED)
             return None
         except sqlite3.IntegrityError:
-            print("Account already exists")
-            return "Account already exists"
+            print(ACCT_ALREADY_EXISTS)
+            return ACCT_ALREADY_EXISTS
 
 
 def delete_account(username: str):
@@ -49,11 +57,11 @@ def delete_account(username: str):
                 "DELETE FROM accounts WHERE username = ?", (username,)
             )
             conn.commit()
-            print("Account deleted successfully.")
+            print(ACCT_DELETED)
             return None
         except sqlite3.IntegrityError:
-            print("Account does not exist.")
-            return "Account does not exist"
+            print(ACCT_NOT_EXIST)
+            return ACCT_NOT_EXIST
 
 
 def authenticate(username: str, password: str) -> str:
@@ -65,8 +73,8 @@ def authenticate(username: str, password: str) -> str:
         )
         account = cursor.fetchone()
         if not account:
-            print("Nonexistent account.")
-            return "Nonexistent account"
+            print(ACCT_NOT_EXIST)
+            return ACCT_NOT_EXIST
 
         cursor.execute(
             "SELECT * FROM accounts WHERE username = ? AND password = ?",
@@ -74,11 +82,11 @@ def authenticate(username: str, password: str) -> str:
         )
         account = cursor.fetchone()
         if account:
-            print("Authentication successful.")
-            return "Authentication successful"
+            print(AUTH_SUCCESS)
+            return AUTH_SUCCESS
         else:
-            print("Incorrect password.")
-            return "Incorrect password"
+            print(AUTH_FAIL_PASSWORD)
+            return AUTH_FAIL_PASSWORD
 
 
 def change_account_password(username: str, password: str):
