@@ -127,7 +127,7 @@ Vue.createApp({
           password: this.password,
           // TODO: patient:
       });
-      if (fetchedData.hasOwnProperty("message")) {
+      if (Object.prototype.hasOwnProperty.call(fetchedData, "message")) {
         switch (fetchedData.message) {
           case "Nonexistent account.":
             alert("帳號不存在");
@@ -407,7 +407,7 @@ Vue.createApp({
         });
         if (
           !this.confirming &&
-          fetchedData.hasOwnProperty("message") &&
+          Object.prototype.hasOwnProperty.call(fetchedData, "message") &&
           fetchedData.message === "Fetch successful."
         ) {
           this.processFetchedData(fetchedData);

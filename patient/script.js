@@ -139,7 +139,7 @@ Vue.createApp({
     },
     async authenticate() {
       const fetchedData = await this.fetchRecords();
-      if (fetchedData.hasOwnProperty("message")) {
+      if (Object.prototype.hasOwnProperty.call(fetchedData, "message")) {
         switch (fetchedData.message) {
           case "Nonexistent account.":
             alert(this.curLangText.nonexistent_account);
@@ -422,7 +422,7 @@ Vue.createApp({
         const fetchedData = await this.fetchRecords();
         if (
           !this.confirming &&
-          fetchedData.hasOwnProperty("message") &&
+          Object.prototype.hasOwnProperty.call(fetchedData, "message") &&
           fetchedData.message === "Fetch successful."
         ) {
           this.records = fetchedData["account_records"];
