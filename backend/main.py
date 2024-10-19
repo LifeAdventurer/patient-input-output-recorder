@@ -9,8 +9,10 @@ from constants import (
     CONFIG_JSON_PATH,
     DATA_JSON_PATH,
     DELETE_PATIENT,
+    FETCH_MONITORING_PATIENTS,
     FETCH_RECORD,
     FETCH_RECORD_SUCCESS,
+    FETCH_UNMONITORED_PATIENTS,
     FRONTEND_PORT,
     INVALID_ACCT_TYPE,
     INVALID_EVENT,
@@ -122,6 +124,8 @@ async def handle_request(request: Request):
             REMOVE_PATIENT,
             DELETE_PATIENT,
             SET_RESTRICTS,
+            FETCH_MONITORING_PATIENTS,
+            FETCH_UNMONITORED_PATIENTS,
         ]
         and post_request_token
         or (

@@ -17,6 +17,8 @@ DELETE_PATIENT = "delete_patient"
 SET_RESTRICTS = "set_restricts"
 UPDATE_RECORD = "update_record"
 FETCH_RECORD = "fetch_record"
+FETCH_MONITORING_PATIENTS = "fetch_monitoring_patients"
+FETCH_UNMONITORED_PATIENTS = "fetch_unmonitored_patients"
 
 # Messages
 ACCT_CREATED = "Account created."
@@ -34,6 +36,10 @@ DELETE_PATIENT_SUCCESS = "Patient account deleted."
 SET_RESTRICTS_SUCCESS = "Restrictions set."
 UPDATE_RECORD_SUCCESS = "Update successful."
 FETCH_RECORD_SUCCESS = "Fetch successful."
+FETCH_MONITORING_PATIENTS_SUCCESS = "Fetched monitoring patients successfully."
+FETCH_UNMONITORED_PATIENTS_SUCCESS = (
+    "Fetched all unmonitored patients successfully."
+)
 
 MISSING_PARAMETER = "Missing parameter."
 INVALID_EVENT = "Invalid event."
