@@ -50,7 +50,7 @@ Vue.createApp({
     togglePasswordVisibility() {
       this.showPassword = !this.showPassword;
     },
-    async fetchData(payload) {
+    async postRequest(payload) {
       try {
         const response = await fetch(this.apiUrl, {
           method: "POST",
@@ -63,10 +63,10 @@ Vue.createApp({
         });
 
         if (!response.ok) {
-          throw new Error("Failed to fetch record");
+          throw new Error("Failed to post request.");
         }
 
-        console.log("Successfully fetched the record");
+        console.log("Successfully posted the request.");
         return await response.json();
       } catch (error) {
         throw new Error(error.message);
@@ -129,7 +129,7 @@ Vue.createApp({
       }
     },
     async authenticate() {
-      const fetchedData = await this.fetchData({
+      const fetchedData = await this.postRequest({
           event: this.events.FETCH_MONITORING_PATIENTS,
           account: this.account,
           password: this.password,
@@ -173,6 +173,7 @@ Vue.createApp({
       if (form.checkValidity()) {
         console.log(this.signUpPatientAccount);
         console.log(this.signUpPatientPassword);
+
 
         const signUpModal = document.getElementById("signUpModal");
         const modalInstance = bootstrap.Modal.getInstance(signUpModal);
@@ -430,7 +431,7 @@ Vue.createApp({
         this.editingRecordIndex === -1 &&
         !this.confirming
       ) {
-        const fetchedData = await this.fetchData({
+        const fetchedData = await this.postRequest({
           event: this.events.FETCH_MONITORING_PATIENTS,
           account: this.account,
           password: this.password,
