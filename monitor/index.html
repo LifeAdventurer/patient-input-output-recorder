@@ -70,14 +70,14 @@
       </footer>
     </template>
     <template v-else>
-      <!-- DATE and TIME -->
+      <!-- DATE, Seacrh Patient Bar, Manage, Sign Up Patient, TIME -->
       <div class="time-bar mb-4 mt-1">
         <div class="row">
           <div class="col-md-3 col-7 fw-bold" style="font-size: 24px">
             {{ currentDate }}
           </div>
-          <div class="col-md-4 offset-md-1">
-            <div class="input-group" style="margin-top: 5px">
+          <div class="col-md-4 mt-1">
+            <div class="input-group">
               <input type="text" class="form-control" v-model="searchQuery" @input="searchPatient"
                 placeholder="查詢病床號..." />
               <button class="btn btn-outline-secondary">
@@ -85,12 +85,15 @@
               </button>
             </div>
           </div>
-          <div class="col-2 offset-1 mt-1">
+          <div class="col-md-3 mt-1 d-flex align-items-center">
+            <button class="btn btn-primary me-2" data-bs-toggle="modal" data-bs-target="#manageModal">
+              管理
+            </button>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signUpModal">
               註冊
             </button>
           </div>
-          <div class="col-md-1 col-3 fw-bold" style="font-size: 24px">
+          <div class="col-md-1 fw-bold" style="font-size: 24px">
             {{ currentTime }}
           </div>
         </div>
