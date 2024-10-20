@@ -25,6 +25,7 @@ from constants import (
     INVALID_EVENT,
     MISSING_PARAMETER,
     REMOVE_PATIENT,
+    REMOVE_PATIENT_SUCCESS,
     SET_RESTRICTS,
     SIGN_UP_MONITOR,
     SIGN_UP_PATIENT,
@@ -231,7 +232,17 @@ async def handle_request(request: Request):
             return {"message": INVALID_ACCT_TYPE}
 
         if event == REMOVE_PATIENT:
-            return {"message": "WIP"}
+            account_relations = load_json_file(ACCT_REL_JSON_PATH)
+            patient_accounts = account_relations["monitor_accounts"][
+                monitor_account
+            ]
+            if patient in patient_accounts:
+                del account_relations["monitor_accounts"][monitor_account][
+                    patient_accounts.index(patient)
+                ]
+            write_json_file(ACCT_REL_JSON_PATH, account_relations)
+
+            return {"message": REMOVE_PATIENT_SUCCESS}
 
         if event == DELETE_PATIENT:
             err = db.delete_account(patient)
