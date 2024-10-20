@@ -148,12 +148,12 @@ async def handle_request(request: Request):
                 patient_password = db.get_password(patient_account)
                 if patient_password:
                     patient_accounts.append(
-                        (patient_account, db.get_password(patient_account))
+                        [patient_account, db.get_password(patient_account)]
                     )
 
             data = load_json_file(DATA_JSON_PATH)
             patient_records = {}
-            for patient_account in patient_accounts:
+            for patient_account, _ in patient_accounts:
                 if patient_account not in data:
                     patient_records[patient_account] = {}
                 else:
