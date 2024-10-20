@@ -93,39 +93,18 @@ Vue.createApp({
       });
     },
     async updateRecords(patientAccount) {
-      try {
-        const response = await fetch(this.apiUrl, {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            event: this.events.UPDATE_RECORD,
-            account: this.account,
-            password: this.password,
-            patient: patientAccount,
-            data: this.patientRecords[patientAccount],
-          }),
-        });
-
-        if (!response.ok) {
-          console.error("Network response was not ok, failed to post patient records.");
-          return false;
-        }
-
-        const { message } = await response.json();
-        if (message === this.events.messages.UPDATE_RECORD_SUCCESS) {
-          console.log("Patient records posted successfully");
-          return true;
-        } else {
-          console.error("Error:", message);
-          return false;
-        }
-      } catch (error) {
-        console.error("Error during posting patient records:", error);
-        return false;
+      const payload = {
+        event: this.events.UPDATE_RECORD,
+        account: this.account,
+        password: this.password,
+        patient: patientAccount,
+        data: this.patientRecords[patientAccount],
+      };
+      const { message } = await this.postRequest(payload);
+      if (message === this.events.messages.UPDATE_RECORD_SUCCESS) {
+        console.log(message);
+      } else {
+        console.error("Error:", message);
       }
     },
     async authenticate() {
