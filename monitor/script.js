@@ -92,18 +92,6 @@ Vue.createApp({
         this.updateRestrictionText(patientAccount);
       });
     },
-    async fetchUnmonitoredPatients() {
-      const response = await this.postRequest({
-        event: this.events.FETCH_UNMONITORED_PATIENTS,
-        account: this.account,
-        password: this.password,
-      });
-      if (response.message === this.events.messages.FETCH_UNMONITORED_PATIENTS_SUCCESS) {
-        this.unmonitoredPatients = response["unmonitored_patients"].map(patient => patient[1]);
-      } else {
-        console.error(response.message);
-      }
-    },
     async updateRecords(patientAccount) {
       const payload = {
         event: this.events.UPDATE_RECORD,
@@ -117,6 +105,19 @@ Vue.createApp({
         console.log(message);
       } else {
         console.error("Error:", message);
+      }
+    },
+    async fetchUnmonitoredPatients() {
+      const payload = {
+        event: this.events.FETCH_UNMONITORED_PATIENTS,
+        account: this.account,
+        password: this.password,
+      };
+      const response = await this.postRequest(payload);
+      if (response.message === this.events.messages.FETCH_UNMONITORED_PATIENTS_SUCCESS) {
+        this.unmonitoredPatients = response["unmonitored_patients"].map(patient => patient[1]);
+      } else {
+        console.error(response.message);
       }
     },
     async authenticate() {
