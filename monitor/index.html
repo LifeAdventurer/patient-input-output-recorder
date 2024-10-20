@@ -339,7 +339,7 @@
             <div class="modal-body">
               <form @submit.prevent="signUpPatient" :class="{ 'was-validated' : signUpPatientSubmitted }" novalidate>
                 <div class="mb-3">
-                  <label for="account" class="form-label">帳號</label>
+                  <label for="signUpPatientAccount" class="form-label">帳號</label>
                   <input type="text" class="form-control" id="signUpPatientAccount" v-model="signUpPatientAccount"
                     required>
                   <div class="invalid-feedback">
@@ -347,8 +347,8 @@
                   </div>
                 </div>
                 <div class="mb-3">
-                  <label for="password" class="form-label">密碼</label>
-                  <input type="password" class="form-control" id="signUpPatientPassword" v-model="signUpPatientPassword"
+                  <label for="signUpPatientPassword" class="form-label">密碼</label>
+                  <input type="text" class="form-control" id="signUpPatientPassword" v-model="signUpPatientPassword"
                     required>
                   <div class="invalid-feedback">
                     請輸入密碼。
