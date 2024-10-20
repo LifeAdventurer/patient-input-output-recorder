@@ -191,11 +191,11 @@ async def handle_request(request: Request):
                 "unmonitored_patients": patient_accounts,
             }
 
+        # The events below requires `patient` and `patient_password`
+        # The account must be a `PATIENT`
         if not has_parameters(post_request, ["patient", "patient_password"]):
             return {"message": MISSING_PARAMETER}
 
-        # The events below requires `patient` and `patient_password`
-        # The account must be a `PATIENT`
         patient = post_request["patient"]
         patient_password = post_request["patient_password"]
         err = db.authenticate(patient, patient_password)
@@ -251,33 +251,6 @@ async def handle_request(request: Request):
 
 
 # def handle_request_without_authentication(post_request):
-#     if post_request["event"] == "fetch unmonitored patients":
-#         account_list = db.get_all_accounts()
-#         account_relations = load_json_file(ACCT_REL_JSON_PATH)
-#         monitored_patients = set()
-#         for account in account_relations["monitor_accounts"].values():
-#             monitored_patients.update(account)
-#         patient_accounts = [
-#             account
-#             for account in account_list
-#             if account[3] == db.AccountType.PATIENT
-#             and account[1] not in monitored_patients
-#         ]
-#
-#         return {
-#             "message": FETCH_RECORD_SUCCESS,
-#             "account_list": patient_accounts,
-#         }
-#
-#     elif post_request["event"] == "fetch account list":
-#         account_list = db.get_all_accounts()
-#         return {"message": FETCH_RECORD_SUCCESS, "account_list": account_list}
-#
-#
-#     err = db.authenticate(post_request["account"], post_request["password"])
-#     if err != "Authentication successful":
-#         return {"message": err}
-#
 #     if post_request["event"] == "del account":
 #         account_type = db.get_account_type(post_request["account"])
 #         err = db.delete_account(post_request["account"])
@@ -331,17 +304,6 @@ async def handle_request(request: Request):
 #         write_json_file(DATA_JSON_PATH, data)
 #
 #         return {"message": UPDATE_RECORD_SUCCESS}
-#
-#     elif post_request["event"] == "fetch patient records":
-#         patient_account = post_request["account"]
-#         if db.get_account_type(patient_account) == db.AccountType.PATIENT:
-#             data = load_json_file(DATA_JSON_PATH)
-#             return {
-#                 "message": FETCH_RECORD_SUCCESS,
-#                 "account_records": data[patient_account],
-#             }
-#         else:
-#             return {"message": INVALID_ACCT_TYPE}
 #
 #     elif post_request["event"] == "add patient account to monitoring list":
 #         monitor_account = post_request["account"]
