@@ -120,6 +120,21 @@ Vue.createApp({
         console.error(response.message);
       }
     },
+    async addPatientToMonitor(index) {
+      const payload = {
+        event: this.events.ADD_PATIENT,
+        account: this.account,
+        password: this.password,
+        patient: this.unmonitoredPatients[index],
+      };
+      const { message } = await this.postRequest(payload);
+      if (message === this.events.messages.ADD_PATIENT_SUCCESS) {
+        console.log(message);
+        await this.fetchUnmonitoredPatients();
+      } else {
+        console.error(message);
+      }
+    },
     async authenticate() {
       const fetchedData = await this.postRequest({
           event: this.events.FETCH_MONITORING_PATIENTS,
