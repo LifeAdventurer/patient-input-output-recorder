@@ -194,6 +194,12 @@ async def handle_request(request: Request):
 
         patient = post_request["patient"]
         patient_password = post_request["patient_password"]
+
+        if event == SIGN_UP_PATIENT:
+            return sign_up_account(
+                db.AccountType.PATIENT, patient, patient_password
+            )
+
         err = db.authenticate(patient, patient_password)
         if err != AUTH_SUCCESS:
             return {"message": err}
@@ -211,11 +217,6 @@ async def handle_request(request: Request):
 
         if event == SET_RESTRICTS:
             return {"message": "WIP"}
-
-        if event == SIGN_UP_PATIENT:
-            return sign_up_account(
-                db.AccountType.PATIENT, patient, patient_password
-            )
 
     elif event in [UPDATE_RECORD, FETCH_RECORD] and authenticate(post_request):
         # Both event needs `patient` as a parameter

@@ -144,24 +144,35 @@ Vue.createApp({
         }
       }
     },
-    signUpPatient() {
+    async signUpPatient() {
       this.signUpPatientSubmitted = true;
 
       const form = document.getElementById("signUpModal").querySelector("form");
 
       if (form.checkValidity()) {
-        console.log(this.signUpPatientAccount);
-        console.log(this.signUpPatientPassword);
+        const payload = {
+          event: this.events.SIGN_UP_PATIENT,
+          account: this.account,
+          password: this.password,
+          patient: this.signUpPatientAccount,
+          patient_password: this.signUpPatientPassword,
+        };
+        const response = await this.postRequest(payload);
+        if (response.message === this.events.messages.ACCT_ALREADY_EXISTS) {
+          alert("此帳號已被註冊。");
+          this.signUpPatientAccount = "";
+          this.signUpPatientPassword = "";
+        } else {
+          alert("註冊成功。");
+          const signUpModal = document.getElementById("signUpModal");
+          const modalInstance = bootstrap.Modal.getInstance(signUpModal);
+          modalInstance.hide();
 
-
-        const signUpModal = document.getElementById("signUpModal");
-        const modalInstance = bootstrap.Modal.getInstance(signUpModal);
-        modalInstance.hide();
-
-        // Reset form and state
-        this.signUpPatientAccount = "";
-        this.signUpPatientPassword = "";
-        this.signUpPatientSubmitted = false;
+          // Reset form and state
+          this.signUpPatientAccount = "";
+          this.signUpPatientPassword = "";
+          this.signUpPatientSubmitted = false;
+        }
       }
     },
     searchPatient: _.debounce(function () {
