@@ -26,7 +26,7 @@ Vue.createApp({
       signUpPatientSubmitted: false,
     };
   },
-  async created() {
+  created() {
     this.apiUrl = "https://lifeadventurer.tfcis.org/";
     // this.apiUrl = "http://localhost:8000/";
     this.dietaryItems = ["food", "water", "urination", "defecation"];
