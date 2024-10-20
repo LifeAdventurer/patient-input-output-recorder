@@ -20,6 +20,10 @@ Vue.createApp({
       restrictionText: {},
       showScrollButton: false,
       removingRecord: false,
+      // signUpModal
+      signUpPatientAccount: "",
+      signUpPatientPassword: "",
+      signUpPatientSubmitted: false,
     };
   },
   async created() {
@@ -159,6 +163,25 @@ Vue.createApp({
             sessionStorage.setItem("account", this.account);
             sessionStorage.setItem("password", this.password);
         }
+      }
+    },
+    signUpPatient() {
+      this.signUpPatientSubmitted = true;
+
+      const form = document.getElementById("signUpModal").querySelector("form");
+
+      if (form.checkValidity()) {
+        console.log(this.signUpPatientAccount);
+        console.log(this.signUpPatientPassword);
+
+        const signUpModal = document.getElementById("signUpModal");
+        const modalInstance = bootstrap.Modal.getInstance(signUpModal);
+        modalInstance.hide();
+
+        // Reset form and state
+        this.signUpPatientAccount = "";
+        this.signUpPatientPassword = "";
+        this.signUpPatientSubmitted = false;
       }
     },
     searchPatient: _.debounce(function () {

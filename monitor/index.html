@@ -86,8 +86,8 @@
             </div>
           </div>
           <div class="col-2 offset-1 mt-1">
-            <button class="btn btn-primary">
-              <i class="fas fa-plus"></i>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signUpModal">
+              註冊
             </button>
           </div>
           <div class="col-md-1 col-3 fw-bold" style="font-size: 24px">
@@ -327,6 +327,39 @@
         v-show="showScrollButton">
         <i class="fas fa-arrow-up"></i>
       </button>
+
+      <!-- Sign up Modal -->
+      <div class="modal fade" id="signUpModal" tabindex="-1" aria-labelledby="signUpModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="signUpModalLabel">註冊病患帳號</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
+            </div>
+            <div class="modal-body">
+              <form @submit.prevent="signUpPatient" :class="{ 'was-validated' : signUpPatientSubmitted }" novalidate>
+                <div class="mb-3">
+                  <label for="account" class="form-label">帳號</label>
+                  <input type="text" class="form-control" id="signUpPatientAccount" v-model="signUpPatientAccount"
+                    required>
+                  <div class="invalid-feedback">
+                    請輸入帳號。
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label">密碼</label>
+                  <input type="password" class="form-control" id="signUpPatientPassword" v-model="signUpPatientPassword"
+                    required>
+                  <div class="invalid-feedback">
+                    請輸入密碼。
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary">註冊</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
   </div>
 

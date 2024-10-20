@@ -126,13 +126,13 @@ async def handle_request(request: Request):
         )
 
     if event in [
-        FETCH_MONITORING_PATIENTS,  # 1
-        FETCH_UNMONITORED_PATIENTS,  # 2
+        FETCH_MONITORING_PATIENTS,
+        FETCH_UNMONITORED_PATIENTS,
         ADD_PATIENT,
         REMOVE_PATIENT,
         DELETE_PATIENT,
         SET_RESTRICTS,
-        SIGN_UP_PATIENT,  # 7
+        SIGN_UP_PATIENT,
     ] and (
         post_request_token
         or (
