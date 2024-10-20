@@ -7,5 +7,22 @@
     "UPDATE_RECORD": "update_record",
     "FETCH_RECORD": "fetch_record",
     "FETCH_MONITORING_PATIENTS": "fetch_monitoring_patients",
-    "FETCT_UNMONITORED_PATIENTS": "fetct_unmonitored_patients"
+    "FETCT_UNMONITORED_PATIENTS": "fetct_unmonitored_patients",
+    "messages": {
+        "ACCT_CREATED": "Account created.",
+        "ACCT_DELETED": "Account deleted.",
+        "ACCT_ALREADY_EXISTS": "Account already exists.",
+        "ACCT_NOT_EXIST": "Nonexistent account.",
+        "AUTH_SUCCESS": "Authentication successful.",
+        "AUTH_FAIL_PASSWORD": "Incorrect password.",
+        "INVALID_ACCT_TYPE": "Invalid account type.",
+        "ADD_PATIENT_SUCCESS": "Patient added to monitor list.",
+        "REMOVE_PATIENT_SUCCESS": "Patient removed from monitor list.",
+        "DELETE_PATIENT_SUCCESS": "Patient account deleted.",
+        "SET_RESTRICTS_SUCCESS": "Restrictions set.",
+        "UPDATE_RECORD_SUCCESS": "Update successful.",
+        "FETCH_RECORD_SUCCESS": "Fetch successful.",
+        "FETCH_MONITORING_PATIENTS_SUCCESS": "Fetched monitoring patients successfully.",
+        "FETCH_UNMONITORED_PATIENTS_SUCCESS": "Fetched all unmonitored patients successfully."
+    }
 }

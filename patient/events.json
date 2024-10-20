@@ -1,4 +1,12 @@
 {
     "UPDATE_RECORD": "update_record",
-    "FETCH_RECORD": "fetch_record"
+    "FETCH_RECORD": "fetch_record",
+    "messages": {
+        "ACCT_NOT_EXIST": "Nonexistent account.",
+        "AUTH_SUCCESS": "Authentication successful.",
+        "AUTH_FAIL_PASSWORD": "Incorrect password.",
+        "INVALID_ACCT_TYPE": "Invalid account type.",
+        "UPDATE_RECORD_SUCCESS": "Update successful.",
+        "FETCH_RECORD_SUCCESS": "Fetch successful."
+    }
 }
