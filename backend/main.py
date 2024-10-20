@@ -89,15 +89,6 @@ def sign_up_account(account_type: str, account: str, password: str) -> dict:
     return {"message": ACCT_CREATED}
 
 
-# TODO: Return messages
-def authenticate(post_request: dict):
-    return (
-        has_parameters(post_request, ["account", "password"])
-        and db.authenticate(post_request["account"], post_request["password"])
-        == AUTH_SUCCESS
-    )
-
-
 def has_parameters(post_request: dict, required_parameters: list[str]) -> bool:
     return not any(
         parameter not in post_request for parameter in required_parameters
@@ -135,16 +126,24 @@ async def handle_request(request: Request):
         DELETE_PATIENT,
         SET_RESTRICTS,
         SIGN_UP_PATIENT,
-    ] and (
-        authenticate(post_request)
-        and db.get_account_type(post_request["account"])
-        == db.AccountType.MONITOR
-    ):
+    ]:
+        if not has_parameters(post_request, ["account", "password"]):
+            return {"message": MISSING_PARAMETER}
+
+        monitor_account = post_request["account"]
+        monitor_password = post_request["password"]
+        err = db.authenticate(monitor_account, monitor_password)
+        if err != AUTH_SUCCESS:
+            return {"message": err}
+
+        if db.get_account_type(monitor_account) != db.AccountType.MONITOR:
+            return {"message": INVALID_ACCT_TYPE}
+
         if event == FETCH_MONITORING_PATIENTS:
             account_relations = load_json_file(ACCT_REL_JSON_PATH)
             patient_accounts = []
             for patient_account in account_relations["monitor_accounts"][
-                post_request["account"]
+                monitor_account
             ]:
                 patient_password = db.get_password(patient_account)
                 if patient_password:
@@ -200,7 +199,6 @@ async def handle_request(request: Request):
                 return {"message": INVALID_ACCT_TYPE}
 
             account_relations = load_json_file(ACCT_REL_JSON_PATH)
-            monitor_account = post_request["account"]
             if (
                 patient
                 not in account_relations["monitor_accounts"][monitor_account]
@@ -227,6 +225,7 @@ async def handle_request(request: Request):
         err = db.authenticate(patient, patient_password)
         if err != AUTH_SUCCESS:
             return {"message": err}
+
         if db.get_account_type(patient) != db.AccountType.PATIENT:
             return {"message": INVALID_ACCT_TYPE}
 
@@ -241,13 +240,16 @@ async def handle_request(request: Request):
         ):  # Use `UPDATE_RECORD` until we have payload record template verification
             return {"message": "WIP"}
 
-    elif event in [UPDATE_RECORD, FETCH_RECORD] and authenticate(post_request):
-        # Both event needs `patient` as a parameter
-        if not has_parameters(post_request, ["patient"]):
+    elif event in [UPDATE_RECORD, FETCH_RECORD]:
+        if not has_parameters(post_request, ["account", "password", "patient"]):
             return {"message": MISSING_PARAMETER}
 
+        err = db.authenticate(post_request["account"], post_request["password"])
+        if err != AUTH_SUCCESS:
+            return {"message": err}
+
+        patient_account = post_request["patient"]
         if event == UPDATE_RECORD:
-            patient_account = post_request["patient"]
             if db.get_account_type(patient_account) == db.AccountType.PATIENT:
                 data = load_json_file(DATA_JSON_PATH)
                 data[patient_account] = post_request["data"]
@@ -258,7 +260,6 @@ async def handle_request(request: Request):
                 return {"message": INVALID_ACCT_TYPE}
 
         if event == FETCH_RECORD:
-            patient_account = post_request["patient"]
             if db.get_account_type(patient_account) == db.AccountType.PATIENT:
                 data = load_json_file(DATA_JSON_PATH)
                 return {
@@ -312,33 +313,3 @@ async def handle_request(request: Request):
 #             "message": "Account deleted successfully",
 #             "account_type": account_type,
 #         }
-
-#     elif post_request["event"] == "add patient account to monitoring list":
-#         monitor_account = post_request["account"]
-#         if db.get_account_type(monitor_account) == db.AccountType.PATIENT:
-#             return {"message": INVALID_ACCT_TYPE}
-#
-#         account_relations = load_json_file(ACCT_REL_JSON_PATH)
-#         if monitor_account not in account_relations["monitor_accounts"]:
-#             account_relations["monitor_accounts"][monitor_account] = []
-#
-#         patient_account = post_request["patient_account"]
-#         patient_account_type = db.get_account_type(patient_account)
-#         if patient_account_type is None:
-#             return {"message": "No such account"}
-#
-#         elif patient_account_type == db.AccountType.PATIENT:
-#             if (
-#                 patient_account
-#                 not in account_relations["monitor_accounts"][monitor_account]
-#             ):
-#                 account_relations["monitor_accounts"][monitor_account].append(
-#                     patient_account
-#                 )
-#                 account_relations["monitor_accounts"][monitor_account].sort()
-#
-#                 write_json_file(ACCT_REL_JSON_PATH, account_relations)
-#
-#             return {"message": "Added"}
-#         else:
-#             return {"message": f"Account: '{patient_account}' is not a PATIENT"}
