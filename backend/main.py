@@ -215,7 +215,9 @@ async def handle_request(request: Request):
             return {"message": "WIP"}
 
         if event == SIGN_UP_PATIENT:
-            return {"message": "WIP"}
+            return sign_up_account(
+                db.AccountType.PATIENT, patient, patient_password
+            )
 
     elif event in [UPDATE_RECORD, FETCH_RECORD] and authenticate(post_request):
         # Both event needs `patient` as a parameter
