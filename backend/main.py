@@ -170,8 +170,7 @@ async def handle_request(request: Request):
             account_relations = load_json_file(ACCT_REL_JSON_PATH)
             monitored_patients = set()
             for patients in account_relations["monitor_accounts"].values():
-                for patient in patients:
-                    monitored_patients.update(patient)
+                monitored_patients.update(patients)
 
             patient_accounts = [
                 account

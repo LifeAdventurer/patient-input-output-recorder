@@ -9,10 +9,13 @@ Vue.createApp({
       currentTime: "",
       currentDateYY_MM_DD: "",
       dietaryItems: ["food", "water", "urination", "defecation"],
+      // Patient
       patientRecords: {},
-      patientAccounts: [],
+      patientAccounts: [], // monitoredPatients
+      unmonitoredPatients: [],
       patientAccountsWithPasswords: [],
       filteredPatientAccounts: [],
+
       searchQuery: "",
       currentDateMMDD: "",
       editingRecordIndex: -1,
@@ -74,9 +77,7 @@ Vue.createApp({
     processFetchedData(fetchedData) {
       this.patientRecords = fetchedData["patient_records"];
       this.patientAccountsWithPasswords = fetchedData["patient_accounts"];
-      console.log(JSON.stringify(this.patientAccountsWithPasswords));
       this.patientAccounts = this.patientAccountsWithPasswords.map(account => account[0]);
-      console.log(JSON.stringify(this.patientAccounts));
       this.patientAccounts.forEach((patientAccount) => {
         let modified = false;
         Object.entries(this.keysToFilter).forEach(([key, value]) => {
@@ -90,6 +91,18 @@ Vue.createApp({
         }
         this.updateRestrictionText(patientAccount);
       });
+    },
+    async fetchUnmonitoredPatients() {
+      const response = await this.postRequest({
+        event: this.events.FETCH_UNMONITORED_PATIENTS,
+        account: this.account,
+        password: this.password,
+      });
+      if (response.message === this.events.messages.FETCH_UNMONITORED_PATIENTS_SUCCESS) {
+        this.unmonitoredPatients = response["unmonitored_patients"].map(patient => patient[1]);
+      } else {
+        console.error(response.message);
+      }
     },
     async updateRecords(patientAccount) {
       const payload = {
@@ -130,11 +143,12 @@ Vue.createApp({
             break;
           default:
             this.authenticated = true;
-            this.processFetchedData(fetchedData);
-
-            this.filteredPatientAccounts = this.patientAccounts;
             sessionStorage.setItem("account", this.account);
             sessionStorage.setItem("password", this.password);
+
+            this.processFetchedData(fetchedData);
+            this.filteredPatientAccounts = this.patientAccounts;
+            await this.fetchUnmonitoredPatients()
         }
       }
     },
@@ -430,6 +444,7 @@ Vue.createApp({
           this.searchPatient();
         }
       }
+      await this.fetchUnmonitoredPatients();
     }, 3000);
 
     window.addEventListener("scroll", this.handleScroll);

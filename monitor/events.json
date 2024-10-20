@@ -7,7 +7,7 @@
     "UPDATE_RECORD": "update_record",
     "FETCH_RECORD": "fetch_record",
     "FETCH_MONITORING_PATIENTS": "fetch_monitoring_patients",
-    "FETCT_UNMONITORED_PATIENTS": "fetct_unmonitored_patients",
+    "FETCH_UNMONITORED_PATIENTS": "fetch_unmonitored_patients",
     "messages": {
         "ACCT_CREATED": "Account created.",
         "ACCT_DELETED": "Account deleted.",
