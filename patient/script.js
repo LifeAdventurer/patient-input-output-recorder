@@ -42,7 +42,6 @@ Vue.createApp({
     // this.apiUrl = "http://localhost:8000/";
     this.dietaryItems = ["food", "water", "urination", "defecation"];
     this.confirming = false;
-    await this.loadAPIEvents();
     await this.loadSupportedLanguages();
     await this.loadLangTexts();
     this.loadSelectedLanguage();
@@ -388,6 +387,7 @@ Vue.createApp({
     },
   },
   async mounted() {
+    await this.loadAPIEvents();
     const url = new URL(location.href);
     const params = url.searchParams;
     const account = params.has("acct")

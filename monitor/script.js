@@ -40,7 +40,6 @@ Vue.createApp({
     this.tempPatientRecord = {};
     this.currentEditingPatient = "";
     this.confirming = false;
-    await this.loadAPIEvents()
   },
   methods: {
     async loadAPIEvents() {
@@ -379,6 +378,7 @@ Vue.createApp({
     },
   },
   async mounted() {
+    await this.loadAPIEvents();
     const url = new URL(location.href);
     const params = url.searchParams;
     const account = params.has("acct")
