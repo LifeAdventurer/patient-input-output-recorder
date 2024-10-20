@@ -4,6 +4,7 @@ import db
 from constants import (
     ACCT_ALREADY_EXISTS,
     ACCT_CREATED,
+    ACCT_DELETED,
     ACCT_NOT_EXIST,
     ACCT_REL_JSON_PATH,
     ADD_PATIENT,
@@ -12,6 +13,7 @@ from constants import (
     CONFIG_JSON_PATH,
     DATA_JSON_PATH,
     DELETE_PATIENT,
+    DELETE_PATIENT_SUCCESS,
     FETCH_MONITORING_PATIENTS,
     FETCH_MONITORING_PATIENTS_SUCCESS,
     FETCH_RECORD,
@@ -73,7 +75,7 @@ def sign_up_account(account_type: str, account: str, password: str) -> dict:
         password,
         account_type,
     )
-    if err is not None:
+    if err != ACCT_CREATED:
         return {"message": ACCT_ALREADY_EXISTS}
 
     if account_type == db.AccountType.PATIENT:
@@ -232,7 +234,29 @@ async def handle_request(request: Request):
             return {"message": "WIP"}
 
         if event == DELETE_PATIENT:
-            return {"message": "WIP"}
+            err = db.delete_account(patient)
+            if err != ACCT_DELETED:
+                return {"message": err}
+
+            account_relations = load_json_file(ACCT_REL_JSON_PATH)
+            for monitor_account, patient_accounts in account_relations[
+                "monitor_accounts"
+            ].items():
+                if patient in patient_accounts:
+                    del account_relations["monitor_accounts"][monitor_account][
+                        patient_accounts.index(patient)
+                    ]
+                    break
+            write_json_file(ACCT_REL_JSON_PATH, account_relations)
+
+            data = load_json_file(DATA_JSON_PATH)
+            if patient in data:
+                del data[patient]
+            write_json_file(DATA_JSON_PATH, data)
+
+            return {
+                "message": DELETE_PATIENT_SUCCESS,
+            }
 
         if (
             event == SET_RESTRICTS
@@ -270,45 +294,3 @@ async def handle_request(request: Request):
 
     else:
         return {"message": INVALID_EVENT}
-
-
-# def handle_request_without_authentication(post_request):
-#     if post_request["event"] == "del account":
-#         account_type = db.get_account_type(post_request["account"])
-#         err = db.delete_account(post_request["account"])
-#         if err is not None:
-#             return {"message": "Account does not exists"}
-#
-#         # Remove deleted account data in JSON files
-#         if account_type == db.AccountType.PATIENT:
-#             # account_relations.json
-#             account_relations = load_json_file(ACCT_REL_JSON_PATH)
-#             for monitor_account, patient_accounts in account_relations[
-#                 "monitor_accounts"
-#             ].items():
-#                 if post_request["account"] in patient_accounts:
-#                     del account_relations["monitor_accounts"][monitor_account][
-#                         patient_accounts.index(post_request["account"])
-#                     ]
-#             write_json_file(ACCT_REL_JSON_PATH, account_relations)
-#
-#             # data.json
-#             data = load_json_file(DATA_JSON_PATH)
-#             del data[post_request["account"]]
-#             write_json_file(DATA_JSON_PATH, data)
-#
-#         if account_type == db.AccountType.MONITOR:
-#             account_relations = load_json_file(ACCT_REL_JSON_PATH)
-#
-#             if (
-#                 post_request["account"]
-#                 in account_relations["monitor_accounts"].keys()
-#             ):
-#                 del account_relations["monitor_accounts"][monitor_account]
-#
-#             write_json_file(ACCT_REL_JSON_PATH, account_relations)
-#
-#         return {
-#             "message": "Account deleted successfully",
-#             "account_type": account_type,
-#         }

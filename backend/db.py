@@ -43,7 +43,7 @@ def add_account(username: str, password: str, account_type: str):
             )
             conn.commit()
             print(ACCT_CREATED)
-            return None
+            return ACCT_CREATED
         except sqlite3.IntegrityError:
             print(ACCT_ALREADY_EXISTS)
             return ACCT_ALREADY_EXISTS
@@ -58,7 +58,7 @@ def delete_account(username: str):
             )
             conn.commit()
             print(ACCT_DELETED)
-            return None
+            return ACCT_DELETED
         except sqlite3.IntegrityError:
             print(ACCT_NOT_EXIST)
             return ACCT_NOT_EXIST
