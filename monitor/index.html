@@ -375,15 +375,24 @@
               <!-- First Section: Unmonitored Patients -->
               <h6 class="mb-3">未監測病患</h6>
               <div class="list-group mb-4">
-
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                  <span>WIP</span>
+                  <button class="btn btn-success btn-sm me-2">加入監測</button>
+                </div>
               </div>
 
               <!-- Second Section: Monitored Patients -->
               <h6 class="mb-3">監測中病患</h6>
               <div class="list-group mb-4">
-
+                <div class="list-group-item d-flex justify-content-between align-items-center"
+                  v-for="patient in patientAccounts">
+                  <span>{{ patient }}</span>
+                  <div>
+                    <button class="btn btn-warning btn-sm me-2">取消監測</button>
+                    <button class="btn btn-danger btn-sm">刪除帳號</button>
+                  </div>
+                </div>
               </div>
-
             </div>
           </div>
         </div>
