@@ -138,6 +138,24 @@ Vue.createApp({
         console.error(message);
       }
     },
+    async removePatientFromMonitor(index) {
+      const account = this.patientAccounts[index];
+      const [patient, patient_password] = this.patientAccountsWithPasswords.find(p => p[0] === account);
+      const payload = {
+        event: this.events.REMOVE_PATIENT,
+        account: this.account,
+        password: this.password,
+        patient: patient,
+        patient_password: patient_password,
+      };
+      const { message } = await this.postRequest(payload);
+      if (message === this.events.messages.REMOVE_PATIENT_SUCCESS) {
+        console.log(message);
+        await this.fetchUnmonitoredPatients();
+      } else {
+        console.error(message);
+      }
+    },
     async authenticate() {
       const fetchedData = await this.postRequest({
           event: this.events.FETCH_MONITORING_PATIENTS,
