@@ -16,7 +16,6 @@ payload = {
     "event": SIGN_UP_MONITOR,
     "account": ACCOUNT,
     "password": PASSWORD,
-    "account_type": "MONITOR",
 }
 headers = {"Accept": "application/json", "Content-Type": "application/json"}
 

@@ -111,13 +111,11 @@ async def handle_request(request: Request):
 
     event = post_request.get("event")
     if event == SIGN_UP_MONITOR and post_request_token:
-        if not has_parameters(
-            post_request, ["account_type", "account", "password"]
-        ):
+        if not has_parameters(post_request, ["account", "password"]):
             return {"message": MISSING_PARAMETER}
 
         response = sign_up_account(
-            post_request["account_type"],
+            db.AccountType.MONITOR,
             post_request["account"],
             post_request["password"],
         )
