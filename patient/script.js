@@ -141,16 +141,16 @@ Vue.createApp({
       const fetchedData = await this.fetchRecords();
       if (Object.prototype.hasOwnProperty.call(fetchedData, "message")) {
         switch (fetchedData.message) {
-          case "Nonexistent account.":
+          case this.events.messages.ACCT_NOT_EXIST:
             alert(this.curLangText.nonexistent_account);
             this.account = "";
             this.password = "";
             break;
-          case "Incorrect password.":
+          case this.events.messages.AUTH_FAIL_PASSWORD:
             alert(this.curLangText.incorrect_password);
             this.password = "";
             break;
-          case "Invalid account type.":
+          case this.events.messages.INVALID_ACCT_TYPE:
             alert(this.curLangText.account_without_permission);
             this.account = "";
             this.password = "";
@@ -221,7 +221,7 @@ Vue.createApp({
         }
 
         const { message } = await response.json();
-        if (message === "Update successful.") {
+        if (message === this.events.messages.UPDATE_RECORD_SUCCESS) {
           console.log("Patient records posted successfully");
           return true;
         } else {
@@ -423,7 +423,7 @@ Vue.createApp({
         if (
           !this.confirming &&
           Object.prototype.hasOwnProperty.call(fetchedData, "message") &&
-          fetchedData.message === "Fetch successful."
+          fetchedData.message === this.events.messages.FETCH_RECORD_SUCCESS
         ) {
           this.records = fetchedData["account_records"];
           this.processRestrictionText();
