@@ -15,7 +15,10 @@ Vue.createApp({
       unmonitoredPatients: [],
       patientAccountsWithPasswords: [],
       filteredPatientAccounts: [],
-
+      // QR Code
+      qrCodePatient: "",
+      qrCodePatientPassword: "",
+      //
       searchQuery: "",
       currentDateMMDD: "",
       editingRecordIndex: -1,
@@ -224,6 +227,22 @@ Vue.createApp({
       const firstDate = keys[0].replace(/_/g, "/");
       const lastDate = keys[keys.length - 1].replace(/_/g, "/");
       return `${firstDate} ~ ${lastDate}`;
+    },
+    openQrCodeModal(index) {
+      const account = this.filteredPatientAccounts[index];
+      const [patient, patient_password] = this.patientAccountsWithPasswords.find(p => p[0] === account);
+      this.qrCodePatient = patient;
+      this.qrCodePatientPassword = patient_password;
+
+      const qrCodeContainer = document.getElementById("qrCodeContainer");
+      qrCodeContainer.innerHTML = "";
+      const qrData = `https://lifeadventurer.github.io/patient-input-output-recorder/patient/?acct=${patient}&pw=${patient_password}`;
+      const qrCode = new QRCode(qrCodeContainer);
+      qrCode.makeCode(qrData);
+
+      const qrCodeModal = document.getElementById("qrCodeModal");
+      const modalInstance = new bootstrap.Modal(qrCodeModal);
+      modalInstance.show();
     },
     updateRestrictionText(patientAccount) {
       const limitAmount = String(
