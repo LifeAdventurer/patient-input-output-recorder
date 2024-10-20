@@ -155,6 +155,11 @@ Vue.createApp({
             this.account = "";
             this.password = "";
             break;
+          case "Invalid event.":
+            alert("帳號或密碼錯誤");
+            this.account = "";
+            this.password = "";
+            break;
           default:
             this.authenticated = true;
             this.records = fetchedData["account_records"];
