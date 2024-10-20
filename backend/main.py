@@ -79,6 +79,11 @@ def sign_up_account(account_type: str, account: str, password: str) -> dict:
         data[account] = {}
         write_json_file(DATA_JSON_PATH, data)
 
+    else:
+        account_relations = load_json_file(ACCT_REL_JSON_PATH)
+        account_relations["monitor_accounts"][account] = []
+        write_json_file(ACCT_REL_JSON_PATH, account_relations)
+
     return {"message": ACCT_CREATED}
 
 
@@ -114,18 +119,11 @@ async def handle_request(request: Request):
         if not has_parameters(post_request, ["account", "password"]):
             return {"message": MISSING_PARAMETER}
 
-        response = sign_up_account(
+        return sign_up_account(
             db.AccountType.MONITOR,
             post_request["account"],
             post_request["password"],
         )
-
-        if response["message"] == ACCT_CREATED:
-            account_relations = load_json_file(ACCT_REL_JSON_PATH)
-            account_relations["monitor_accounts"][post_request["account"]] = []
-            write_json_file(ACCT_REL_JSON_PATH, account_relations)
-
-        return response
 
     if event in [
         FETCH_MONITORING_PATIENTS,  # 1
