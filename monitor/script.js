@@ -225,7 +225,7 @@ Vue.createApp({
         };
         const response = await this.postRequest(payload);
         if (response.message === this.events.messages.ACCT_ALREADY_EXISTS) {
-          alert("此帳號已被註冊。");
+          alert("此帳號名已被使用。");
           this.signUpPatientAccount = "";
           this.signUpPatientPassword = "";
         } else {
