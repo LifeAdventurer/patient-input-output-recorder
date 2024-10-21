@@ -158,6 +158,9 @@ Vue.createApp({
     },
     async deletePatient(index) {
       const account = this.patientAccounts[index];
+      if (!confirm(`請確認病患: ${account} 是否要出院?`)) {
+        return;
+      }
       const [patient, patient_password] = this.patientAccountsWithPasswords.find(p => p[0] === account);
       const payload = {
         event: this.events.DELETE_PATIENT,
