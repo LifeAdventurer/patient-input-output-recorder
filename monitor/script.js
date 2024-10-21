@@ -198,8 +198,8 @@ Vue.createApp({
             break;
           default:
             this.authenticated = true;
-            sessionStorage.setItem("account", this.account);
-            sessionStorage.setItem("password", this.password);
+            localStorage.setItem("account", this.account);
+            localStorage.setItem("password", this.password);
 
             this.processFetchedData(fetchedData);
             this.filteredPatientAccounts = this.patientAccounts;
@@ -414,8 +414,8 @@ Vue.createApp({
         this.account = "";
         this.password = "";
         this.authenticated = false;
-        sessionStorage.removeItem("account");
-        sessionStorage.removeItem("password");
+        localStorage.removeItem("account");
+        localStorage.removeItem("password");
       }
     },
     async removeRecord(target, patientAccount) {
@@ -468,10 +468,10 @@ Vue.createApp({
     const params = url.searchParams;
     const account = params.has("acct")
       ? params.get("acct")
-      : sessionStorage.getItem("account");
+      : localStorage.getItem("account");
     const password = params.has("pw")
       ? params.get("pw")
-      : sessionStorage.getItem("password");
+      : localStorage.getItem("password");
 
     if (account && password) {
       this.authenticated = false;
