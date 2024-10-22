@@ -1,14 +1,9 @@
 __pycache__/
 
-backend/post.py
-backend/note.md
 backend/data.json
 backend/account_relations.json
 
 *.db
 config.json
-
-# Generated QR codes
-qr_code*
 
 docs/
