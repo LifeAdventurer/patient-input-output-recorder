@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "patient-input-output-recorder"
-version = "0.5.1"
+version = "1.0.0"
 description = ""
 authors = ["lifeadventurer <life0adventurer@gmail.com>"]
 license = "GPL-3.0"
