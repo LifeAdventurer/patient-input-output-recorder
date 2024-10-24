@@ -358,6 +358,10 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="關閉"></button>
             </div>
             <div class="modal-body">
+              <div v-if="signUpAlertMessage" :class="['alert', signUpAlertClass]" role="alert">
+                {{ signUpAlertMessage}}
+              </div>
+
               <form @submit.prevent="signUpPatient" :class="{ 'was-validated' : signUpPatientSubmitted }" novalidate>
                 <div class="mb-3">
                   <label for="signUpPatientAccount" class="form-label">帳號</label>
