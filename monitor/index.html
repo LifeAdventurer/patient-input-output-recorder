@@ -335,8 +335,13 @@
 
       <!-- Logout -->
       <div class="row mt-3">
-        <div class="col text-center" id="logout">
-          <button class="btn btn-dark" @click="confirmLogout">登出</button>
+        <h4 class="col-md-3 offset-md-4 col-5 offset-1">
+          帳號: {{ account }}
+        </h4>
+        <div class="col-md-2 offset-md-0 col-4 offset-2" id="logout">
+          <button class="btn btn-dark" @click="confirmLogout">
+            登出
+          </button>
         </div>
       </div>
       <button class="btn btn-dark position-fixed bottom-0 end-0 m-3" id="scrollToTopBtn" @click="scrollToTop"
