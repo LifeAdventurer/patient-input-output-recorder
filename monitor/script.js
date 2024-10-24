@@ -272,11 +272,16 @@ Vue.createApp({
       this.qrCodePatient = patient;
       this.qrCodePatientPassword = patient_password;
 
+      const encodedPatient = encodeURIComponent(patient);
+      const encodedPassword = encodeURIComponent(patient_password);
+
       const qrCodeContainer = document.getElementById("qrCodeContainer");
-      qrCodeContainer.innerHTML = "";
-      const qrData = `https://lifeadventurer.github.io/patient-input-output-recorder/patient/?acct=${patient}&pw=${patient_password}`;
-      const qrCode = new QRCode(qrCodeContainer);
-      qrCode.makeCode(qrData);
+      const qrData = `https://lifeadventurer.github.io/patient-input-output-recorder/patient/?acct=${encodedPatient}&pw=${encodedPassword}`;
+      const qrCode = qrcode(0, 'H');
+      qrCode.addData(qrData);
+      qrCode.make();
+
+      qrCodeContainer.innerHTML = qrCode.createImgTag(6);
 
       const qrCodeModal = document.getElementById("qrCodeModal");
       const modalInstance = new bootstrap.Modal(qrCodeModal);
