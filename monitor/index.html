@@ -37,7 +37,7 @@
           <div class="input-group">
             <span class="input-group-text">密碼</span>
             <input :type="showPassword ? 'text' : 'password'" class="form-control" v-model="password" />
-            <button class="btn btn-outline-secondary" @click="togglePasswordVisibility">
+            <button class="btn btn-light border" @click="togglePasswordVisibility" type="button">
               <i class="fas" :class="showPassword ? 'fa-eye-slash' : 'fa-eye'" aria-hidden="true"></i>
             </button>
           </div>
